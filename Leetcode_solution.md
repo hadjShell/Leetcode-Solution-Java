@@ -147,3 +147,70 @@ class Solution {
 
 ***
 
+## Question 19
+
+### Description
+
+Given the `head` of a linked list, remove the `nth` node from the end of the list and return its head.
+
+![img](https://assets.leetcode.com/uploads/2020/10/03/remove_ex1.jpg)
+
+- The number of nodes in the list is `sz`.
+- `1 <= sz <= 30`
+- `0 <= Node.val <= 100`
+- `1 <= n <= sz`
+
+### Example
+
+```markdown
+Input: head = [1,2,3,4,5], n = 2
+Output: [1,2,3,5]
+
+Input: head = [1], n = 1
+Output: []
+
+Input: head = [1,2], n = 1
+Output: [1]
+```
+
+### Solution
+
+* Quick slow pointers
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if(head == null || head.next == null)
+            return null;
+        
+        // create a sentinel
+        ListNode sen = new ListNode(0, head);
+        
+        // slow is the deleted node
+        ListNode slow = head, quick = head, preSlow = sen;
+        while(quick != null) {
+            if(n <= 0) {
+                preSlow = slow;
+                slow = slow.next;
+            }
+            
+            quick = quick.next;
+            n--;
+        }
+        
+        preSlow.next = slow.next;
+        return sen.next;
+    }   
+}
+```
+
