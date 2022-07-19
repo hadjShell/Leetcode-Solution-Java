@@ -266,3 +266,46 @@ class Solution {
 }
 ```
 
+***
+
+## Question 24
+
+### Description
+
+Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)
+
+### Example
+
+![img](https://assets.leetcode.com/uploads/2020/10/03/swap_ex1.jpg)
+
+```markdown
+Input: head = [1,2,3,4]
+Output: [2,1,4,3]
+```
+
+### Solution
+
+```java
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        if(head == null || head.next == null)
+            return head;
+        
+        ListNode sentinel = new ListNode(0, head);
+        ListNode cur = head, next = head.next, prev = sentinel;
+        head = next;
+        while(cur != null && cur.next != null) {
+            next = cur.next;
+            cur.next = next.next;
+            next.next = cur;
+            prev.next = next;
+            prev = cur;
+            cur = cur.next;
+        }
+        return head;
+    }
+}
+```
+
+***
+
