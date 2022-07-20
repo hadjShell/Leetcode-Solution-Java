@@ -14,6 +14,8 @@
 
 ## Question 2
 
+*Add Two Numbers*
+
 ### Description
 
 You are given two **non-empty** linked lists representing two non-negative integers. The digits are stored in **reverse order**, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
@@ -39,67 +41,55 @@ Output: [8,9,9,9,0,0,0,1]
 * Consider **carry**, and the method used for calculating it
 
 ```java
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
-class Solution {
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode cur = l2;
-        ListNode sum = cur;
-        int carry = 0;
-        ListNode prev = null;
-        
-        while(l1 != null && cur != null) {
-            cur.val = l1.val + cur.val + carry;
-            carry = cur.val / 10;
-            cur.val %= 10;
-            
-            l1 = l1.next;
-            prev = cur;
-            cur = cur.next;
-        }
-        
-        /* if l1 go to the end, go with cur, do nothing
+public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    ListNode cur = l2;
+    ListNode sum = cur;
+    int carry = 0;
+    ListNode prev = null;
+
+    while(l1 != null && cur != null) {
+        cur.val = l1.val + cur.val + carry;
+        carry = cur.val / 10;
+        cur.val %= 10;
+
+        l1 = l1.next;
+        prev = cur;
+        cur = cur.next;
+    }
+
+    /* if l1 go to the end, go with cur, do nothing
         ** if cur go to the end, link prev node to l1 current node
         */
-        if(cur == null) {
-            prev.next = l1;
-            cur = l1;
-        } 
-        
-        while(cur != null) {
-            cur.val += carry;
-            carry = cur.val / 10;
-            cur.val %= 10;
-            
-            if(carry == 0)  break;
+    if(cur == null) {
+        prev.next = l1;
+        cur = l1;
+    } 
 
-            prev = cur;
-            cur = cur.next;
-        }
-        
-        // cur go the end, check carry, if 1, create a new node
-        if(carry == 1) {
-            prev.next = new ListNode(1, null);
-        }
-        
-        return sum;
+    while(cur != null) {
+        cur.val += carry;
+        carry = cur.val / 10;
+        cur.val %= 10;
+
+        if(carry == 0)  break;
+
+        prev = cur;
+        cur = cur.next;
     }
+
+    // cur go the end, check carry, if 1, create a new node
+    if(carry == 1) {
+        prev.next = new ListNode(1, null);
+    }
+
+    return sum;
 }
 ```
-
-
 
 ***
 
 ## Question 9 
+
+*Palindrome Number*
 
 ### Description
 
@@ -123,33 +113,33 @@ Output: false
 * Save time by operating on half of the number
 
 ```java
-class Solution {
-    public boolean isPalindrome(int x) {
-        if(x < 0)
-            return false;
-        
-        if(x < 10)
-            return true;
-        
-        // Special case: end with 0, couldn't get the last half properly
-        if(x % 10 == 0)
-            return false;
-        
-        // reversed last half part of x, save time for reversing the whole number
-        int lastHalf = 0;
-        while(x > lastHalf) {
-            lastHalf = lastHalf * 10 + x % 10;
-            x /= 10;
-        }
-        
-        return x == lastHalf || x == lastHalf / 10;  
+public boolean isPalindrome(int x) {
+    if(x < 0)
+        return false;
+
+    if(x < 10)
+        return true;
+
+    // Special case: end with 0, couldn't get the last half properly
+    if(x % 10 == 0)
+        return false;
+
+    // reversed last half part of x, save time for reversing the whole number
+    int lastHalf = 0;
+    while(x > lastHalf) {
+        lastHalf = lastHalf * 10 + x % 10;
+        x /= 10;
     }
+
+    return x == lastHalf || x == lastHalf / 10;  
 }
 ```
 
 ***
 
 ## Question 19
+
+*Remove Nth Node From End of List*
 
 ### Description
 
@@ -180,45 +170,35 @@ Output: [1]
 * Quick slow pointers
 
 ```java
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
-class Solution {
-    public ListNode removeNthFromEnd(ListNode head, int n) {
-        if(head == null || head.next == null)
-            return null;
-        
-        // create a sentinel
-        ListNode sen = new ListNode(0, head);
-        
-        // slow is the deleted node
-        ListNode slow = head, quick = head, preSlow = sen;
-        while(quick != null) {
-            if(n <= 0) {
-                preSlow = slow;
-                slow = slow.next;
-            }
-            
-            quick = quick.next;
-            n--;
+public ListNode removeNthFromEnd(ListNode head, int n) {
+    if(head == null || head.next == null)
+        return null;
+
+    // create a sentinel
+    ListNode sen = new ListNode(0, head);
+
+    // slow is the deleted node
+    ListNode slow = head, quick = head, preSlow = sen;
+    while(quick != null) {
+        if(n <= 0) {
+            preSlow = slow;
+            slow = slow.next;
         }
-        
-        preSlow.next = slow.next;
-        return sen.next;
-    }   
-}
+
+        quick = quick.next;
+        n--;
+    }
+
+    preSlow.next = slow.next;
+    return sen.next;
+}   
 ```
 
 ***
 
 ## Question 21
+
+:star:*Merge Two Sorted Lists*
 
 ### Description
 
@@ -237,31 +217,19 @@ Return *the head of the merged linked list*.
 * Recursion
 
 ```java
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
-class Solution {
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        if(l1 == null)
-            return l2;
-        if(l2 == null)
-            return l1;
-        
-        if(l1.val >= l2.val) {
-            l2.next = mergeTwoLists(l1, l2.next);
-            return l2;
-        }
-        else {
-            l1.next = mergeTwoLists(l1.next, l2);
-            return l1;
-        }
+public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    if(l1 == null)
+        return l2;
+    if(l2 == null)
+        return l1;
+
+    if(l1.val >= l2.val) {
+        l2.next = mergeTwoLists(l1, l2.next);
+        return l2;
+    }
+    else {
+        l1.next = mergeTwoLists(l1.next, l2);
+        return l1;
     }
 }
 ```
@@ -269,6 +237,8 @@ class Solution {
 ***
 
 ## Question 24
+
+*Swap Nodes in Pairs*
 
 ### Description
 
@@ -286,24 +256,22 @@ Output: [2,1,4,3]
 ### Solution
 
 ```java
-class Solution {
-    public ListNode swapPairs(ListNode head) {
-        if(head == null || head.next == null)
-            return head;
-        
-        ListNode sentinel = new ListNode(0, head);
-        ListNode cur = head, next = head.next, prev = sentinel;
-        head = next;
-        while(cur != null && cur.next != null) {
-            next = cur.next;
-            cur.next = next.next;
-            next.next = cur;
-            prev.next = next;
-            prev = cur;
-            cur = cur.next;
-        }
+public ListNode swapPairs(ListNode head) {
+    if(head == null || head.next == null)
         return head;
+
+    ListNode sentinel = new ListNode(0, head);
+    ListNode cur = head, next = head.next, prev = sentinel;
+    head = next;
+    while(cur != null && cur.next != null) {
+        next = cur.next;
+        cur.next = next.next;
+        next.next = cur;
+        prev.next = next;
+        prev = cur;
+        cur = cur.next;
     }
+    return head;
 }
 ```
 
@@ -311,7 +279,7 @@ class Solution {
 
 ## Question 61
 
-Rotate List
+*Rotate List*
 
 ### Description
 
@@ -332,37 +300,35 @@ Given the `head` of a linked list, rotate the list to the right by `k` places.
 * Quick, slow pointer
 
 ```java
-class Solution {
-    public ListNode rotateRight(ListNode head, int k) {
-        if(head == null || head.next == null)
-            return head;
-        
-        ListNode cur = head;
-        int size = 0;
-        while(cur != null) {
-            size++;
+public ListNode rotateRight(ListNode head, int k) {
+    if(head == null || head.next == null)
+        return head;
+
+    ListNode cur = head;
+    int size = 0;
+    while(cur != null) {
+        size++;
+        cur = cur.next;
+    }
+
+    int rotate = k % size;
+    if(rotate == 0)
+        return head;
+
+    ListNode quick = head, tail = null;
+    cur = head;
+    while(quick != null) {
+        if(rotate < 0) {
             cur = cur.next;
         }
-        
-        int rotate = k % size;
-        if(rotate == 0)
-            return head;
-        
-        ListNode quick = head, tail = null;
-        cur = head;
-        while(quick != null) {
-            if(rotate < 0) {
-                cur = cur.next;
-            }
-            rotate--;
-            tail = quick;
-            quick = quick.next;
-        }
-        tail.next = head;
-        head = cur.next;
-        cur.next = null;
-        return head; 
+        rotate--;
+        tail = quick;
+        quick = quick.next;
     }
+    tail.next = head;
+    head = cur.next;
+    cur.next = null;
+    return head; 
 }
 ```
 
@@ -370,11 +336,15 @@ class Solution {
 
 ## Question 82
 
-Remove Duplicates from Sorted List II
+*Remove Duplicates from Sorted List II*
 
 ### Description
 
 Given the `head` of a sorted linked list, *delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list*. Return *the linked list **sorted** as well*.
+
+- The number of nodes in the list is in the range `[0, 300]`.
+- `-100 <= Node.val <= 100`
+- The list is guaranteed to be **sorted** in ascending order.
 
 ### Example
 
@@ -441,7 +411,7 @@ public ListNode deleteDuplicates(ListNode head) {
 
 ## Question 83
 
-Remove Duplicates from Sorted List
+*Remove Duplicates from Sorted List*
 
 ### Description
 
@@ -457,24 +427,22 @@ Output: [1,2,3]
 ### Solution
 
 ```java
-class Solution {
-    public ListNode deleteDuplicates(ListNode head) {
-        if(head == null || head.next == null)
-            return head;
-        
-        ListNode cur = head.next, prev = head;
-        while(cur != null) {
-            if(cur.val == prev.val) {
-                prev.next = cur.next;
-            }
-            else {
-                prev = cur;
-            }
-            cur = cur.next;
-        }
-        
+public ListNode deleteDuplicates(ListNode head) {
+    if(head == null || head.next == null)
         return head;
+
+    ListNode cur = head.next, prev = head;
+    while(cur != null) {
+        if(cur.val == prev.val) {
+            prev.next = cur.next;
+        }
+        else {
+            prev = cur;
+        }
+        cur = cur.next;
     }
+
+    return head;
 }
 ```
 
