@@ -309,3 +309,189 @@ class Solution {
 
 ***
 
+## Question 61
+
+Rotate List
+
+### Description
+
+Given the `head` of a linked list, rotate the list to the right by `k` places.
+
+- The number of nodes in the list is in the range `[0, 500]`.
+- `-100 <= Node.val <= 100`
+- `0 <= k <= 2 * 109`
+
+### Example
+
+![img](https://assets.leetcode.com/uploads/2020/11/13/rotate1.jpg)
+
+![img](https://assets.leetcode.com/uploads/2020/11/13/roate2.jpg)
+
+### Solution
+
+* Quick, slow pointer
+
+```java
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if(head == null || head.next == null)
+            return head;
+        
+        ListNode cur = head;
+        int size = 0;
+        while(cur != null) {
+            size++;
+            cur = cur.next;
+        }
+        
+        int rotate = k % size;
+        if(rotate == 0)
+            return head;
+        
+        ListNode quick = head, tail = null;
+        cur = head;
+        while(quick != null) {
+            if(rotate < 0) {
+                cur = cur.next;
+            }
+            rotate--;
+            tail = quick;
+            quick = quick.next;
+        }
+        tail.next = head;
+        head = cur.next;
+        cur.next = null;
+        return head; 
+    }
+}
+```
+
+***
+
+## Question 82
+
+Remove Duplicates from Sorted List II
+
+### Description
+
+Given the `head` of a sorted linked list, *delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list*. Return *the linked list **sorted** as well*.
+
+### Example
+
+```markdown
+Input: head = [1,2,3,3,4,4,5]
+Output: [1,2,5]
+```
+
+### Solution
+
+```java
+// Solution 1
+// Use three pointers, follow the logic
+public ListNode deleteDuplicates(ListNode head) {
+        if(head == null || head.next == null)
+            return head;
+        
+        ListNode sentinel = new ListNode(-101, head);
+        ListNode pSen = new ListNode(-102, sentinel);
+        ListNode prev = sentinel, cur = head, pPrev = pSen;
+        boolean deleted = false;
+        while(cur != null) {
+            if(cur.val == prev.val) {
+                pPrev.next = cur.next;
+                deleted = true;
+            }
+            else {
+                // if there is no node deleted before current node, move pPrev pointer
+                // otherwise no need to move it
+                if(!deleted)    pPrev = prev;
+                prev = cur;
+                deleted = false;
+            }
+            cur = cur.next;
+        }
+        
+        return sentinel.next;
+}
+
+// Solution 2
+// loop all next nodes of current next node which have same value with it
+// current node always has different value with current next node
+public ListNode deleteDuplicates(ListNode head) {
+    if(head == null || head.next == null) return head;
+
+    ListNode sentinel = new ListNode(-101, head);
+    ListNode curr = sentinel;
+
+    while(curr.next != null && curr.next.next != null){
+        if(curr.next.val == curr.next.next.val){
+            int val = curr.next.val;
+            while(curr.next != null && curr.next.val == val){
+                curr.next = curr.next.next;
+            }
+        }else{
+            curr = curr.next;
+        }
+    }
+    return sentinel.next;
+}
+```
+
+***
+
+## Question 83
+
+Remove Duplicates from Sorted List
+
+### Description
+
+Given the `head` of a sorted linked list, *delete all duplicates such that each element appears only once*. Return *the linked list **sorted** as well*.
+
+### Example
+
+```markdown
+Input: head = [1,1,2,3,3]
+Output: [1,2,3]
+```
+
+### Solution
+
+```java
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if(head == null || head.next == null)
+            return head;
+        
+        ListNode cur = head.next, prev = head;
+        while(cur != null) {
+            if(cur.val == prev.val) {
+                prev.next = cur.next;
+            }
+            else {
+                prev = cur;
+            }
+            cur = cur.next;
+        }
+        
+        return head;
+    }
+}
+```
+
+***
+
+## Question
+
+### Description
+
+### Example
+
+### Solution
+
+## Question
+
+### Description
+
+### Example
+
+### Solution
