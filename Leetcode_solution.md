@@ -448,13 +448,65 @@ public ListNode deleteDuplicates(ListNode head) {
 
 ***
 
-## Question
+## Question 86
+
+*Partition List*
 
 ### Description
 
+Given the `head` of a linked list and a value `x`, partition it such that all nodes **less than** `x` come before nodes **greater than or equal** to `x`.
+
+You should **preserve** the original relative order of the nodes in each of the two partitions.
+
+- The number of nodes in the list is in the range `[0, 200]`.
+- `-100 <= Node.val <= 100`
+- `-200 <= x <= 200`
+
 ### Example
 
+![img](https://assets.leetcode.com/uploads/2021/01/04/partition.jpg)
+
+```markdown
+Input: head = [1,4,3,2,5,2], x = 3
+Output: [1,2,2,4,3,5]
+```
+
 ### Solution
+
+* Note that when `head.val < x` there are two different scenarios, **the only difference is whether to alter the `prev` pointer or not**
+
+```java
+// hold last node pointer whose value is less than x 
+public ListNode partition(ListNode head, int x) {
+    if(head == null || head.next == null)
+        return head;
+
+    ListNode sentinel = new ListNode(-201, head);
+    ListNode less = sentinel, prev = sentinel;
+    while(head != null) {
+        if(head.val < x) {
+            // if prev node is last less node, no need to move
+            if(prev == less) {
+                prev = head;
+            }
+            else {
+                prev.next = head.next;
+                head.next = less.next;
+                less.next = head;
+            }
+            less = less.next;
+        }
+        else {
+            prev = head;
+        }
+        head = prev.next;
+    }
+
+    return sentinel.next;
+}
+```
+
+***
 
 ## Question
 
