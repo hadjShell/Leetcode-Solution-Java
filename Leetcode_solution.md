@@ -196,9 +196,9 @@ public ListNode removeNthFromEnd(ListNode head, int n) {
 
 ***
 
-## Question 21
+## :star:Question 21 
 
-:star:*Merge Two Sorted Lists*
+*Merge Two Sorted Lists*
 
 ### Description
 
@@ -544,13 +544,95 @@ public ListNode reverseList(ListNode head) {
 
 ***
 
-## Question
+## :star:Question 160
 
 ### Description
 
+*Intersection of Two Linked Lists*
+
 ### Example
 
+Given the heads of two singly linked-lists `headA` and `headB`, return *the node at which the two lists intersect*. If the two linked lists have no intersection at all, return `null`.
+
+**Note** that the linked lists must **retain their original structure** after the function returns.
+
+![img](https://assets.leetcode.com/uploads/2021/03/05/160_example_1_1.png)
+
+```markdown
+Input: intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3
+Output: Intersected at '8'
+```
+
 ### Solution
+
+* **Key**: commutative law of addition, `a + b = b + a`
+* <img src="\imgs\160.png" alt="160" style="zoom: 67%;" />
+
+```java
+// Solution 1
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    if(headA == null || headB == null)
+        return null;
+
+    ListNode currA = headA;
+    ListNode currB = headB;
+    int iteration = 0;
+
+    while(currA != currB) {
+        if(iteration == 4)
+            return null;
+        if(currA.next == null) {
+            currA = headB;
+            iteration++;
+        }
+        else
+            currA = currA.next;
+
+        if(currB.next == null) {
+            currB = headA;
+            iteration++;
+        }
+        else
+            currB = currB.next;
+    }
+    return currA;
+}
+
+// Solution 2
+// Longer list starts from part of it which has the same length of shorter one
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    int len1 = 0;
+    int len2 = 0;
+    ListNode h1 = headA;
+    ListNode h2 = headB;
+    while(h1 != null) {
+        h1 = h1.next;
+        len1++;
+    }
+    while(h2 != null) {
+        h2 = h2.next;
+        len2++;
+    }
+
+    while(len1 != len2) {
+        if (len1 > len2) {
+            headA = headA.next;
+            len1--;
+        } else {
+            headB = headB.next;
+            len2--;
+        }
+    }
+
+    while (headA != headB) {
+        headA = headA.next;
+        headB = headB.next;
+    }
+    return headA;
+}
+```
+
+***
 
 ## Question
 
