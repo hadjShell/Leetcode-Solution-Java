@@ -508,6 +508,50 @@ public ListNode partition(ListNode head, int x) {
 
 ***
 
+## Question 206
+
+*Reverse Linked List*
+
+### Description
+
+Given the `head` of a singly linked list, reverse the list, and return *the reversed list*.
+
+### Example
+
+```markdown
+Input: head = [1,2,3,4,5]
+Output: [5,4,3,2,1]
+```
+
+### Solution
+
+```java
+public ListNode reverseList(ListNode head) {
+    if(head == null || head.next == null) 
+        return head;
+
+    ListNode cur = head.next, prev = head, next = null;
+    while(cur != null) {
+        next = cur.next;
+        cur.next = prev;
+        prev = cur;
+        cur = next;
+    }
+    head.next = null;
+    return prev;
+}
+```
+
+***
+
+## Question
+
+### Description
+
+### Example
+
+### Solution
+
 ## Question
 
 ### Description
