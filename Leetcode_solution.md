@@ -566,7 +566,7 @@ Output: Intersected at '8'
 ### Solution
 
 * **Key**: commutative law of addition, `a + b = b + a`
-* <img src="\imgs\160.png" alt="160" style="zoom: 67%;" />
+* <img src="https://raw.githubusercontent.com/hadjShell/Leetcode-Solution-Java/main/imgs/160.png" alt="160" style="zoom: 67%;" />
 
 ```java
 // Solution 1
