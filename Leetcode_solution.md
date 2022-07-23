@@ -747,6 +747,69 @@ public ListNode reverseList(ListNode head) {
 
 ***
 
+## Question 234
+
+*Palindrome Linked List*
+
+### Description
+
+Given the `head` of a singly linked list, return `true` if it is a palindrome.
+
+### Example
+
+```markdown
+Input: head = [1,2,2,1]
+Output: true
+Input: head = [1,2]
+Output: false
+```
+
+### Solution
+
+* Same logic as [question 143](#Question 143)
+* Or can use array to store list information and then check, but the memory complexity will be `O(N)`
+
+```java
+public boolean isPalindrome(ListNode head) {
+    if(head == null || head.next == null)
+        return true;
+
+    ListNode middle = head, tail = head;
+    // find middle node
+    while(tail.next != null && tail.next.next != null) {
+        middle = middle.next;
+        tail = tail.next.next;
+    }
+    tail = reverseList(middle.next);
+
+    while(tail != null) {
+        if(head.val != tail.val)
+            return false;
+        tail = tail.next;
+        head = head.next;
+    }
+
+    return true;
+}
+
+private ListNode reverseList(ListNode head) {
+    if(head == null || head.next == null) 
+        return head;
+
+    ListNode cur = head.next, prev = head, next = null;
+    while(cur != null) {
+        next = cur.next;
+        cur.next = prev;
+        prev = cur;
+        cur = next;
+    }
+    head.next = null;
+    return prev;
+}
+```
+
+***
+
 ## Question
 
 ### Description
