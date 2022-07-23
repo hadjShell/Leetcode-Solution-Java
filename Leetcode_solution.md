@@ -766,7 +766,7 @@ Output: false
 
 ### Solution
 
-* Same logic as [question 143](#Question 143)
+* Same logic as [question 143](# Question 143)
 * Or can use array to store list information and then check, but the memory complexity will be `O(N)`
 
 ```java
@@ -806,6 +806,36 @@ private ListNode reverseList(ListNode head) {
     head.next = null;
     return prev;
 }
+```
+
+***
+
+## Question 237
+
+*Delete Node in a Linked List*
+
+### Description
+
+Write a function to **delete a node** in a singly-linked list. You will **not** be given access to the `head` of the list, instead you will be given access to **the node to be deleted** directly.
+
+It is **guaranteed** that the node to be deleted is **not a tail node** in the list.
+
+- The number of the nodes in the given list is in the range `[2, 1000]`.
+
+### Example
+
+```markdown
+Input: head = [4,5,1,9], node = 5
+Output: [4,1,9]
+```
+
+### Solution
+
+```java
+public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
 ```
 
 ***
