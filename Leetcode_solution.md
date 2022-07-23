@@ -508,6 +508,81 @@ public ListNode partition(ListNode head, int x) {
 
 ***
 
+## Question 143
+
+*Reorder List*
+
+### Description
+
+You are given the head of a singly linked-list. The list can be represented as:
+
+```
+L0 → L1 → … → Ln - 1 → Ln
+```
+
+*Reorder the list to be on the following form:*
+
+```
+L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+```
+
+You may not modify the values in the list's nodes. Only nodes themselves may be changed.
+
+### Example
+
+![img](https://assets.leetcode.com/uploads/2021/03/04/reorder1linked-list.jpg)
+
+![img](https://assets.leetcode.com/uploads/2021/03/09/reorder2-linked-list.jpg)
+
+### Solution
+
+* Notice the algorithm used to find middle node in the list: **quick slow pointers with different step lengths**
+
+```java
+public void reorderList(ListNode head) {
+        if(head == null || head.next == null)
+            return;
+        
+        ListNode middle = head, tail = head;
+        // find middle node
+        while(tail.next != null && tail.next.next != null) {
+            middle = middle.next;
+            tail = tail.next.next;
+        }
+        
+        tail = reverseList(middle.next);
+        middle.next = null;
+        
+        ListNode cur = head, tmp = null;
+        while(tail != null) {
+            tmp = tail.next;
+            tail.next = cur.next;
+            cur.next = tail;
+            cur = cur.next.next;
+            tail = tmp;
+        }
+        
+        return;
+    }
+    
+    private ListNode reverseList(ListNode head) {
+        if(head == null || head.next == null) 
+            return head;
+
+        ListNode cur = head.next, prev = head, next = null;
+        while(cur != null) {
+            next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        head.next = null;
+        return prev;
+    }
+```
+
+***
+
 ## :star:Question 160
 
 ### Description
