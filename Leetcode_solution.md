@@ -766,7 +766,7 @@ Output: false
 
 ### Solution
 
-* Same logic as [question 143](# Question 143)
+* Same logic as [question 143](# question-143)
 * Or can use array to store list information and then check, but the memory complexity will be `O(N)`
 
 ```java
