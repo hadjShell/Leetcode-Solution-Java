@@ -508,42 +508,6 @@ public ListNode partition(ListNode head, int x) {
 
 ***
 
-## Question 206
-
-*Reverse Linked List*
-
-### Description
-
-Given the `head` of a singly linked list, reverse the list, and return *the reversed list*.
-
-### Example
-
-```markdown
-Input: head = [1,2,3,4,5]
-Output: [5,4,3,2,1]
-```
-
-### Solution
-
-```java
-public ListNode reverseList(ListNode head) {
-    if(head == null || head.next == null) 
-        return head;
-
-    ListNode cur = head.next, prev = head, next = null;
-    while(cur != null) {
-        next = cur.next;
-        cur.next = prev;
-        prev = cur;
-        cur = next;
-    }
-    head.next = null;
-    return prev;
-}
-```
-
-***
-
 ## :star:Question 160
 
 ### Description
@@ -629,6 +593,80 @@ public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         headB = headB.next;
     }
     return headA;
+}
+```
+
+***
+
+## Question 203
+
+*Remove Linked List Elements*
+
+### Description
+
+Given the `head` of a linked list and an integer `val`, remove all the nodes of the linked list that has `Node.val == val`, and return *the new head*.
+
+### Example
+
+```markdown
+Input: head = [1,2,6,3,4,5,6], val = 6
+Output: [1,2,3,4,5]
+```
+
+### Solution
+
+```java
+public ListNode removeElements(ListNode head, int val) {
+    if(head == null)
+        return null;
+
+    ListNode sentinel = new ListNode(0, head);
+    ListNode cur = head, prev = sentinel;
+    while(cur != null) {
+        if(cur.val == val)
+            prev.next = cur.next;
+        else
+            prev = cur;
+        cur = cur.next;
+    }
+
+    return sentinel.next;
+}
+```
+
+***
+
+## Question 206
+
+*Reverse Linked List*
+
+### Description
+
+Given the `head` of a singly linked list, reverse the list, and return *the reversed list*.
+
+### Example
+
+```markdown
+Input: head = [1,2,3,4,5]
+Output: [5,4,3,2,1]
+```
+
+### Solution
+
+```java
+public ListNode reverseList(ListNode head) {
+    if(head == null || head.next == null) 
+        return head;
+
+    ListNode cur = head.next, prev = head, next = null;
+    while(cur != null) {
+        next = cur.next;
+        cur.next = prev;
+        prev = cur;
+        cur = next;
+    }
+    head.next = null;
+    return prev;
 }
 ```
 
