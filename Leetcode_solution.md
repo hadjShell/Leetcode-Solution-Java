@@ -508,6 +508,48 @@ public ListNode partition(ListNode head, int x) {
 
 ***
 
+## :star:Question 141
+
+*Linked List Cycle*
+
+### Description
+
+Given `head`, the head of a linked list, determine if the linked list has a cycle in it.
+
+### Example
+
+![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png)
+
+### Solution
+
+* Quick slow pointer
+
+* When both pointers are in the circle, assume the relative distance (the distance that quick pointer need to catch up) is D, then if the difference between two pointer's speeds is one node, then D will absolutely decrease to 0 
+
+* If the difference is not one node, then they may not meet:
+
+  Assume circle has N nodes, quick speed is Q, slow speed is S (Q > S), after k iteration two pointers meet (k is integer), then `k(Q - S) - D` must be divisible by `N`, which is not always true
+
+  E.g., 4 nodes, slow at index 0, quick at index 3, slow's speed is one node, quick's speed is three nodes, they will never meet
+
+```java
+public boolean hasCycle(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+
+        if (fast == slow)
+            return true;
+    }
+    return false;
+}
+```
+
+***
+
 ## Question 143
 
 *Reorder List*
