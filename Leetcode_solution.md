@@ -550,6 +550,56 @@ public boolean hasCycle(ListNode head) {
 
 ***
 
+## :star:Question 142
+
+*Linked List Cycle II*
+
+### Description
+
+Given the `head` of a linked list, return *the node where the cycle begins. If there is no cycle, return* `null`.
+
+**Do not modify** the linked list.
+
+### Example
+
+```markdown
+Input: head = [3,2,0,-4], pos = 1
+Output: tail connects to node index 1
+```
+
+### Solution
+
+* Upgrade version of *Question 141*
+* ![142](\imgs\142.png)
+* Quick pointer move `xq`: `x1 + x2 + x3 + x2`, slow pointer move `xs`: `x1 + x2`, and `xq = 2xs`, so `x1 = x3`
+* So, after quick and slow meet, let quick back to the head of the list and make it move one node each iteration as slow point does. When they meet again, they will be at the start node of the cycle
+
+```java
+public ListNode detectCycle(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+
+        // there is a cycle
+        if (fast == slow) {
+            fast = head;
+            while(fast != slow) {
+                fast = fast.next;
+                slow = slow.next;
+            }
+            return fast;
+        }
+    }
+
+    return null;
+}
+```
+
+***
+
 ## Question 143
 
 *Reorder List*
