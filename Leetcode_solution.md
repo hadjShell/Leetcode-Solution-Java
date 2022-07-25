@@ -570,7 +570,7 @@ Output: tail connects to node index 1
 ### Solution
 
 * Upgrade version of *Question 141*
-* ![142](\imgs\142.png)
+* ![142](https://raw.githubusercontent.com/hadjShell/Leetcode-Solution-Java/main/imgs/142.png)
 * Quick pointer move `xq`: `x1 + x2 + x3 + x2`, slow pointer move `xs`: `x1 + x2`, and `xq = 2xs`, so `x1 = x3`
 * So, after quick and slow meet, let quick back to the head of the list and make it move one node each iteration as slow point does. When they meet again, they will be at the start node of the cycle
 
@@ -760,6 +760,82 @@ public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         headB = headB.next;
     }
     return headA;
+}
+```
+
+***
+
+## Question 202
+
+*Happy Number*
+
+### Description
+
+Write an algorithm to determine if a number `n` is happy.
+
+A **happy number** is a number defined by the following process:
+
+- Starting with any positive integer, replace the number by the sum of the squares of its digits.
+- Repeat the process until the number equals 1 (where it will stay), or it **loops endlessly in a cycle** which does not include 1.
+- Those numbers for which this process **ends in 1** are happy.
+
+Return `true` *if* `n` *is a happy number, and* `false` *if not*.
+
+- `1 <= n <= 2^31 - 1`
+
+### Example
+
+```markdown
+Input: n = 19
+Output: true
+Explanation:
+12 + 92 = 82
+82 + 22 = 68
+62 + 82 = 100
+12 + 02 + 02 = 1
+```
+
+### Solution
+
+* Floyd's cycle-finding algorithm: two endings: loop in `1` or loop in a cycle without `1` (cycle may not start at the input value)
+
+```java
+// Solution 1: implicit LinkedList cycle problem
+public boolean isHappy(int n) {
+    int slow = squares(n);
+    int fast = squares(squares(n));
+
+    while(fast != slow) {
+        slow = squares(slow);
+        fast = squares(squares(fast));
+    }
+
+    return fast == 1;
+}
+
+private int squares(int n) {
+    int ret = 0;
+    while(n != 0) {
+        int tmp = n % 10;
+        ret += tmp * tmp;
+        n /= 10;
+    }
+    return ret;
+}
+
+// Solution 2: hardcoding
+public boolean isHappy(int n) {
+    if((n==1)||(n==7))
+        return true;
+    else if(n<10)
+        return false;
+    int m=0;
+    while(n!=0) {
+        int tail=n%10;
+        m+=tail*tail;
+        n/=10;
+    }
+    return isHappy(m);
 }
 ```
 
