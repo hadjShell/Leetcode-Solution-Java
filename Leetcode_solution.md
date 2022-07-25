@@ -1008,6 +1008,50 @@ public void deleteNode(ListNode node) {
 
 ***
 
+## Question 258
+
+*Add Digits*
+
+### Description
+
+Given an integer `num`, repeatedly add all its digits until the result has only one digit, and return it.
+
+### Example
+
+```markdown
+Input: num = 38
+Output: 2
+Explanation: The process is
+38 --> 3 + 8 --> 11
+11 --> 1 + 1 --> 2 
+Since 2 has only one digit, return it.
+```
+
+### Solution
+
+```java
+// Solution 1: recursion
+public int addDigits(int num) {
+    if(num < 10)
+        return num;
+    else {
+        int newNum = 0;
+        while(num != 0) {
+            newNum += num % 10;
+            num /= 10;
+        }
+        return addDigits(newNum);
+    }
+}
+
+// Solution 2: math
+public int addDigits(int num) {
+    return 1 + (num - 1) % 9;
+}
+```
+
+***
+
 ## Question
 
 ### Description
