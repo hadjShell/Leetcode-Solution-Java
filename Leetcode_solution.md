@@ -508,6 +508,66 @@ public ListNode partition(ListNode head, int x) {
 
 ***
 
+## Question 92
+
+*Reverse Linked List II*
+
+### Description
+
+Given the `head` of a singly linked list and two integers `left` and `right` where `left <= right`, reverse the nodes of the list from position `left` to position `right`, and return *the reversed list*.
+
+### Example
+
+![img](https://assets.leetcode.com/uploads/2021/02/19/rev2ex2.jpg)
+
+```markdown
+Input: head = [1,2,3,4,5], left = 2, right = 4
+Output: [1,4,3,2,5]
+```
+
+### Solution
+
+```java
+public ListNode reverseBetween(ListNode head, int left, int right) {
+    if(head == null || head.next == null)
+        return head;
+
+    ListNode sentinel = new ListNode(0, head);
+    ListNode prev = sentinel, end = head;
+    while(right > 1) {
+        if(left > 1) {
+            prev = prev.next;
+            left--;
+        }
+        end = end.next;
+        right--;
+    }
+    ListNode reverse = prev.next;
+    ListNode next = end.next;
+    end.next = null;
+    prev.next = reverseList(reverse);
+    reverse.next = next;
+    return sentinel.next;
+}
+
+private ListNode reverseList(ListNode head) {
+    if(head == null || head.next == null) 
+        return head;
+
+    ListNode cur = head.next, prev = head, next = null;
+    while(cur != null) {
+        next = cur.next;
+        cur.next = prev;
+        prev = cur;
+        cur = next;
+    }
+    head.next = null;
+    return prev;
+}
+```
+
+***
+
 ## :star:Question 141
 
 *Linked List Cycle*
@@ -789,10 +849,10 @@ Return `true` *if* `n` *is a happy number, and* `false` *if not*.
 Input: n = 19
 Output: true
 Explanation:
-12 + 92 = 82
-82 + 22 = 68
-62 + 82 = 100
-12 + 02 + 02 = 1
+1^2 + 9^2 = 82
+8^2 + 2^2 = 68
+6^2 + 8^2 = 100
+1^2 + 0^2 + 0^2 = 1
 ```
 
 ### Solution
