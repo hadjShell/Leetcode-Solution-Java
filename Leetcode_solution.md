@@ -196,6 +196,67 @@ public ListNode removeNthFromEnd(ListNode head, int n) {
 
 ***
 
+## :star:Question 20
+
+*Valid Parentheses*
+
+### Description
+
+Given a string `s` containing just the characters `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, determine if the input string is valid.
+
+An input string is valid if:
+
+1. Open brackets must be closed by the same type of brackets.
+2. Open brackets must be closed in the correct order.
+
+### Example
+
+```
+Input: s = "{ { } [ ] [ [ [ ] ] ] }"
+Output: true
+Input: s = "([)]"
+Output: false
+```
+
+### Solution
+
+* If meet left parenthesis push correspond right one into the **stack**. If meet right parenthesis, if the peek of stack is itself, pop the stack and continue, otherwise it indicates that there is a cross of different parentheses in the string
+* Check the size of the stack in the end, if it is not equal to 0, there is at least one parenthesis unpaired in the string
+
+```java
+public boolean isValid(String s) {
+    if(s.length() % 2 == 1)
+        return false;
+
+    char[] stack = new char[s.length()];
+    int head = 0;
+
+    for(int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        switch(c) {
+            // add correspond parenthesis to r
+            case '(':
+                stack[head++] = ')';
+                break;
+            case '{':
+                stack[head++] = '}';
+                break;
+            case '[':
+                stack[head++] = ']';
+                break;
+            default:
+                // condition and operation at the same time
+                if(head == 0 || stack[--head] != c)
+                    return false;
+                break;
+        }
+    }
+    return head == 0;
+}
+```
+
+***
+
 ## :star:Question 21 
 
 *Merge Two Sorted Lists*
