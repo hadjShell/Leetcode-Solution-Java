@@ -1129,6 +1129,48 @@ public void deleteNode(ListNode node) {
 
 ***
 
+## Question 242
+
+*Valid Anagram*
+
+### Description
+
+Given two strings `s` and `t`, return `true` *if* `t` *is an anagram of* `s`*, and* `false` *otherwise*.
+
+An **Anagram** is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+### Example
+
+```markdown
+Input: s = "anagram", t = "nagaram"
+Output: true
+Input: s = "ab", t = "a"
+Output: false
+```
+
+### Solution
+
+```java
+public boolean isAnagram(String s, String t) {
+    if(s.length() != t.length())
+        return false;
+    int[] a = new int[26];
+    for(char c : s.toCharArray()) {
+        a[c - 'a']++;
+    }
+    for(char c : t.toCharArray()) {
+        a[c - 'a']--;
+    }
+    for(int i = 0; i < 26; i++) {
+        if(a[i] != 0)
+            return false;
+    }
+    return true;
+}
+```
+
+***
+
 ## Question 258
 
 *Add Digits*
