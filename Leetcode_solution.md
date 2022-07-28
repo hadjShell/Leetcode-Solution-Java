@@ -338,6 +338,48 @@ public ListNode swapPairs(ListNode head) {
 
 ***
 
+## Question 27
+
+*Remove Element*
+
+### Description
+
+Given an integer array `nums` and an integer `val`, remove all occurrences of `val` in `nums` [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm). The relative order of the elements may be changed.
+
+Return `k` *after placing the final result in the first* `k` *slots of* `nums`.
+
+### Example
+
+```markdown
+Input: nums = [0,1,2,2,3,0,4,2], val = 2
+Output: 5, nums = [0,1,4,0,3,_,_,_]
+Explanation: Your function should return k = 5, with the first five elements of nums containing 0, 0, 1, 3, and 4.
+Note that the five elements can be returned in any order.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+```
+
+### Solution
+
+* Two pointers
+
+```java
+public int removeElement(int[] nums, int val) {
+    int i = 0, j = nums.length - 1;
+    while(i <= j) {
+        if(nums[i] != val)
+            i++;
+        else {
+            nums[i] = nums[j];
+            nums[j] = val;
+            j--;
+        }
+    }
+    return j + 1;
+}
+```
+
+***
+
 ## Question 61
 
 *Rotate List*
