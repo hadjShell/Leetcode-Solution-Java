@@ -1462,6 +1462,87 @@ public int addDigits(int num) {
 
 ***
 
+## Question 890
+
+*Find and Replace Pattern*
+
+### Description
+
+Given a list of strings `words` and a string `pattern`, return *a list of* `words[i]` *that match* `pattern`. You may return the answer in **any order**.
+
+A word matches the pattern if there exists a permutation of letters `p` so that after replacing every letter `x` in the pattern with `p(x)`, we get the desired word.
+
+Recall that a permutation of letters is a bijection from letters to letters: every letter maps to another letter, and no two letters map to the same letter.
+
+- `1 <= pattern.length <= 20`
+- `1 <= words.length <= 50`
+- `words[i].length == pattern.length`
+- `pattern` and `words[i]` are lowercase English letters.
+
+### Example
+
+```markdown
+Input: words = ["abc","deq","mee","aqq","dkd","ccc"], pattern = "abb"
+Output: ["mee","aqq"]
+Explanation: "mee" matches the pattern because there is a permutation {a -> m, b -> e, ...}. 
+"ccc" does not match the pattern because {a -> c, b -> c, ...} is not a permutation, since a and b map to the same letter.
+```
+
+### Solution
+
+* For solution 2, `charArray` implicitly created a HashMap mapping distinct character to first present index
+
+```java
+// Solution 1: HashMap
+public List<String> findAndReplacePattern(String[] words, String pattern) {
+    List<String> ret = new ArrayList<>();
+    Map<Character, Character> m = new HashMap<>();
+    char[] p = pattern.toCharArray();
+    for(String word : words) {
+        char[] w = word.toCharArray();
+        m.clear();
+        int i = 0;
+        for(; i < p.length; i++) {
+            if(!m.containsKey(p[i])) {
+                if(m.containsValue(w[i]))
+                    break;
+                else {
+                    m.put(p[i], w[i]);
+                }
+            }
+            else {
+                if(m.get(p[i]) != w[i])
+                    break;
+            }
+        }
+        if(i == p.length)   ret.add(word);
+    }
+    return ret;
+}
+
+// Solution 2
+public static List<String> findAndReplacePattern(String[] words, String pattern) {
+    List<String> list=new LinkedList<>();
+
+    for(int i=0;i<words.length;i++){
+        if(checkPattern(words[i],pattern)){
+            list.add(words[i]);
+        }
+    }
+    return list;
+}
+
+private static boolean checkPattern(String word, String pattern){
+    for(int i=0;i<word.length();i++){
+        if(word.indexOf(word.charAt(i))!=pattern.indexOf(pattern.charAt(i)))
+            return false;
+    }
+    return true;
+}
+```
+
+***
+
 ## Question
 
 ### Description
