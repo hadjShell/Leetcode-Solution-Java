@@ -780,6 +780,44 @@ private ListNode reverseList(ListNode head) {
 
 ***
 
+## Question 125
+
+*Valid Palindrome*
+
+### Description
+
+A phrase is a **palindrome** if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
+
+Given a string `s`, return `true` *if it is a **palindrome**, or* `false` *otherwise*.
+
+### Example
+
+```markdown
+Input: s = "A man, a plan, a canal: Panama"
+Output: true
+Explanation: "amanaplanacanalpanama" is a palindrome.
+```
+
+### Solution
+
+```java
+public boolean isPalindrome(String s) {
+    char[] letters = new char[s.length()];
+    int len = 0;
+    for(char c : s.toCharArray()) {
+        if(Character.isLetterOrDigit(c))
+            letters[len++] = Character.toLowerCase(c);
+    }
+    for(int i = 0; i < len / 2; i++) {
+        if(letters[i] != letters[len - 1 - i])
+            return false;
+    }
+    return true;
+}
+```
+
+***
+
 ## :star:Question 141
 
 *Linked List Cycle*
@@ -1532,7 +1570,7 @@ public int addDigits(int num) {
 
 ***
 
-## Question 890
+## :star:Question 890
 
 *Find and Replace Pattern*
 
