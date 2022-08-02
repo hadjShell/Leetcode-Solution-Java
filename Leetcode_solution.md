@@ -546,6 +546,60 @@ public ListNode rotateRight(ListNode head, int k) {
 
 ***
 
+## Question 75
+
+*Sort Colors*
+
+### Description
+
+Given an array `nums` with `n` objects colored red, white, or blue, sort them **[in-place](https://en.wikipedia.org/wiki/In-place_algorithm)** so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+
+We will use the integers `0`, `1`, and `2` to represent the color red, white, and blue, respectively.
+
+You must solve this problem without using the library's sort function.
+
+### Example
+
+```markdown
+Input: nums = [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+```
+
+### Solution
+
+```java
+public void sortColors(int[] nums) {
+    int i = 0, j = 0, k = 0;
+    for(int num : nums) {
+        switch(num) {
+            case 0:
+                i++;
+                break;
+            case 1:
+                j++;
+                break;
+            case 2:
+                k++;
+                break;
+            default:
+                break;
+        }
+    }
+    int cur = 0;
+    for(int a = 0; a < i; a++) {
+        nums[cur++] = 0;
+    }
+    for(int a = 0; a < j; a++) {
+        nums[cur++] = 1;
+    }
+    for(int a = 0; a < k; a++) {
+        nums[cur++] = 2;
+    }
+}
+```
+
+***
+
 ## Question 82
 
 *Remove Duplicates from Sorted List II*
