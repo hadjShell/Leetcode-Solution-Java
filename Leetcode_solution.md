@@ -1666,6 +1666,37 @@ public int addDigits(int num) {
 
 ***
 
+## Question 344
+
+*Reverse String*
+
+### Description
+
+Write a function that reverses a string. The input string is given as an array of characters `s`.
+
+You must do this by modifying the input array [in-place](https://en.wikipedia.org/wiki/In-place_algorithm) with `O(1)` extra memory
+
+### Example
+
+```markdown
+Input: s = ["h","e","l","l","o"]
+Output: ["o","l","l","e","h"]
+```
+
+### Solution
+
+```java
+public void reverseString(char[] s) {
+    for(int i = 0; i < s.length / 2; i++) {
+        char tmp = s[i];
+        s[i] = s[s.length - 1 - i];
+        s[s.length - 1 - i] = tmp;
+    }
+}
+```
+
+***
+
 ## :star:Question 890
 
 *Find and Replace Pattern*
