@@ -600,6 +600,48 @@ public void sortColors(int[] nums) {
 
 ***
 
+## Question 80
+
+*Remove Duplicates from Sorted Array II*
+
+### Description
+
+Given an integer array `nums` sorted in **non-decreasing order**, remove some duplicates [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm) such that each unique element appears **at most twice**. The **relative order** of the elements should be kept the **same**.
+
+### Example
+
+```markdown
+Input: nums = [1,1,1,2,2,3]
+Output: 5, nums = [1,1,2,2,3,_]
+Explanation: Your function should return k = 5, with the first five elements of nums being 1, 1, 2, 2 and 3 respectively.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+```
+
+### Solution
+
+* Upgraded version of [question 26](#question-26)
+
+```java
+public int removeDuplicates(int[] nums) {
+    int cur = 1, ret = 1, appear = 1;
+    while(cur < nums.length) {
+        if(nums[cur] == nums[cur - 1]) {
+            if(appear == 1)
+                nums[ret++] = nums[cur];
+            appear++;   
+        }
+        else {
+            nums[ret++] = nums[cur];
+            appear = 1;
+        }
+        cur++;
+    }
+    return ret;
+}
+```
+
+***
+
 ## Question 82
 
 *Remove Duplicates from Sorted List II*
