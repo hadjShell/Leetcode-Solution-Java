@@ -207,6 +207,50 @@ public int romanToInt(String s) {
 
 ***
 
+## Question 14
+
+*Longest Common Prefix*
+
+### Description
+
+Write a function to find the longest common prefix string amongst an array of strings.
+
+If there is no common prefix, return an empty string `""`.
+
+- `1 <= strs.length <= 200`
+- `0 <= strs[i].length <= 200`
+- `strs[i]` consists of only lowercase English letters.
+
+### Example
+
+```markdown
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+```
+
+### Solution
+
+```java
+public String longestCommonPrefix(String[] strs) {
+    String ret = strs[0];
+    for(int i = 1; i < strs.length; i++) {
+        int j = 0, k = 0;
+        for(; j < ret.length() && k < strs[i].length(); j++, k++) {
+            if(ret.charAt(j) != strs[i].charAt(k)) {
+                ret = ret.substring(0, j);
+                break;
+            }
+        }   
+        // ret is not substringed and is longer than strs[i]
+        if(j != ret.length())
+            ret = ret.substring(0, j);
+    }
+    return ret;
+}
+```
+
+***
+
 ## Question 19
 
 *Remove Nth Node From End of List*
