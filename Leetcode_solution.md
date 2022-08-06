@@ -590,6 +590,48 @@ public ListNode rotateRight(ListNode head, int k) {
 
 ***
 
+## Question 66
+
+*Plus One*
+
+### Description
+
+You are given a **large integer** represented as an integer array `digits`, where each `digits[i]` is the `ith` digit of the integer. The digits are ordered from most significant to least significant in left-to-right order. The large integer does not contain any leading `0`'s.
+
+Increment the large integer by one and return *the resulting array of digits*.
+
+### Example
+
+```markdown
+Input: digits = [1,2,3]
+Output: [1,2,4]
+Input: digits = [9]
+Output: [1,0]
+```
+
+### Solution
+
+```java
+public int[] plusOne(int[] digits) {
+    int carry = 1;
+    for(int i = digits.length - 1; i > - 1; i--) {
+        if(carry == 1) {
+            digits[i] = (digits[i] + carry) % 10;
+            carry = digits[i] == 0 ? 1 : 0;
+        }
+        if(carry == 0)
+            break;
+    }
+    if(carry == 1) {
+        digits = new int[digits.length + 1];
+        digits[0] = 1;
+    }
+    return digits;
+}
+```
+
+***
+
 ## Question 75
 
 *Sort Colors*
