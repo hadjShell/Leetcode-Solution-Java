@@ -3,6 +3,7 @@
 ## Binary Search
 
 * **Locate the section on which you want to search based on the situation**
+* Change the **base case or recursive case logic** of a normal binary search
 
 ### Q33. Search in rotated sorted array
 
@@ -45,8 +46,6 @@
   ```
 
 ### Q34. Find first and last position of element in sorted array
-
-* Change the **base case** of normal binary search
 
 * ```java
   class Solution {
@@ -97,7 +96,29 @@
   }
   ```
 
-* 
+### Q35. Search insertion position
+
+* ```java
+  class Solution {
+      public int searchInsert(int[] nums, int target) {
+          if(nums.length == 0)    return 0;
+          return bs(nums, target, 0, nums.length - 1);
+      }
+  
+      private int bs(int[] nums, int target, int left, int right) {
+          if (left > right) return left;
+          int mid = left + (right - left) / 2;
+          if (nums[mid] > target)
+              return bs(nums, target, left, mid - 1);
+          else if (nums[mid] < target)
+              return bs(nums, target, mid + 1, right);
+          else
+              return mid;
+      }
+  }
+  ```
+
+
 
 
 
