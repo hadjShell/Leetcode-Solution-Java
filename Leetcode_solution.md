@@ -1,5 +1,110 @@
 # Leetcode Solution
 
+## Binary Search
+
+* **Locate the section on which you want to search based on the situation**
+
+### Q33. Search in rotated sorted array
+
+* It's about to consider all possibilities
+
+* ```java
+  class Solution {
+      public int search(int[] nums, int target) {
+          return bs(nums, target, 0, nums.length - 1);
+      }
+  
+      private int bs(int[] nums, int target, int left, int right) {
+          if (left > right)   return -1;
+  
+          int mid = left + (right - left) / 2;
+          if (target == nums[mid])    return mid;
+  
+          // mid in large section
+          if (nums[mid] > nums[right]) {
+              if (target < nums[mid] && target >= nums[left])
+                  return bs(nums, target, left, mid - 1);
+              else
+                  return bs(nums, target, mid + 1, right);
+          }
+          // mid in small section
+          else if (nums[mid] < nums[left])
+              if (target > nums[mid] && target <= nums[right])
+                  return bs(nums, target, mid + 1, right);
+              else
+                  return bs(nums, target, left, mid - 1);
+          // no rotate
+          else {
+              if (target > nums[mid])
+                  return bs(nums, target, mid + 1, right);
+              else
+                  return bs(nums, target, left, mid - 1);
+          }
+      }
+  }
+  ```
+
+### Q34. Find first and last position of element in sorted array
+
+* Change the **base case** of normal binary search
+
+* ```java
+  class Solution {
+      public int[] searchRange(int[] nums, int target) {
+          int len = nums.length;
+          if (len == 0)   return new int[] {-1, -1};
+  
+          int first = bsFirst(nums, target, 0, len - 1);
+          if (first == -1) {
+              return new int[] {-1, -1};
+          }
+          else {
+              return new int[] {first, bsLast(nums, target, 0, len - 1)};
+          }
+      }
+  
+      private int bsFirst(int[] nums, int target, int left, int right) {
+          if (left > right)   return -1;
+          int mid = left + (right - left) / 2;
+          int tmp = mid;
+          if (target > nums[mid])
+              return bsFirst(nums, target, mid + 1, right);
+          else if (target < nums[mid])
+              return bsFirst(nums, target, left, mid - 1);
+          else {
+              if (mid == left || nums[mid - 1] != target)
+                  return mid;
+              else
+                  return bsFirst(nums, target, left, mid - 1);
+          }
+      }
+  
+      private int bsLast(int[] nums, int target, int left, int right) {
+          if (left > right)   return -1;
+          int mid = left + (right - left) / 2;
+          int tmp = mid;
+          if (target > nums[mid])
+              return bsLast(nums, target, mid + 1, right);
+          else if (target < nums[mid])
+              return bsLast(nums, target, left, mid - 1);
+          else {
+              if (mid == right || nums[mid + 1] != target)
+                  return mid;
+              else
+                  return bsLast(nums, target, mid + 1, right);
+          }
+      }
+  }
+  ```
+
+* 
+
+
+
+
+
+
+
 ## Template
 
 ## Question
