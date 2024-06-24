@@ -4,48 +4,9 @@
 
 * **Locate the section on which you want to search based on the situation**
 * Change the **base case or recursive case logic** of a normal binary search
+* Be aware of the out of bound problem
 
-### Q33. Search in rotated sorted array
-
-* It's about to consider all possibilities
-
-* ```java
-  class Solution {
-      public int search(int[] nums, int target) {
-          return bs(nums, target, 0, nums.length - 1);
-      }
-  
-      private int bs(int[] nums, int target, int left, int right) {
-          if (left > right)   return -1;
-  
-          int mid = left + (right - left) / 2;
-          if (target == nums[mid])    return mid;
-  
-          // mid in large section
-          if (nums[mid] > nums[right]) {
-              if (target < nums[mid] && target >= nums[left])
-                  return bs(nums, target, left, mid - 1);
-              else
-                  return bs(nums, target, mid + 1, right);
-          }
-          // mid in small section
-          else if (nums[mid] < nums[left])
-              if (target > nums[mid] && target <= nums[right])
-                  return bs(nums, target, mid + 1, right);
-              else
-                  return bs(nums, target, left, mid - 1);
-          // no rotate
-          else {
-              if (target > nums[mid])
-                  return bs(nums, target, mid + 1, right);
-              else
-                  return bs(nums, target, left, mid - 1);
-          }
-      }
-  }
-  ```
-
-### Q34. Find first and last position of element in sorted array
+### Q34. [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
 
 * ```java
   class Solution {
@@ -96,7 +57,7 @@
   }
   ```
 
-### Q35. Search insertion position
+### Q35. [Search Insert Position](https://leetcode.com/problems/search-insert-position/)
 
 * ```java
   class Solution {
@@ -118,7 +79,7 @@
   }
   ```
 
-### Q74. Search a 2D matrix
+### Q74. [Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/)
 
 * ```java
   class Solution {
@@ -148,6 +109,46 @@
               return bs(nums, target, left, mid - 1);
           else 
               return true;
+      }
+  }
+  ```
+
+### Q33. [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
+
+* It's about to consider all possibilities
+
+* ```java
+  class Solution {
+      public int search(int[] nums, int target) {
+          return bs(nums, target, 0, nums.length - 1);
+      }
+  
+      private int bs(int[] nums, int target, int left, int right) {
+          if (left > right)   return -1;
+  
+          int mid = left + (right - left) / 2;
+          if (target == nums[mid])    return mid;
+  
+          // mid in large section
+          if (nums[mid] > nums[right]) {
+              if (target < nums[mid] && target >= nums[left])
+                  return bs(nums, target, left, mid - 1);
+              else
+                  return bs(nums, target, mid + 1, right);
+          }
+          // mid in small section
+          else if (nums[mid] < nums[left])
+              if (target > nums[mid] && target <= nums[right])
+                  return bs(nums, target, mid + 1, right);
+              else
+                  return bs(nums, target, left, mid - 1);
+          // no rotate
+          else {
+              if (target > nums[mid])
+                  return bs(nums, target, mid + 1, right);
+              else
+                  return bs(nums, target, left, mid - 1);
+          }
       }
   }
   ```
@@ -196,7 +197,7 @@
   }
   ```
 
-### Q153. Find mInimum in rotated array
+### Q153. [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
 
 * ```java
   class Solution {
@@ -224,7 +225,7 @@
   }
   ```
 
-### Q154. FInd mInimum in rotated array ii
+### Q154. [Find Minimum in Rotated Sorted Array II](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/)
 
 * Two solutions: recursion or loop
 
@@ -290,9 +291,7 @@
   }
   ```
 
-* 
-
-### Q278. First bad version
+### Q278. [First Bad Version](https://leetcode.com/problems/first-bad-version/)
 
 * ```java
   /* The isBadVersion API is defined in the parent class VersionControl.
@@ -318,7 +317,9 @@
   }
   ```
 
-* 
+***
+
+
 
 
 
