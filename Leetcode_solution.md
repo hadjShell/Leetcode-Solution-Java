@@ -152,6 +152,146 @@
   }
   ```
 
+### Q81. [Search in Rotated Sorted Array II](https://leetcode.com/problems/search-in-rotated-sorted-array-ii/)
+
+* Q33 + Q154
+
+* ```java
+  class Solution {
+      public boolean search(int[] nums, int target) {
+          return bsDuplicate(nums, target, 0, nums.length - 1);
+      }
+  
+      private boolean bsDuplicate(int[] nums, int target, int left, int right) {
+          if (left == right)  return nums[left] == target;
+          else if (left + 1 == right)
+              return nums[left] == target || nums[right] == target;
+          
+          // at least 3 elements 
+          int mid = left + (right - left) / 2;
+          if (nums[mid] == target)    return true;
+          if (nums[left] > nums[right]) {
+              if (nums[mid] > nums[right]) {
+                  if (target < nums[mid] && target >= nums[left])
+                      return bsDuplicate(nums, target, left, mid - 1);
+                  else 
+                      return bsDuplicate(nums, target, mid + 1, right);
+              }
+              else {
+                  if (target > nums[mid] && target <= nums[right])
+                      return bsDuplicate(nums, target, mid + 1, right);
+                  else
+                      return bsDuplicate(nums, target, left, mid - 1);
+              }
+          }
+          else if (nums[left] < nums[right]) {
+              if (target < nums[mid])
+                  return bsDuplicate(nums, target, left, mid - 1);
+              else
+                  return bsDuplicate(nums, target, mid + 1, right);
+          }
+          else 
+              return bsDuplicate(nums, target, left, mid - 1) || bsDuplicate(nums, target, mid + 1, right);
+      }
+  }
+  ```
+
+### Q153. Find mInimum in rotated array
+
+* ```java
+  class Solution {
+      public int findMin(int[] nums) {
+          return bsMin(nums, 0, nums.length - 1);
+      }
+  
+      private int bsMin(int[] nums, int left, int right) {
+          if (left == right)  return nums[left];
+          int mid = left + (right - left) / 2;
+          // mid in large part
+          if (nums[mid] >= nums[left] && nums[mid] > nums[right]) 
+              return bsMin(nums, mid + 1, right);
+          // mid in small part
+          else if (nums[mid] < nums[left]) {
+              if (nums[mid] < nums[mid - 1])
+                  return nums[mid];
+              else
+                  return bsMin(nums, left, mid - 1);
+          }
+          // no rotate
+          else
+              return nums[left];
+      }
+  }
+  ```
+
+### Q154. FInd mInimum in rotated array ii
+
+* Two solutions: recursion or loop
+
+* ```java
+  class Solution {
+      public int findMin(int[] nums) {
+          return bsMinDuplicate(nums, 0, nums.length - 1);
+      }
+  
+      private int bsMinDuplicate(int[] nums, int left, int right) {
+          if (left == right)  return nums[left];
+          else if (left + 1 == right)
+              return nums[left] < nums[right] ? nums[left] : nums[right];
+          
+          // at least 3 elements 
+          int mid = left + (right - left) / 2;
+          if (nums[left] > nums[right]) {
+              if (nums[mid] > nums[right])
+                  return bsMinDuplicate(nums, mid + 1, right);
+              else
+                  return nums[mid] < nums[mid - 1] ? nums[mid] : bsMinDuplicate(nums, left, mid - 1);
+          }
+          else if (nums[left] < nums[right])
+              return nums[left];
+          else {
+              if (nums[mid] < nums[mid - 1] && nums[mid] < nums[mid + 1])
+                  return nums[mid];
+              else {
+                  int leftMin = bsMinDuplicate(nums, left, mid - 1);
+                  int rightMin = bsMinDuplicate(nums, mid + 1, right);
+                  return leftMin < rightMin ? leftMin : rightMin;
+              }
+          }
+      }
+  }
+  ```
+
+* ```java
+  class Solution {
+      public int findMin(int[] nums) {
+           int l = 0;
+          int h = nums.length - 1;
+          
+          while (l < h) {
+              int m = l + (h - l) / 2;
+  
+              // Handle duplicates
+              if (nums[l] == nums[m] && nums[m] == nums[h]) {
+                  l++;
+                  h--;
+              } else if (nums[m] <= nums[h]) {
+                  // Right part is sorted or pivot element is to the left
+                  h = m;
+              } else {
+                  // Left part is sorted and pivot element is to the right
+                  l = m + 1;
+              }
+          }
+          
+          return nums[l];
+  
+      }
+  }
+  ```
+
+* 
+
 ### Q278. First bad version
 
 * ```java
