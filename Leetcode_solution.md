@@ -118,7 +118,41 @@
   }
   ```
 
+### Q74. Search a 2D matrix
 
+* ```java
+  class Solution {
+      public boolean searchMatrix(int[][] matrix, int target) {
+          return bsMatrix(matrix, target, 0, matrix.length - 1);
+      }
+  
+      private boolean bsMatrix(int[][] matrix, int target, int left, int right) {
+          if (left > right)   return false;
+          int mid = left + (right - left) / 2;
+          if (bs(matrix[mid], target, 0, matrix[0].length - 1) == true)
+              return true;
+          else {
+              if (target < matrix[mid][0])
+                  return bsMatrix(matrix, target, left, mid - 1);
+              else
+                  return bsMatrix(matrix, target, mid + 1, right);
+          }
+      }
+  
+      private boolean bs(int[] nums, int target, int left, int right) {
+          if (left > right)   return false;
+          int mid = left + (right - left) / 2;
+          if (target > nums[mid])
+              return bs(nums, target, mid + 1, right);
+          else if (target < nums[mid])
+              return bs(nums, target, left, mid - 1);
+          else 
+              return true;
+      }
+  }
+  ```
+
+### 
 
 
 
