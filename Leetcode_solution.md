@@ -152,7 +152,33 @@
   }
   ```
 
-### 
+### Q278. First bad version
+
+* ```java
+  /* The isBadVersion API is defined in the parent class VersionControl.
+        boolean isBadVersion(int version); */
+  
+  public class Solution extends VersionControl {
+      public int firstBadVersion(int n) {
+          return bs(0, n - 1);
+      }
+  
+      private int bs(int left, int right) {
+          if (left > right)   return -1;
+          int mid = left + (right - left) / 2;
+          if (isBadVersion(mid + 1)) {
+              if (isBadVersion(mid))
+                  return bs(left, mid - 1);
+              else
+                  return mid + 1;
+          }
+          else
+              return bs(mid + 1, right);
+      }
+  }
+  ```
+
+* 
 
 
 
