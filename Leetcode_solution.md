@@ -361,9 +361,96 @@
 * Fast and slow pointers
 * Left and right pointers
 
-***
+### Q21. [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
 
-## Sentinel Node/Element
+* Sentinel node + two pointers
+
+* ```java
+  class Solution {
+      public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+          if (list1 == null)  return list2;
+          if (list2 == null)  return list1;
+  
+          ListNode head = new ListNode();
+          ListNode n = head;
+          while (list1 != null && list2 != null) {
+              if (list2.val <= list1.val) {
+                  n.next = list2;
+                  list2 = list2.next;
+              }
+              else {
+                  n.next = list1;
+                  list1 = list1.next;
+              }
+              n = n.next;
+          }
+          if (list1 == null)
+              n.next = list2;
+          else 
+              n.next = list1;
+          
+          return head.next;
+      }
+  }
+  ```
+
+* ```java
+  public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+      if(l1 == null)
+          return l2;
+      if(l2 == null)
+          return l1;
+  
+      if(l1.val >= l2.val) {
+          l2.next = mergeTwoLists(l1, l2.next);
+          return l2;
+      }
+      else {
+          l1.next = mergeTwoLists(l1.next, l2);
+          return l1;
+      }
+  }
+  ```
+
+### Q23. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+
+* Divide and conquer + Q21.
+
+* ```java
+  class Solution {
+      public ListNode mergeKLists(ListNode[] lists) {
+          return merge(lists, 0, lists.length - 1);
+      }
+  
+      public ListNode merge(ListNode[] lists, int left, int right) {
+          if (left > right)
+              return null;
+          else if (left == right) 
+              return lists[left];
+          else {
+              int mid = left + (right - left) / 2;
+              ListNode leftList = merge(lists, left, mid), rightList = merge(lists, mid + 1, right);
+              return mergeTwoLists(leftList, rightList);
+          }  
+      }
+  
+      public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+          if(l1 == null)
+              return l2;
+          if(l2 == null)
+              return l1;
+  
+          if(l1.val >= l2.val) {
+              l2.next = mergeTwoLists(l1, l2.next);
+              return l2;
+          }
+          else {
+              l1.next = mergeTwoLists(l1.next, l2);
+              return l1;
+          }
+      }
+  }
+  ```
 
 ***
 
