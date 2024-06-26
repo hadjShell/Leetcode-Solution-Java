@@ -485,6 +485,75 @@
   }
   ```
 
+### Q160. [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
+
+* ```java
+  public class Solution {
+      public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+          ListNode a = headA, b = headB;
+          int lenA = 1, lenB = 1;
+          while (a.next != null) {
+              a = a.next;
+              lenA++;
+          }
+          while (b.next != null) {
+              b = b.next;
+              lenB++;
+          }
+  
+          if (a != b)     return null;
+  
+          a = headA;
+          b = headB;
+          if (lenA >= lenB) {
+              for (int i = 0; i < lenA - lenB; i++)
+                  a = a.next;
+          } 
+          else {
+              for (int i = 0; i < lenB - lenA; i++)
+                  b = b.next;
+          }
+          while (a != b) {
+              a = a.next;
+              b = b.next;
+          }
+          return a;
+          
+      }
+  }
+  ```
+
+* Concat two lists: a + b = b + a 
+
+* <img src="https://raw.githubusercontent.com/hadjShell/Leetcode-Solution-Java/main/imgs/160.png" alt="160" style="zoom: 50%;" />
+
+* ```java
+  public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+      ListNode currA = headA;
+      ListNode currB = headB;
+      int iteration = 0;
+  
+      while(currA != currB) {
+          if(iteration == 4)
+              return null;
+          if(currA.next == null) {
+              currA = headB;
+              iteration++;
+          }
+          else
+              currA = currA.next;
+  
+          if(currB.next == null) {
+              currB = headA;
+              iteration++;
+          }
+          else
+              currB = currB.next;
+      }
+      return currA;
+  }
+  ```
+
 
 
 ## Template
@@ -1559,7 +1628,7 @@ Output: Intersected at '8'
 ### Solution
 
 * **Key**: commutative law of addition, `a + b = b + a`
-* <img src="https://raw.githubusercontent.com/hadjShell/Leetcode-Solution-Java/main/imgs/160.png" alt="160" style="zoom: 67%;" />
+* 
 
 ```java
 // Solution 1
