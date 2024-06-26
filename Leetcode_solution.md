@@ -452,11 +452,38 @@
   }
   ```
 
-***
+### Q86. [Partition List](https://leetcode.com/problems/partition-list/)
 
+* Sentinel node
 
-
-
+* ```java
+  class Solution {
+      public ListNode partition(ListNode head, int x) {
+          if (head == null || head.next == null)
+              return head;
+          
+          ListNode less = new ListNode(0);
+          ListNode great = new ListNode(0);
+          ListNode l = less, g = great;
+  
+          while (head != null) {
+              if (head.val < x) {
+                  less.next = head;
+                  less = less.next;
+              }
+              else {
+                  great.next = head;
+                  great = great.next;
+              }
+              head = head.next;
+          }
+        	// the last node may point to uncorrect node
+          great.next = null;
+          less.next = g.next;
+          return l.next;
+      }
+  }
+  ```
 
 
 
@@ -767,46 +794,6 @@ public boolean isValid(String s) {
         }
     }
     return head == 0;
-}
-```
-
-***
-
-## :star:Question 21 
-
-*Merge Two Sorted Lists*
-
-### Description
-
-You are given the heads of two sorted linked lists `list1` and `list2`.
-
-Merge the two lists in a one **sorted** list. The list should be made by splicing together the nodes of the first two lists.
-
-Return *the head of the merged linked list*.
-
-### Example
-
-![img](https://assets.leetcode.com/uploads/2020/10/03/merge_ex1.jpg)
-
-### Solution
-
-* Recursion
-
-```java
-public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-    if(l1 == null)
-        return l2;
-    if(l2 == null)
-        return l1;
-
-    if(l1.val >= l2.val) {
-        l2.next = mergeTwoLists(l1, l2.next);
-        return l2;
-    }
-    else {
-        l1.next = mergeTwoLists(l1.next, l2);
-        return l1;
-    }
 }
 ```
 
@@ -1238,66 +1225,6 @@ public ListNode deleteDuplicates(ListNode head) {
     }
 
     return head;
-}
-```
-
-***
-
-## Question 86
-
-*Partition List*
-
-### Description
-
-Given the `head` of a linked list and a value `x`, partition it such that all nodes **less than** `x` come before nodes **greater than or equal** to `x`.
-
-You should **preserve** the original relative order of the nodes in each of the two partitions.
-
-- The number of nodes in the list is in the range `[0, 200]`.
-- `-100 <= Node.val <= 100`
-- `-200 <= x <= 200`
-
-### Example
-
-![img](https://assets.leetcode.com/uploads/2021/01/04/partition.jpg)
-
-```markdown
-Input: head = [1,4,3,2,5,2], x = 3
-Output: [1,2,2,4,3,5]
-```
-
-### Solution
-
-* Note that when `head.val < x` there are two different scenarios, **the only difference is whether to alter the `prev` pointer or not**
-
-```java
-// hold last node pointer whose value is less than x 
-public ListNode partition(ListNode head, int x) {
-    if(head == null || head.next == null)
-        return head;
-
-    ListNode sentinel = new ListNode(-201, head);
-    ListNode less = sentinel, prev = sentinel;
-    while(head != null) {
-        if(head.val < x) {
-            // if prev node is last less node, no need to move
-            if(prev == less) {
-                prev = head;
-            }
-            else {
-                prev.next = head.next;
-                head.next = less.next;
-                less.next = head;
-            }
-            less = less.next;
-        }
-        else {
-            prev = head;
-        }
-        head = prev.next;
-    }
-
-    return sentinel.next;
 }
 ```
 
