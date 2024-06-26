@@ -319,7 +319,53 @@
 
 ***
 
+## Linked List
 
+* Corner case
+  * Empty list
+  * Single node
+  * Two nodes
+  * Operation on head node (and tail node for doubly linked list)
+
+### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+
+* ```java
+  class Solution {
+      public ListNode removeNthFromEnd(ListNode head, int n) {
+          ListNode cur = head;
+          int len = 1;
+          while (cur.next != null) {
+              cur = cur.next;
+              len++;
+          }
+  
+          if (len == n)
+              return head.next;
+          
+          cur = head;
+          for (int i = 1; i < len - n; i++) {
+              cur = cur.next;
+          }
+          cur.next = cur.next.next;
+          return head;
+      }
+  }
+  ```
+
+
+
+***
+
+## Two Pointers
+
+* Fast and slow pointers
+* Left and right pointers
+
+***
+
+## Sentinel Node/Element
+
+***
 
 
 
@@ -574,65 +620,6 @@ public String longestCommonPrefix(String[] strs) {
     }
     return ret;
 }
-```
-
-***
-
-## Question 19
-
-*Remove Nth Node From End of List*
-
-### Description
-
-Given the `head` of a linked list, remove the `nth` node from the end of the list and return its head.
-
-![img](https://assets.leetcode.com/uploads/2020/10/03/remove_ex1.jpg)
-
-- The number of nodes in the list is `sz`.
-- `1 <= sz <= 30`
-- `0 <= Node.val <= 100`
-- `1 <= n <= sz`
-
-### Example
-
-```markdown
-Input: head = [1,2,3,4,5], n = 2
-Output: [1,2,3,5]
-
-Input: head = [1], n = 1
-Output: []
-
-Input: head = [1,2], n = 1
-Output: [1]
-```
-
-### Solution
-
-* Quick slow pointers
-
-```java
-public ListNode removeNthFromEnd(ListNode head, int n) {
-    if(head == null || head.next == null)
-        return null;
-
-    // create a sentinel
-    ListNode sen = new ListNode(0, head);
-
-    // slow is the deleted node
-    ListNode slow = head, quick = head, preSlow = sen;
-    while(quick != null) {
-        if(n <= 0) {
-            preSlow = slow;
-            slow = slow.next;
-        }
-
-        quick = quick.next;
-        n--;
-    }
-
-    preSlow.next = slow.next;
-    return sen.next;
-}   
 ```
 
 ***
