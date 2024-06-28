@@ -607,6 +607,58 @@
   }
   ```
 
+***
+
+## Stack
+
+* Basic push and pop
+
+### Q71. [Simplify Path](https://leetcode.com/problems/simplify-path/)
+
+* ```java
+  class Solution {
+      public String simplifyPath(String path) {
+          String[] paths = path.split("/");
+          Deque<String> sp = new ArrayDeque();
+          for (String s : paths) {
+              switch (s) {
+                  case "":
+                  case ".":
+                      break;
+                  case "..":
+                      if (!sp.isEmpty()) {
+                          sp.pop();
+                      }
+                      break;
+                  default:
+                      sp.push(s);
+              }
+          }
+          StringBuilder simplePath = new StringBuilder();
+          while (!sp.isEmpty()) {
+              simplePath.append("/").append(sp.removeLast());
+          }
+          if (simplePath.length() == 0)   
+              simplePath.append("/");
+          return simplePath.toString();
+      }
+  }
+  ```
+
+* 
+
+***
+
+* Valid parentheses
+
+***
+
+
+
+
+
+
+
 
 
 ## Template
