@@ -485,6 +485,51 @@
   }
   ```
 
+### Q141. [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+
+* ```java
+  public class Solution {
+      public boolean hasCycle(ListNode head) {
+          ListNode fast = head, slow = head;
+          while (fast != null && fast.next != null) {
+              fast = fast.next.next;
+              slow = slow.next;
+              if (fast == slow)   return true;
+          }
+          return false;
+      }
+  }
+  ```
+
+### Q142. [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
+
+* <img src="https://raw.githubusercontent.com/hadjShell/Leetcode-Solution-Java/main/imgs/142.png" alt="142" style="zoom:50%;" />
+
+* Quick pointer move `xq`: `x1 + x2 + x3 + x2`, slow pointer move `xs`: `x1 + x2`, and `xq = 2xs`, so `x1 = x3`
+
+* So, after quick and slow meet, let quick back to the head of the list and make it move one node each iteration as slow point does. When they meet again, they will be at the start node of the cycle
+
+* ```java
+  public class Solution {
+      public ListNode detectCycle(ListNode head) {
+          ListNode fast = head, slow = head;
+          while (fast != null && fast.next != null) {
+              fast = fast.next.next;
+              slow = slow.next;
+              if (fast == slow) {
+                  fast = head;
+                  while (fast != slow) {
+                      slow = slow.next;
+                      fast = fast.next;
+                  }
+                  return fast;
+              }
+          }
+          return null;
+      }
+  }
+  ```
+
 ### Q160. [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
 
 * ```java
@@ -1442,98 +1487,6 @@ public boolean isPalindrome(String s) {
             return false;
     }
     return true;
-}
-```
-
-***
-
-## :star:Question 141
-
-*Linked List Cycle*
-
-### Description
-
-Given `head`, the head of a linked list, determine if the linked list has a cycle in it.
-
-### Example
-
-![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png)
-
-### Solution
-
-* Quick slow pointer
-
-* When both pointers are in the circle, assume the relative distance (the distance that quick pointer need to catch up) is D, then if the difference between two pointer's speeds is one node, then D will absolutely decrease to 0 
-
-* If the difference is not one node, then they may not meet:
-
-  Assume circle has N nodes, quick speed is Q, slow speed is S (Q > S), after k iteration two pointers meet (k is integer), then `k(Q - S) - D` must be divisible by `N`, which is not always true
-
-  E.g., 4 nodes, slow at index 0, quick at index 3, slow's speed is one node, quick's speed is three nodes, they will never meet
-
-```java
-public boolean hasCycle(ListNode head) {
-    ListNode slow = head;
-    ListNode fast = head;
-
-    while (fast != null && fast.next != null) {
-        slow = slow.next;
-        fast = fast.next.next;
-
-        if (fast == slow)
-            return true;
-    }
-    return false;
-}
-```
-
-***
-
-## :star:Question 142
-
-*Linked List Cycle II*
-
-### Description
-
-Given the `head` of a linked list, return *the node where the cycle begins. If there is no cycle, return* `null`.
-
-**Do not modify** the linked list.
-
-### Example
-
-```markdown
-Input: head = [3,2,0,-4], pos = 1
-Output: tail connects to node index 1
-```
-
-### Solution
-
-* Upgrade version of *Question 141*
-* ![142](https://raw.githubusercontent.com/hadjShell/Leetcode-Solution-Java/main/imgs/142.png)
-* Quick pointer move `xq`: `x1 + x2 + x3 + x2`, slow pointer move `xs`: `x1 + x2`, and `xq = 2xs`, so `x1 = x3`
-* So, after quick and slow meet, let quick back to the head of the list and make it move one node each iteration as slow point does. When they meet again, they will be at the start node of the cycle
-
-```java
-public ListNode detectCycle(ListNode head) {
-    ListNode slow = head;
-    ListNode fast = head;
-
-    while (fast != null && fast.next != null) {
-        slow = slow.next;
-        fast = fast.next.next;
-
-        // there is a cycle
-        if (fast == slow) {
-            fast = head;
-            while(fast != slow) {
-                fast = fast.next;
-                slow = slow.next;
-            }
-            return fast;
-        }
-    }
-
-    return null;
 }
 ```
 
