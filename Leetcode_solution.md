@@ -619,7 +619,7 @@
   class Solution {
       public String simplifyPath(String path) {
           String[] paths = path.split("/");
-          Deque<String> sp = new ArrayDeque();
+          Deque<String> sp = new ArrayDeque<>();
           for (String s : paths) {
               switch (s) {
                   case "":
@@ -641,6 +641,42 @@
           if (simplePath.length() == 0)   
               simplePath.append("/");
           return simplePath.toString();
+      }
+  }
+  ```
+
+### Q150. [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)
+
+* ```java
+  class Solution {
+      public int evalRPN(String[] tokens) {
+          Deque<Integer> result = new ArrayDeque<>();
+          int tmp1 = 0, tmp2 = 0;
+          for (String t : tokens) {
+              try {
+                  int num = Integer.parseInt(t);
+                  result.push(num);
+              } catch (NumberFormatException e) {
+                  tmp1 = result.pop();
+                  tmp2 = result.pop();
+                  switch (t) {
+                      case "+":
+                          result.push(tmp2 + tmp1);
+                          break;
+                      case "-":
+                          result.push(tmp2 - tmp1);
+                          break;
+                      case "*":
+                          result.push(tmp2 * tmp1);
+                          break;
+                      case "/":
+                          result.push(tmp2 / tmp1);
+                          break;
+                      default :
+                  }
+              }
+          }
+          return result.pop();
       }
   }
   ```
