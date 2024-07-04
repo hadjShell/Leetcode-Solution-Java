@@ -798,6 +798,69 @@
   }
   ```
 
+### Q946. [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/)
+
+* ```java
+  class Solution {
+      public boolean validateStackSequences(int[] pushed, int[] popped) {
+          ArrayList<Integer> stack = new ArrayList<>();
+          int up = 0;      // pointer to the first unpushed element
+          for (int pop : popped) {
+              // if stack is empty, all elements remaining on the push stack are pushed
+              if (stack.isEmpty()) {
+                  while (pushed[up] != pop) {
+                      stack.add(pushed[up++]);
+                  }
+                  up++;
+              }
+              // an element is ready to be popped
+              else {
+                  // check the push stack
+                  int i = stack.size() - 1;
+                  while (i >= 0 && stack.get(i) != pop) {
+                      i--;
+                  }
+                  // if not found, generate the push stack
+                  if (i == -1) {
+                      while (pushed[up] != pop) {
+                          stack.add(pushed[up++]);
+                      }
+                      up++;
+                  }
+                  // if found, it should be last element (first to be popped) on the push stack
+                  else if (i == stack.size() - 1)
+                      stack.removeLast();
+                  
+                  else
+                      return false;
+              }
+          }
+          return true;
+      }
+  }
+  ```
+
+* Rebuild the process
+
+* ```java
+  class Solution {
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+      Deque<Integer> stack = new ArrayDeque<>();
+      int i = 0; // popped's index
+  
+      for (int x : pushed) {
+        stack.push(x);
+        while (!stack.isEmpty() && stack.peek() == popped[i]) {
+          stack.pop();
+          ++i;
+        }
+      }
+  
+      return stack.isEmpty();
+    }
+  }
+  ```
+
 
 
 ***
