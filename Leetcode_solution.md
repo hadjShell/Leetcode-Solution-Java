@@ -611,6 +611,8 @@
 
 ## Two Pointers in Array
 
+* Take advantage of the array memory to build the new array
+
 ### Q1047. [Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
 
 * ```java
@@ -640,7 +642,7 @@
 
 ## Stack
 
-* Basic push and pop
+#### Basic push and pop
 
 ### Q71. [Simplify Path](https://leetcode.com/problems/simplify-path/)
 
@@ -894,7 +896,7 @@
 
 ***
 
-* Valid parentheses
+#### Valid parentheses
 
 ***
 
@@ -910,18 +912,6 @@
 
 
 
-
-
-
-## Template
-
-## Question
-
-### Description
-
-### Example
-
-### Solution
 
 ***
 
@@ -2310,12 +2300,4 @@ private static boolean checkPattern(String word, String pattern){
 }
 ```
 
-***
-
-## Question
-
-### Description
-
-### Example
-
-### Solution
+### 
