@@ -609,6 +609,35 @@
 
 ***
 
+## Two Pointers in Array
+
+### Q1047. [Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
+
+* ```java
+  class Solution {
+      public String removeDuplicates(String s) {
+          char[] tokens = s.toCharArray();
+          int pos = -1, i = 0;
+          while (i < tokens.length) {
+              if (pos < 0 || tokens[i] != tokens[pos]) {
+                  tokens[++pos] = tokens[i++];
+              }
+              else {
+                  pos--;
+                  i++;
+              }
+          }
+          return new String(tokens, 0, pos + 1);
+      }
+  }
+  ```
+
+* Or use a stack
+
+
+
+***
+
 ## Stack
 
 * Basic push and pop
