@@ -681,7 +681,46 @@
   }
   ```
 
-* 
+### Q155. [Min Stack](https://leetcode.com/problems/min-stack/)
+
+* Store the minimum value in each node
+
+* ```java
+  class MinStack {
+  	private Node head;
+          
+      public void push(int x) {
+          if (head == null) 
+              head = new Node(x, x, null);
+          else 
+              head = new Node(x, Math.min(x, head.min), head);
+      }
+      
+      public void pop() {
+          head = head.next;
+      }
+      
+      public int top() {
+          return head.val;
+      }
+      
+      public int getMin() {
+          return head.min;
+      }
+          
+      private class Node {
+          int val;
+          int min;
+          Node next;
+              
+          private Node(int val, int min, Node next) {
+              this.val = val;
+              this.min = min;
+              this.next = next;
+          }
+      }
+  }
+  ```
 
 ***
 
@@ -689,7 +728,14 @@
 
 ***
 
+## String
 
+### Q224. [Basic Calculator](https://leetcode.com/problems/basic-calculator/)
+
+* ```java
+  ```
+
+* ==Need to be done again==
 
 
 
