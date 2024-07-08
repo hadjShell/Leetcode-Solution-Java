@@ -918,11 +918,47 @@
   }
   ```
 
-
-
 ***
 
 #### Valid parentheses
+
+* ```java
+  class Solution {
+      public boolean isValid(String s) {
+          // length can not be divided by 2: false
+          if (s.length() % 2 != 0)
+              return false;
+          
+          Deque<Character> stack = new ArrayDeque<>();
+          for (char c : s.toCharArray()) {
+              switch (c) {
+                  case '(', '{', '[' -> stack.push(c);
+                  case ')', '}', ']' -> {
+                      if (stack.isEmpty())
+                          return false;
+                      else {
+                          char prev = stack.pop();
+                          switch (prev) {
+                              case '(' -> {
+                                  if (c != ')')   return false;
+                              }
+                              case '{' -> {
+                                  if (c != '}')   return false;
+                              }
+                              case '[' -> {
+                                  if (c != ']')   return false;
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+          return stack.isEmpty();
+      }
+  }
+  ```
+
+* 
 
 ***
 
@@ -1175,67 +1211,6 @@ public String longestCommonPrefix(String[] strs) {
             ret = ret.substring(0, j);
     }
     return ret;
-}
-```
-
-***
-
-## :star:Question 20
-
-*Valid Parentheses*
-
-### Description
-
-Given a string `s` containing just the characters `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, determine if the input string is valid.
-
-An input string is valid if:
-
-1. Open brackets must be closed by the same type of brackets.
-2. Open brackets must be closed in the correct order.
-
-### Example
-
-```
-Input: s = "{ { } [ ] [ [ [ ] ] ] }"
-Output: true
-Input: s = "([)]"
-Output: false
-```
-
-### Solution
-
-* If meet left parenthesis push correspond right one into the **stack**. If meet right parenthesis, if the peek of stack is itself, pop the stack and continue, otherwise it indicates that there is a cross of different parentheses in the string
-* Check the size of the stack in the end, if it is not equal to 0, there is at least one parenthesis unpaired in the string
-
-```java
-public boolean isValid(String s) {
-    if(s.length() % 2 == 1)
-        return false;
-
-    char[] stack = new char[s.length()];
-    int head = 0;
-
-    for(int i = 0; i < s.length(); i++) {
-        char c = s.charAt(i);
-        switch(c) {
-            // add correspond parenthesis to r
-            case '(':
-                stack[head++] = ')';
-                break;
-            case '{':
-                stack[head++] = '}';
-                break;
-            case '[':
-                stack[head++] = ']';
-                break;
-            default:
-                // condition and operation at the same time
-                if(head == 0 || stack[--head] != c)
-                    return false;
-                break;
-        }
-    }
-    return head == 0;
 }
 ```
 
