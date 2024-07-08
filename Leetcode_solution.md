@@ -922,6 +922,8 @@
 
 #### Valid parentheses
 
+### Q20. 
+
 * ```java
   class Solution {
       public boolean isValid(String s) {
@@ -958,7 +960,23 @@
   }
   ```
 
-* 
+### Q921. [Minimum Add to Make Parentheses Valid](https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/)
+
+* ```java
+  class Solution {
+      public int minAddToMakeValid(String s) {
+          int a = 0, b = 0;
+          for (char c : s.toCharArray()) {
+              if (c == '(')   a++;
+              else {
+                  if (a != 0) a--;
+                  else        b++;
+              }
+          }
+          return a + b;
+      }
+  }
+  ```
 
 ***
 
