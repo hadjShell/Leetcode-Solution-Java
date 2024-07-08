@@ -922,7 +922,7 @@
 
 #### Valid parentheses
 
-### Q20. 
+### Q20. [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
 
 * ```java
   class Solution {
@@ -974,6 +974,34 @@
               }
           }
           return a + b;
+      }
+  }
+  ```
+
+### Q1021. [Remove Outermost Parentheses](https://leetcode.com/problems/remove-outermost-parentheses/)
+
+* ```java
+  class Solution {
+      public String removeOuterParentheses(String s) {
+          int count = 0, start = 0, end = 0;
+          StringBuilder sb = new StringBuilder();
+          char[] c = s.toCharArray();
+  
+          for (int i = 0; i < c.length; i++) {
+              if (count == 0) {
+                  if (start < end)    sb.append(s, start, end);
+                  start = i + 1;
+              }
+              if (c[i] == '(') {
+                  count++;
+              }
+              else {
+                  count--;
+                  if (count == 0)     end = i;
+              }  
+          }
+          if (start < end)    sb.append(s, start, end);
+          return sb.toString();
       }
   }
   ```
