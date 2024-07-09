@@ -1094,8 +1094,6 @@
   }
   ```
 
-* 
-
 ***
 
 ## String
@@ -1108,6 +1106,54 @@
 * ==Need to be done again==
 
 ***
+
+## Recursion
+
+### :star:Q880. [Decoded String at Index](https://leetcode.com/problems/decoded-string-at-index/)
+
+* ```java
+  class Solution {
+      public String decodeAtIndex(String s, int k) {
+          char[] c = s.toCharArray();
+          return decode(c, k);
+      }
+  
+      private String decode(char[] c, long k) {
+          long curLength = 0;
+          long[] length = new long[100];
+          int p = 0;
+  
+          for (int i = 0; i < c.length; i++) {
+              if (c[i] >= 'a' && c[i] <= 'z')
+                  curLength++;
+              else
+                  curLength *= c[i] - '0';
+              length[i] = curLength;
+  
+              if (curLength >= k) {
+                  p = i;
+                  break;
+              }
+          }
+  
+          // base case
+          if (c[p] >= 'a' && c[p] <= 'z')
+              return String.valueOf(c[p]);
+          else {
+              k %= length[p - 1];
+              if (k == 0)
+                  k = length[p - 1];
+              return decode(c, k);
+          }
+      }
+  }
+  ```
+
+* 
+
+***
+
+
 
 ## Dynamic Programming
 
