@@ -855,6 +855,29 @@
   }
   ```
 
+### Q682. [Baseball Game](https://leetcode.com/problems/baseball-game/)
+
+* ```java
+  class Solution {
+      public int calPoints(String[] operations) {
+          ArrayList<Integer> record = new ArrayList<>();
+          int sum = 0;
+          for (String s : operations) {
+              switch (s) {
+                  case "+" -> record.add(record.get(record.size() - 1) + record.get(record.size() - 2));
+                  case "D" -> record.add(record.get(record.size() - 1) * 2);
+                  case "C" -> record.removeLast();
+                  default  -> record.add(Integer.parseInt(s));
+              }
+          }
+          for (int r : record) {
+              sum += r;
+          }
+          return sum;
+      }
+  }
+  ```
+
 ### Q946. [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/)
 
 * ```java
@@ -1006,6 +1029,8 @@
   }
   ```
 
+***
+
 #### Encoding & Decoding
 
 ### :star:Q394.  [Decode String](https://leetcode.com/problems/decode-string/)
@@ -1043,30 +1068,33 @@
   }
   ```
 
-### Q682. [Baseball Game](https://leetcode.com/problems/baseball-game/)
+### Q856. [Score of Parentheses](https://leetcode.com/problems/score-of-parentheses/)
+
+* Same idea with Q394: maintain a previous result stack
 
 * ```java
   class Solution {
-      public int calPoints(String[] operations) {
-          ArrayList<Integer> record = new ArrayList<>();
-          int sum = 0;
-          for (String s : operations) {
-              switch (s) {
-                  case "+" -> record.add(record.get(record.size() - 1) + record.get(record.size() - 2));
-                  case "D" -> record.add(record.get(record.size() - 1) * 2);
-                  case "C" -> record.removeLast();
-                  default  -> record.add(Integer.parseInt(s));
+      public int scoreOfParentheses(String s) {
+          Deque<Integer> score = new ArrayDeque<>();
+          int cur_s = 0;
+          for (char c : s.toCharArray()) {
+              if (c == '(') {
+                  score.push(cur_s);
+                  cur_s = 0;
+              }
+              else {
+                  if (cur_s == 0) 
+                      cur_s = score.pop() + 1;
+                  else
+                      cur_s = cur_s * 2 + score.pop();
               }
           }
-          for (int r : record) {
-              sum += r;
-          }
-          return sum;
+          return cur_s;
       }
   }
   ```
 
-
+* 
 
 ***
 
