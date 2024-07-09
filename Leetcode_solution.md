@@ -1006,6 +1006,43 @@
   }
   ```
 
+#### Encoding & Decoding
+
+### :star:Q394.  [Decode String](https://leetcode.com/problems/decode-string/)
+
+* st1 maintains a result stack that for each k[encoded_string] pair (or the beginning of the input string) there is a different StringBuilder including the partial or complete result previous to it. Whenever the loop encounter a '[', we push that sb into st1 to store that information
+
+* ```java
+  class Solution {
+      public String decodeString(String s) {
+          Deque<Integer> nums = new ArrayDeque<>();
+          Deque<StringBuilder> results = new ArrayDeque<>();
+          StringBuilder n = new StringBuilder();
+          StringBuilder cur_r = new StringBuilder();
+  
+          for (char c : s.toCharArray()) {
+              if (c >= '0' && c <= '9') {
+                  n.append(c);
+              }
+              else if (c == '[') {              
+                  nums.push(Integer.parseInt(n.toString()));
+                  n.setLength(0);
+                  encodeds.push(cur_r);
+                  cur_r = new StringBuilder();
+              }
+              else if (c == ']') {
+                  cur_r.repeat(cur_r, nums.pop() - 1);
+                  cur_r = encodeds.pop().append(cur_r);
+              }
+              else
+                  cur_r.append(c);
+          }
+  
+          return cur_r.toString();
+      }
+  }
+  ```
+
 ***
 
 ## String
@@ -1017,7 +1054,11 @@
 
 * ==Need to be done again==
 
+***
 
+## Dynamic Programming
+
+### Q1823. [Find the Winner of the Circular Game](https://leetcode.com/problems/find-the-winner-of-the-circular-game/)
 
 
 
