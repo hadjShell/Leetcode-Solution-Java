@@ -1043,6 +1043,31 @@
   }
   ```
 
+### Q682. [Baseball Game](https://leetcode.com/problems/baseball-game/)
+
+* ```java
+  class Solution {
+      public int calPoints(String[] operations) {
+          ArrayList<Integer> record = new ArrayList<>();
+          int sum = 0;
+          for (String s : operations) {
+              switch (s) {
+                  case "+" -> record.add(record.get(record.size() - 1) + record.get(record.size() - 2));
+                  case "D" -> record.add(record.get(record.size() - 1) * 2);
+                  case "C" -> record.removeLast();
+                  default  -> record.add(Integer.parseInt(s));
+              }
+          }
+          for (int r : record) {
+              sum += r;
+          }
+          return sum;
+      }
+  }
+  ```
+
+
+
 ***
 
 ## String
