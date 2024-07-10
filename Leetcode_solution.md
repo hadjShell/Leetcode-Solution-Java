@@ -878,6 +878,53 @@
   }
   ```
 
+### Q735. [Asteroid Collision](https://leetcode.com/problems/asteroid-collision/)
+
+* Simulation
+
+* ```java
+  class Solution {
+      public int[] asteroidCollision(int[] asteroids) {
+          Deque<Integer> stars = new ArrayDeque<>();
+          for (int a : asteroids) {
+              if (a > 0)
+                  stars.push(a);
+              // a < 0
+              else {
+                  if (stars.isEmpty() || stars.peek() < 0)
+                      stars.push(a);
+                  else {
+                      int absolute = Math.abs(a);
+                      if (stars.peek() < absolute) {
+                          while (!stars.isEmpty() && stars.peek() > 0) {
+                              int right = stars.pop();
+                              if (right == absolute) {
+                                  absolute = 0;
+                                  break;
+                              }
+                              else if (right > absolute) {
+                                  stars.push(right);
+                                  absolute = 0;
+                                  break;
+                              }
+                          }
+                          if (absolute != 0)
+                              stars.push(a);
+                      }
+                      else if (stars.peek() == absolute)
+                          stars.pop();
+                  }
+              }
+          }
+          int[] arr = new int[stars.size()];
+          for (int i = 0; i < arr.length; i++) {
+              arr[i] = stars.removeLast();
+          }
+          return arr;
+      }
+  }
+  ```
+
 ### :star:Q946. [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/)
 
 * ```java
