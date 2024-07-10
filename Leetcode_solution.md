@@ -670,7 +670,7 @@
 
 #### Basic push and pop
 
-### Q71. [Simplify Path](https://leetcode.com/problems/simplify-path/)
+### :star:Q71. [Simplify Path](https://leetcode.com/problems/simplify-path/)
 
 * ```java
   class Solution {
@@ -878,7 +878,7 @@
   }
   ```
 
-### Q946. [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/)
+### :star:Q946. [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/)
 
 * ```java
   class Solution {
@@ -940,6 +940,50 @@
     }
   }
   ```
+
+### Q1598. [Crawler Log Folder](https://leetcode.com/problems/crawler-log-folder/)
+
+* ```java
+  class Solution {
+      public int minOperations(String[] logs) {
+          int count = 0;
+          for (String l : logs) {
+              switch (l) {
+                  case "../"  -> {
+                      if (count != 0)
+                          count--;
+                  } 
+                  case "./"   -> {}
+                  default     -> {
+                      count++;
+                  }
+              }
+          }
+          return count;
+      }
+  }
+  ```
+
+### Q2390. [Removing Stars From a String](https://leetcode.com/problems/removing-stars-from-a-string/)
+
+* ```java
+  class Solution {
+      public String removeStars(String s) {
+          StringBuilder sb = new StringBuilder();
+          for (char c : s.toCharArray()) {
+              if (c == '*') {
+                  if (!sb.isEmpty()) 
+                      sb.deleteCharAt(sb.length() - 1);
+              }
+              else
+                  sb.append(c);
+          }
+          return sb.toString();
+      }
+  }
+  ```
+
+
 
 ***
 
@@ -1093,6 +1137,10 @@
       }
   }
   ```
+
+#### Monotonic Stack
+
+
 
 ***
 
