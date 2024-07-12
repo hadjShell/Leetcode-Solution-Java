@@ -639,6 +639,43 @@
 
 * Take advantage of the array memory to build the new array
 
+### :star:Q11. [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
+
+* Better: Eliminate the possiblities
+
+* ```java
+  class Solution {
+      public int maxArea(int[] height) {
+          int i = 0, j = height.length - 1, max = 0;
+          while (i < j) {
+              int v = (j - i) * Math.min(height[i], height[j]);
+              if (max < v)    max = v;
+              if (height[i] <= height[j]) i++;
+              else                        j--;
+          }
+          return max;
+      }
+  }
+  ```
+
+* Best: The problem is to find a greater height for smaller width during we scan the array
+
+* ```java
+  class Solution {
+      public int maxArea(int[] height) {
+          int i = 0, j = height.length - 1, max = 0;
+          while (i < j) {
+              int h = Math.min(height[i], height[j]);
+              int v = (j - i) * h;
+              if (max < v)    max = v;
+              while (i < j && height[i] <= h)     i++;
+              while (i < j && height[j] <= h)     j--;
+          }
+          return max;
+      }
+  }
+  ```
+
 ### Q283. [Move Zeroes](https://leetcode.com/problems/move-zeroes/)
 
 * ```java
