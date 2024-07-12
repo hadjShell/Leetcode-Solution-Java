@@ -659,6 +659,30 @@
   }
   ```
 
+### Q392. [Is Subsequence](https://leetcode.com/problems/is-subsequence/)
+
+* ```java
+  class Solution {
+      public boolean isSubsequence(String s, String t) {
+          if (s.length() > t.length())
+              return false;
+  
+          char[] sub = s.toCharArray();
+          int j = 0, len = sub.length;
+          for (char c : t.toCharArray()) {
+              if (j >= len)    return true;
+              else if (sub[j] == c)    j++;
+          }
+          return j >= len;
+      }
+  }
+  ```
+
+* Follow up
+
+  * The idea here is to use prefix sum and binary search
+  * `O(K*N) -> O(K*MLogN)`
+
 ### Q1047. [Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
 
 * ```java
