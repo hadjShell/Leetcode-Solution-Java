@@ -639,6 +639,26 @@
 
 * Take advantage of the array memory to build the new array
 
+### Q283. [Move Zeroes](https://leetcode.com/problems/move-zeroes/)
+
+* ```java
+  class Solution {
+      public void moveZeroes(int[] nums) {
+          int first0 = 0, cur = 0;
+          while (cur < nums.length) {
+              if (nums[cur] != 0) {
+                  if (cur > first0) {
+                      nums[first0] = nums[cur];
+                      nums[cur] = 0;
+                  }
+                  first0++;
+              }
+              cur++;
+          }
+      }
+  }
+  ```
+
 ### Q1047. [Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
 
 * ```java
