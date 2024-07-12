@@ -1286,6 +1286,30 @@
 
 ## HashTable
 
+### Q1207. [Unique Number of Occurrences](https://leetcode.com/problems/unique-number-of-occurrences/)
+
+* ```java
+  class Solution {
+      public boolean uniqueOccurrences(int[] arr) {
+          Map<Integer, Integer> o = new HashMap<>();
+          for (int i : arr) {
+              if (o.containsKey(i)) 
+                  o.put(i, o.get(i) + 1);
+              else
+                  o.put(i, 1);
+          }
+          boolean[] ar= new boolean[1001];
+          for(int i: o.values())
+          {
+              if(ar[i])
+                  return false;
+              ar[i]= true;
+          }
+          return true;
+      }
+  }
+  ```
+
 ### Q2215. [Find the Difference of Two Arrays](https://leetcode.com/problems/find-the-difference-of-two-arrays/)
 
 * ```java
