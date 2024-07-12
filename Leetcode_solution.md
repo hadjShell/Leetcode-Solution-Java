@@ -1284,6 +1284,40 @@
 
 ***
 
+## HashTable
+
+### Q2215. [Find the Difference of Two Arrays](https://leetcode.com/problems/find-the-difference-of-two-arrays/)
+
+* ```java
+  class Solution {
+      public List<List<Integer>> findDifference(int[] nums1, int[] nums2) {
+          Set<Integer> n1 = new HashSet<>();
+          Set<Integer> n2 = new HashSet<>();
+          List<List<Integer>> r = new ArrayList<>();
+  
+          for (int n : nums1)
+              n1.add(n);
+          for (int n : nums2)
+              n2.add(n);
+  
+          Iterator<Integer> i = n1.iterator();
+          while (i.hasNext()) {
+              int n = i.next();
+              if (n2.contains(n)) {
+                  i.remove();
+                  n2.remove(n);
+              }
+          }
+          r.add(new ArrayList<Integer>(n1));
+          r.add(new ArrayList<Integer>(n2));
+  
+          return r;
+      }
+  }
+  ```
+
+
+
 ## Recursion
 
 ### :star:Q880. [Decoded String at Index](https://leetcode.com/problems/decoded-string-at-index/)
