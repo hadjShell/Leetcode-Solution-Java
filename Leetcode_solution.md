@@ -1,5 +1,52 @@
 # Leetcode Solution
 
+## Linked List
+
+* Corner case
+  * Empty list
+  * Single node
+  * Two nodes
+  * Operation on head node (and tail node for doubly linked list)
+
+### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+
+* ```java
+  class Solution {
+      public ListNode removeNthFromEnd(ListNode head, int n) {
+          ListNode cur = head;
+          int len = 1;
+          while (cur.next != null) {
+              cur = cur.next;
+              len++;
+          }
+  
+          if (len == n)
+              return head.next;
+          
+          cur = head;
+          for (int i = 1; i < len - n; i++) {
+              cur = cur.next;
+          }
+          cur.next = cur.next.next;
+          return head;
+      }
+  }
+  ```
+
+***
+
+## String
+
+### Q224. [Basic Calculator](https://leetcode.com/problems/basic-calculator/)
+
+* ```java
+  
+  ```
+
+* ==Need to be done again==
+
+***
+
 ## Binary Search
 
 * **Locate the section on which you want to search based on the situation**
@@ -313,41 +360,6 @@
           }
           else
               return bs(mid + 1, right);
-      }
-  }
-  ```
-
-***
-
-## Linked List
-
-* Corner case
-  * Empty list
-  * Single node
-  * Two nodes
-  * Operation on head node (and tail node for doubly linked list)
-
-### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
-
-* ```java
-  class Solution {
-      public ListNode removeNthFromEnd(ListNode head, int n) {
-          ListNode cur = head;
-          int len = 1;
-          while (cur.next != null) {
-              cur = cur.next;
-              len++;
-          }
-  
-          if (len == n)
-              return head.next;
-          
-          cur = head;
-          for (int i = 1; i < len - n; i++) {
-              cur = cur.next;
-          }
-          cur.next = cur.next.next;
-          return head;
       }
   }
   ```
@@ -1272,17 +1284,6 @@
 
 ***
 
-## String
-
-### Q224. [Basic Calculator](https://leetcode.com/problems/basic-calculator/)
-
-* ```java
-  ```
-
-* ==Need to be done again==
-
-***
-
 ## Recursion
 
 ### :star:Q880. [Decoded String at Index](https://leetcode.com/problems/decoded-string-at-index/)
@@ -1329,11 +1330,71 @@
 
 ***
 
-
-
 ## Dynamic Programming
 
 ### Q1823. [Find the Winner of the Circular Game](https://leetcode.com/problems/find-the-winner-of-the-circular-game/)
+
+
+
+***
+
+## Greedy Algorithm
+
+### Q1717. [Maximum Score From Removing Substrings](https://leetcode.com/problems/maximum-score-from-removing-substrings/)
+
+* ```java
+  class Solution {
+      public int maximumGain(String s, int x, int y) {
+          char[] arr = s.toCharArray();
+          int score = 0;
+          if (x >= y) {
+              int[] result = deleteAB(arr, arr.length);
+              score += x * result[0];
+              result = deleteBA(arr, result[1]);
+              score += y * result[0];
+          }
+          else {
+              int[] result = deleteBA(arr, arr.length);
+              score += y * result[0];
+              result = deleteAB(arr, result[1]);
+              score += x * result[0];
+          }
+          return score;
+      }
+  
+      private int[] deleteAB(char[] arr, int len) {
+          int p = -1, cur = 0, cnt = 0;
+          while (cur < len) {
+              if (p >= 0 && arr[cur] == 'b' && arr[p] == 'a') {
+                  p--;
+                  cur++;
+                  cnt++;
+              }              
+              else
+                  arr[++p] = arr[cur++];
+          }
+          return new int[] {cnt, p + 1};
+      }
+  
+      private int[] deleteBA(char[] arr, int len) {
+          int p = -1, cur = 0, cnt = 0;
+          while (cur < len) {
+              if (p >= 0 && arr[cur] == 'a' && arr[p] == 'b') {
+                  p--;
+                  cur++;
+                  cnt++;
+              }              
+              else
+                  arr[++p] = arr[cur++];
+          }
+          return new int[] {cnt, p + 1};
+      }
+  }
+  ```
+
+* 
+
+
 
 
 
