@@ -1370,6 +1370,32 @@
 
 ***
 
+## Queue
+
+### Q933. [Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)
+
+* ```java
+  class RecentCounter {
+      Deque<Integer> p;
+  
+      public RecentCounter() {
+          p = new ArrayDeque<Integer>();
+      }
+      
+      public int ping(int t) {
+          p.addLast(t);
+          while (p.getFirst() < t - 3000) {
+              p.removeFirst();
+          }
+          return p.size();
+      }
+  }
+  ```
+
+
+
+***
+
 ## HashTable
 
 ### Q1207. [Unique Number of Occurrences](https://leetcode.com/problems/unique-number-of-occurrences/)
