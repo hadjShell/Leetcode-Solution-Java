@@ -617,6 +617,26 @@
   }
   ```
 
+### Q2095. [Delete the Middle Node of a Linked List](https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/)
+
+* ```java
+  class Solution {
+      public ListNode deleteMiddle(ListNode head) {
+          if (head.next == null)
+              return null;
+          
+          ListNode s = head;
+          ListNode f = head.next.next;
+          while (f != null && f.next != null) {
+              s = s.next;
+              f = f.next.next;
+          }
+          s.next = s.next.next;
+          return head;
+      }
+  }
+  ```
+
 ### Q2181. [Merge Nodes in Between Zeros](https://leetcode.com/problems/merge-nodes-in-between-zeros/)
 
 * Take advantage of the past irrelevant nodes to avoid creation of new nodes
