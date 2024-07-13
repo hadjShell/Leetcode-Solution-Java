@@ -669,6 +669,40 @@
   }
   ```
 
+### Q2130. [Maximum Twin Sum of a Linked List](https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/)
+
+* ```java
+  class Solution {
+      public int pairSum(ListNode head) {
+          int len = 1;
+          ListNode h = head;
+          while (h.next != null) {
+              h = h.next;
+              len++;
+          }
+  				// reverse first half
+          h = head;
+          ListNode reverse = new ListNode();
+          for (int i = 0; i < len / 2; i++) {
+              ListNode tmp = h;
+              h = h.next;
+              tmp.next = reverse;
+              reverse = tmp;
+          }
+  
+          int max = 0;
+          while (h != null) {
+              int sum = h.val + reverse.val;
+              max = sum > max ? sum : max;
+              h = h.next;
+              reverse = reverse.next;
+          }
+  
+          return max;
+      }
+  }
+  ```
+
 ### Q2181. [Merge Nodes in Between Zeros](https://leetcode.com/problems/merge-nodes-in-between-zeros/)
 
 * Take advantage of the past irrelevant nodes to avoid creation of new nodes
