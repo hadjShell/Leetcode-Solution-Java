@@ -602,6 +602,38 @@
   }
   ```
 
+### Q328. [Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)
+
+* ```java
+  class Solution {
+      public ListNode oddEvenList(ListNode head) {
+          if (head == null || head.next == null || head.next.next == null)
+              return head;
+          
+          ListNode even = new ListNode();
+          ListNode eCopy = even;
+          ListNode odd = new ListNode();
+          ListNode cur = head;
+          int i = 1;
+          while (cur != null) {
+              if (i % 2 != 0) {
+                  odd.next = cur;
+                  odd = odd.next;
+              }
+              else {
+                  even.next = cur;
+                  even = even.next;
+              }
+              cur = cur.next;
+              i++;
+          }
+          odd.next = eCopy.next;
+          even.next = null;
+          return head;
+      }
+  }
+  ```
+
 ### Q876. [Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/)
 
 * ```java
