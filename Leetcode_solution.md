@@ -1,5 +1,31 @@
 # Leetcode Solution
 
+## Array
+
+### Q1431. [Kids With the Greatest Number of Candies](https://leetcode.com/problems/kids-with-the-greatest-number-of-candies/)
+
+* ```java
+  class Solution {
+      public List<Boolean> kidsWithCandies(int[] candies, int extraCandies) {
+          int max = 0;
+          for (int c : candies) {
+              if (max < c)
+                  max = c;
+          }
+          List<Boolean> l = new ArrayList<>();
+          for (int c : candies) {
+              if (c + extraCandies >= max)
+                  l.add(true);
+              else
+                  l.add(false);
+          }
+          return l;
+      }
+  }
+  ```
+
+***
+
 ## Linked List
 
 * Corner case
