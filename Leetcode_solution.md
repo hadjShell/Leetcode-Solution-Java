@@ -46,6 +46,43 @@
 * ==Need to be done again==
 
 
+### :star:Q1071. [Greatest Common Divisor of Strings](https://leetcode.com/problems/greatest-common-divisor-of-strings/)
+
+* ```java
+  class Solution {
+      public String gcdOfStrings(String str1, String str2) {
+          if(!(str1 + str2).equals(str2+str1))
+              return "";
+  
+          int len1 = str1.length(),len2 = str2.length();
+          return str1.substring(0,gcd(len1,len2));
+      }
+  
+      // private String dOfString(String str) {
+      //     StringBuilder div = new StringBuilder();
+      //     char[] c = str.toCharArray();
+      //     for (int i = 0; i < c.length; i++) {
+      //         div.append(c[i]);
+      //         StringBuilder tmp = new StringBuilder(div);
+      //         StringBuilder s = new StringBuilder(str);
+      //         if (tmp.append(str).compareTo(s.append(div)) == 0)
+      //             break;
+      //     }
+      //     return div.toString();
+      // }
+  
+      private int gcd(int m, int n) {
+          int t = 1;
+          while (t != 0) {
+              t = m % n;
+              m = n;
+              n = t;
+          }
+          return m;
+      }
+  }
+  ```
+
 ### Q1768. [Merge Strings Alternately](https://leetcode.com/problems/merge-strings-alternately/)
 
 * ```java
