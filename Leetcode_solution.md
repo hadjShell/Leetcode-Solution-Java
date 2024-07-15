@@ -1486,6 +1486,37 @@
   }
   ```
 
+### Q2352. [Equal Row and Column Pairs](https://leetcode.com/problems/equal-row-and-column-pairs/)
+
+* ```java
+  class Solution {
+      public int equalPairs(int[][] grid) {
+          int len = grid.length;
+          if (len == 1)   return 1;
+          
+          Map<String, Integer> row = new HashMap<>();
+          StringBuilder sb = new StringBuilder();
+          for (int i = 0; i < len; i++) {
+              sb.setLength(0);
+              for (int j = 0; j < len; j++) {
+                  sb.append(grid[i][j]).append(',');
+              }
+              row.put(sb.toString(), row.getOrDefault(sb.toString(), 0) + 1);
+          }
+          int cnt = 0;
+          sb.setLength(0);
+          for (int j = 0; j < len; j++) {
+              sb.setLength(0);
+              for (int i = 0; i < len; i++) {
+                  sb.append(grid[i][j]).append(',');
+              }
+              cnt += row.getOrDefault(sb.toString(), 0);
+          }
+          return cnt;
+      }
+  }
+  ```
+
 ***
 
 ## Recursion
