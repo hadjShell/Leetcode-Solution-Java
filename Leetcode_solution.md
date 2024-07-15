@@ -45,6 +45,32 @@
 
 * ==Need to be done again==
 
+
+### Q1768. [Merge Strings Alternately](https://leetcode.com/problems/merge-strings-alternately/)
+
+* ```java
+  class Solution {
+      public String mergeAlternately(String word1, String word2) {
+          int len1 = word1.length(), len2 = word2.length();
+          StringBuilder word = new StringBuilder();
+          char[] w1 = word1.toCharArray(), w2 = word2.toCharArray();
+          int i = 0, j = 0;
+          for (; i < len1 && j < len2; i++, j++) {
+              word.append(w1[i]).append(w2[j]);
+          }
+          if (len2 > len1)
+              while (j < len2) 
+                  word.append(w2[j++]);
+          else 
+              while (i < len1)
+                  word.append(w1[i++]);
+          return word.toString();
+      }
+  }
+  ```
+
+
+
 ***
 
 ## Binary Search
