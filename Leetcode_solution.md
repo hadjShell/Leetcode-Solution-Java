@@ -28,36 +28,15 @@
 
 ## Linked List
 
+* Tricks
+  * Two pointers
+  * Dummy node
+
 * Corner case
   * Empty list
   * Single node
   * Two nodes
   * Operation on head node (and tail node for doubly linked list)
-
-### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
-
-* ```java
-  class Solution {
-      public ListNode removeNthFromEnd(ListNode head, int n) {
-          ListNode cur = head;
-          int len = 1;
-          while (cur.next != null) {
-              cur = cur.next;
-              len++;
-          }
-  
-          if (len == n)
-              return head.next;
-          
-          cur = head;
-          for (int i = 1; i < len - n; i++) {
-              cur = cur.next;
-          }
-          cur.next = cur.next.next;
-          return head;
-      }
-  }
-  ```
 
 ***
 
@@ -132,337 +111,207 @@
   }
   ```
 
-
-
-***
-
-## Binary Search
-
-* **Locate the section on which you want to search based on the situation**
-* Change the **base case or recursive case logic** of a normal binary search
-* Be aware of the out of bound problem
-
-### Q34. [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
-
-* ```java
-  class Solution {
-      public int[] searchRange(int[] nums, int target) {
-          int len = nums.length;
-          if (len == 0)   return new int[] {-1, -1};
-  
-          int first = bsFirst(nums, target, 0, len - 1);
-          if (first == -1) {
-              return new int[] {-1, -1};
-          }
-          else {
-              return new int[] {first, bsLast(nums, target, 0, len - 1)};
-          }
-      }
-  
-      private int bsFirst(int[] nums, int target, int left, int right) {
-          if (left > right)   return -1;
-          int mid = left + (right - left) / 2;
-          int tmp = mid;
-          if (target > nums[mid])
-              return bsFirst(nums, target, mid + 1, right);
-          else if (target < nums[mid])
-              return bsFirst(nums, target, left, mid - 1);
-          else {
-              if (mid == left || nums[mid - 1] != target)
-                  return mid;
-              else
-                  return bsFirst(nums, target, left, mid - 1);
-          }
-      }
-  
-      private int bsLast(int[] nums, int target, int left, int right) {
-          if (left > right)   return -1;
-          int mid = left + (right - left) / 2;
-          int tmp = mid;
-          if (target > nums[mid])
-              return bsLast(nums, target, mid + 1, right);
-          else if (target < nums[mid])
-              return bsLast(nums, target, left, mid - 1);
-          else {
-              if (mid == right || nums[mid + 1] != target)
-                  return mid;
-              else
-                  return bsLast(nums, target, mid + 1, right);
-          }
-      }
-  }
-  ```
-
-### Q35. [Search Insert Position](https://leetcode.com/problems/search-insert-position/)
-
-* ```java
-  class Solution {
-      public int searchInsert(int[] nums, int target) {
-          if(nums.length == 0)    return 0;
-          return bs(nums, target, 0, nums.length - 1);
-      }
-  
-      private int bs(int[] nums, int target, int left, int right) {
-          if (left > right) return left;
-          int mid = left + (right - left) / 2;
-          if (nums[mid] > target)
-              return bs(nums, target, left, mid - 1);
-          else if (nums[mid] < target)
-              return bs(nums, target, mid + 1, right);
-          else
-              return mid;
-      }
-  }
-  ```
-
-### Q74. [Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/)
-
-* ```java
-  class Solution {
-      public boolean searchMatrix(int[][] matrix, int target) {
-          return bsMatrix(matrix, target, 0, matrix.length - 1);
-      }
-  
-      private boolean bsMatrix(int[][] matrix, int target, int left, int right) {
-          if (left > right)   return false;
-          int mid = left + (right - left) / 2;
-          if (bs(matrix[mid], target, 0, matrix[0].length - 1) == true)
-              return true;
-          else {
-              if (target < matrix[mid][0])
-                  return bsMatrix(matrix, target, left, mid - 1);
-              else
-                  return bsMatrix(matrix, target, mid + 1, right);
-          }
-      }
-  
-      private boolean bs(int[] nums, int target, int left, int right) {
-          if (left > right)   return false;
-          int mid = left + (right - left) / 2;
-          if (target > nums[mid])
-              return bs(nums, target, mid + 1, right);
-          else if (target < nums[mid])
-              return bs(nums, target, left, mid - 1);
-          else 
-              return true;
-      }
-  }
-  ```
-
-### Q33. [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
-
-* It's about to consider all possibilities
-
-* ```java
-  class Solution {
-      public int search(int[] nums, int target) {
-          return bs(nums, target, 0, nums.length - 1);
-      }
-  
-      private int bs(int[] nums, int target, int left, int right) {
-          if (left > right)   return -1;
-  
-          int mid = left + (right - left) / 2;
-          if (target == nums[mid])    return mid;
-  
-          // mid in large section
-          if (nums[mid] > nums[right]) {
-              if (target < nums[mid] && target >= nums[left])
-                  return bs(nums, target, left, mid - 1);
-              else
-                  return bs(nums, target, mid + 1, right);
-          }
-          // mid in small section
-          else if (nums[mid] < nums[left])
-              if (target > nums[mid] && target <= nums[right])
-                  return bs(nums, target, mid + 1, right);
-              else
-                  return bs(nums, target, left, mid - 1);
-          // no rotate
-          else {
-              if (target > nums[mid])
-                  return bs(nums, target, mid + 1, right);
-              else
-                  return bs(nums, target, left, mid - 1);
-          }
-      }
-  }
-  ```
-
-### Q81. [Search in Rotated Sorted Array II](https://leetcode.com/problems/search-in-rotated-sorted-array-ii/)
-
-* Q33 + Q154
-
-* ```java
-  class Solution {
-      public boolean search(int[] nums, int target) {
-          return bsDuplicate(nums, target, 0, nums.length - 1);
-      }
-  
-      private boolean bsDuplicate(int[] nums, int target, int left, int right) {
-          if (left == right)  return nums[left] == target;
-          else if (left + 1 == right)
-              return nums[left] == target || nums[right] == target;
-          
-          // at least 3 elements 
-          int mid = left + (right - left) / 2;
-          if (nums[mid] == target)    return true;
-          if (nums[left] > nums[right]) {
-              if (nums[mid] > nums[right]) {
-                  if (target < nums[mid] && target >= nums[left])
-                      return bsDuplicate(nums, target, left, mid - 1);
-                  else 
-                      return bsDuplicate(nums, target, mid + 1, right);
-              }
-              else {
-                  if (target > nums[mid] && target <= nums[right])
-                      return bsDuplicate(nums, target, mid + 1, right);
-                  else
-                      return bsDuplicate(nums, target, left, mid - 1);
-              }
-          }
-          else if (nums[left] < nums[right]) {
-              if (target < nums[mid])
-                  return bsDuplicate(nums, target, left, mid - 1);
-              else
-                  return bsDuplicate(nums, target, mid + 1, right);
-          }
-          else 
-              return bsDuplicate(nums, target, left, mid - 1) || bsDuplicate(nums, target, mid + 1, right);
-      }
-  }
-  ```
-
-### Q153. [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
-
-* ```java
-  class Solution {
-      public int findMin(int[] nums) {
-          return bsMin(nums, 0, nums.length - 1);
-      }
-  
-      private int bsMin(int[] nums, int left, int right) {
-          if (left == right)  return nums[left];
-          int mid = left + (right - left) / 2;
-          // mid in large part
-          if (nums[mid] >= nums[left] && nums[mid] > nums[right]) 
-              return bsMin(nums, mid + 1, right);
-          // mid in small part
-          else if (nums[mid] < nums[left]) {
-              if (nums[mid] < nums[mid - 1])
-                  return nums[mid];
-              else
-                  return bsMin(nums, left, mid - 1);
-          }
-          // no rotate
-          else
-              return nums[left];
-      }
-  }
-  ```
-
-### Q154. [Find Minimum in Rotated Sorted Array II](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/)
-
-* Two solutions: recursion or loop
-
-* ```java
-  class Solution {
-      public int findMin(int[] nums) {
-          return bsMinDuplicate(nums, 0, nums.length - 1);
-      }
-  
-      private int bsMinDuplicate(int[] nums, int left, int right) {
-          if (left == right)  return nums[left];
-          else if (left + 1 == right)
-              return nums[left] < nums[right] ? nums[left] : nums[right];
-          
-          // at least 3 elements 
-          int mid = left + (right - left) / 2;
-          if (nums[left] > nums[right]) {
-              if (nums[mid] > nums[right])
-                  return bsMinDuplicate(nums, mid + 1, right);
-              else
-                  return nums[mid] < nums[mid - 1] ? nums[mid] : bsMinDuplicate(nums, left, mid - 1);
-          }
-          else if (nums[left] < nums[right])
-              return nums[left];
-          else {
-              if (nums[mid] < nums[mid - 1] && nums[mid] < nums[mid + 1])
-                  return nums[mid];
-              else {
-                  int leftMin = bsMinDuplicate(nums, left, mid - 1);
-                  int rightMin = bsMinDuplicate(nums, mid + 1, right);
-                  return leftMin < rightMin ? leftMin : rightMin;
-              }
-          }
-      }
-  }
-  ```
-
-* ```java
-  class Solution {
-      public int findMin(int[] nums) {
-           int l = 0;
-          int h = nums.length - 1;
-          
-          while (l < h) {
-              int m = l + (h - l) / 2;
-  
-              // Handle duplicates
-              if (nums[l] == nums[m] && nums[m] == nums[h]) {
-                  l++;
-                  h--;
-              } else if (nums[m] <= nums[h]) {
-                  // Right part is sorted or pivot element is to the left
-                  h = m;
-              } else {
-                  // Left part is sorted and pivot element is to the right
-                  l = m + 1;
-              }
-          }
-          
-          return nums[l];
-  
-      }
-  }
-  ```
-
-### Q278. [First Bad Version](https://leetcode.com/problems/first-bad-version/)
-
-* ```java
-  /* The isBadVersion API is defined in the parent class VersionControl.
-        boolean isBadVersion(int version); */
-  
-  public class Solution extends VersionControl {
-      public int firstBadVersion(int n) {
-          return bs(0, n - 1);
-      }
-  
-      private int bs(int left, int right) {
-          if (left > right)   return -1;
-          int mid = left + (right - left) / 2;
-          if (isBadVersion(mid + 1)) {
-              if (isBadVersion(mid))
-                  return bs(left, mid - 1);
-              else
-                  return mid + 1;
-          }
-          else
-              return bs(mid + 1, right);
-      }
-  }
-  ```
-
 ***
 
 ## Two Pointers
 
 * Fast and slow pointers
+  * Find middle element
+  * Circular list
+
 * Left and right pointers
+  * Reverse array
+
+* Sliding window
+  * Subarray
+  * Find Last k element
+
+* Etc.
+
+#### Fast and slow
+
+### Q141. [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+
+* ```java
+  public class Solution {
+      public boolean hasCycle(ListNode head) {
+          ListNode fast = head, slow = head;
+          while (fast != null && fast.next != null) {
+              fast = fast.next.next;
+              slow = slow.next;
+              if (fast == slow)   return true;
+          }
+          return false;
+      }
+  }
+  ```
+
+### Q142. [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
+
+* <img src="imgs/142.png" alt="142" style="zoom:50%;" />
+
+* Quick pointer move `xq`: `x1 + x2 + x3 + x2`, slow pointer move `xs`: `x1 + x2`, and `xq = 2xs`, so `x1 = x3`
+
+* So, after quick and slow meet, let quick back to the head of the list and make it move one node each iteration as slow point does. When they meet again, they will be at the start node of the cycle
+
+* ```java
+  public class Solution {
+      public ListNode detectCycle(ListNode head) {
+          ListNode fast = head, slow = head;
+          while (fast != null && fast.next != null) {
+              fast = fast.next.next;
+              slow = slow.next;
+              if (fast == slow) {
+                  fast = head;
+                  while (fast != slow) {
+                      slow = slow.next;
+                      fast = fast.next;
+                  }
+                  return fast;
+              }
+          }
+          return null;
+      }
+  }
+  ```
+
+### Q876. [Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/)
+
+* ```java
+  class Solution {
+      public ListNode middleNode(ListNode head) {
+          ListNode fast = head, slow = head;
+          while (fast != null && fast.next != null) {
+              fast = fast.next.next;
+              slow = slow.next;
+          }
+          return slow;
+      }
+  }
+  ```
+
+### Q2095. [Delete the Middle Node of a Linked List](https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/)
+
+* ```java
+  class Solution {
+      public ListNode deleteMiddle(ListNode head) {
+          if (head.next == null)
+              return null;
+          
+          ListNode s = head;
+          ListNode f = head.next.next;
+          while (f != null && f.next != null) {
+              s = s.next;
+              f = f.next.next;
+          }
+          s.next = s.next.next;
+          return head;
+      }
+  }
+  ```
+
+### Q2130. [Maximum Twin Sum of a Linked List](https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/)
+
+* ```java
+  class Solution {
+      public int pairSum(ListNode head) {
+          ListNode f = head.next.next, s = head;
+          ListNode reverse = new ListNode();
+          while (f != null) {
+              f = f.next.next;
+              ListNode tmp = s;
+              s = s.next;
+              tmp.next = reverse;
+              reverse = tmp;
+          }
+          f = s.next;
+          s.next = reverse;
+  
+          int max = 0;
+          while (f != null) {
+              int sum = s.val + f.val;
+              max = sum > max ? sum : max;
+              s = s.next;
+              f = f.next;
+          }
+  
+          return max;
+      }
+  }
+  ```
+
+***
+
+#### Left and right
+
+### :star:Q11. [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
+
+* Better: Eliminate the possiblities
+
+* ```java
+  class Solution {
+      public int maxArea(int[] height) {
+          int i = 0, j = height.length - 1, max = 0;
+          while (i < j) {
+              int v = (j - i) * Math.min(height[i], height[j]);
+              if (max < v)    max = v;
+              if (height[i] <= height[j]) i++;
+              else                        j--;
+          }
+          return max;
+      }
+  }
+  ```
+
+* Best: The problem is to find a greater height for smaller width during we scan the array
+
+* ```java
+  class Solution {
+      public int maxArea(int[] height) {
+          int i = 0, j = height.length - 1, max = 0;
+          while (i < j) {
+              int h = Math.min(height[i], height[j]);
+              int v = (j - i) * h;
+              if (max < v)    max = v;
+              while (i < j && height[i] <= h)     i++;
+              while (i < j && height[j] <= h)     j--;
+          }
+          return max;
+      }
+  }
+  ```
+
+***
+
+#### Sliding window
+
+### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+
+* ```java
+  class Solution {
+      public ListNode removeNthFromEnd(ListNode head, int n) {
+          ListNode first = head, second = head;
+          for (int i = 0; i < n; i++) {
+              first = first.next;
+          }
+          if (first == null)
+              return head.next;
+          
+          while (first.next != null) {
+              first = first.next;
+              second = second.next;
+          }
+          second.next = second.next.next;
+          return head;
+      }
+  }
+  ```
+
+***
+
+#### Others
 
 ### Q21. [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
-
-* Sentinel node + two pointers
 
 * ```java
   class Solution {
@@ -511,7 +360,7 @@
   }
   ```
 
-### Q23. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+### :star:Q23. [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
 
 * Divide and conquer + Q21.
 
@@ -553,8 +402,6 @@
 
 ### Q86. [Partition List](https://leetcode.com/problems/partition-list/)
 
-* Sentinel node
-
 * ```java
   class Solution {
       public ListNode partition(ListNode head, int x) {
@@ -584,52 +431,7 @@
   }
   ```
 
-### Q141. [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
-
-* ```java
-  public class Solution {
-      public boolean hasCycle(ListNode head) {
-          ListNode fast = head, slow = head;
-          while (fast != null && fast.next != null) {
-              fast = fast.next.next;
-              slow = slow.next;
-              if (fast == slow)   return true;
-          }
-          return false;
-      }
-  }
-  ```
-
-### Q142. [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
-
-* <img src="https://raw.githubusercontent.com/hadjShell/Leetcode-Solution-Java/main/imgs/142.png" alt="142" style="zoom:50%;" />
-
-* Quick pointer move `xq`: `x1 + x2 + x3 + x2`, slow pointer move `xs`: `x1 + x2`, and `xq = 2xs`, so `x1 = x3`
-
-* So, after quick and slow meet, let quick back to the head of the list and make it move one node each iteration as slow point does. When they meet again, they will be at the start node of the cycle
-
-* ```java
-  public class Solution {
-      public ListNode detectCycle(ListNode head) {
-          ListNode fast = head, slow = head;
-          while (fast != null && fast.next != null) {
-              fast = fast.next.next;
-              slow = slow.next;
-              if (fast == slow) {
-                  fast = head;
-                  while (fast != slow) {
-                      slow = slow.next;
-                      fast = fast.next;
-                  }
-                  return fast;
-              }
-          }
-          return null;
-      }
-  }
-  ```
-
-### Q160. [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
+### :star:Q160. [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
 
 * ```java
   public class Solution {
@@ -723,78 +525,9 @@
   }
   ```
 
-### Q876. [Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/)
+### :star:Q2181. [Merge Nodes in Between Zeros](https://leetcode.com/problems/merge-nodes-in-between-zeros/)
 
-* ```java
-  class Solution {
-      public ListNode middleNode(ListNode head) {
-          ListNode fast = head, slow = head;
-          while (fast != null && fast.next != null) {
-              fast = fast.next.next;
-              slow = slow.next;
-          }
-          return slow;
-      }
-  }
-  ```
-
-### Q2095. [Delete the Middle Node of a Linked List](https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/)
-
-* ```java
-  class Solution {
-      public ListNode deleteMiddle(ListNode head) {
-          if (head.next == null)
-              return null;
-          
-          ListNode s = head;
-          ListNode f = head.next.next;
-          while (f != null && f.next != null) {
-              s = s.next;
-              f = f.next.next;
-          }
-          s.next = s.next.next;
-          return head;
-      }
-  }
-  ```
-
-### Q2130. [Maximum Twin Sum of a Linked List](https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/)
-
-* ```java
-  class Solution {
-      public int pairSum(ListNode head) {
-          int len = 1;
-          ListNode h = head;
-          while (h.next != null) {
-              h = h.next;
-              len++;
-          }
-  				// reverse first half
-          h = head;
-          ListNode reverse = new ListNode();
-          for (int i = 0; i < len / 2; i++) {
-              ListNode tmp = h;
-              h = h.next;
-              tmp.next = reverse;
-              reverse = tmp;
-          }
-  
-          int max = 0;
-          while (h != null) {
-              int sum = h.val + reverse.val;
-              max = sum > max ? sum : max;
-              h = h.next;
-              reverse = reverse.next;
-          }
-  
-          return max;
-      }
-  }
-  ```
-
-### Q2181. [Merge Nodes in Between Zeros](https://leetcode.com/problems/merge-nodes-in-between-zeros/)
-
-* Take advantage of the past irrelevant nodes to avoid creation of new nodes
+* **Take advantage of the past irrelevant nodes memory** to avoid creation of new nodes
 
 * ```java
   class Solution {
@@ -816,49 +549,6 @@
               curr = curr.next;
           }
           return head;
-      }
-  }
-  ```
-
-***
-
-## Two Pointers in Array
-
-* Take advantage of the array memory to build the new array
-
-### :star:Q11. [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
-
-* Better: Eliminate the possiblities
-
-* ```java
-  class Solution {
-      public int maxArea(int[] height) {
-          int i = 0, j = height.length - 1, max = 0;
-          while (i < j) {
-              int v = (j - i) * Math.min(height[i], height[j]);
-              if (max < v)    max = v;
-              if (height[i] <= height[j]) i++;
-              else                        j--;
-          }
-          return max;
-      }
-  }
-  ```
-
-* Best: The problem is to find a greater height for smaller width during we scan the array
-
-* ```java
-  class Solution {
-      public int maxArea(int[] height) {
-          int i = 0, j = height.length - 1, max = 0;
-          while (i < j) {
-              int h = Math.min(height[i], height[j]);
-              int v = (j - i) * h;
-              if (max < v)    max = v;
-              while (i < j && height[i] <= h)     i++;
-              while (i < j && height[j] <= h)     j--;
-          }
-          return max;
       }
   }
   ```
@@ -929,8 +619,6 @@
   ```
 
 * Or use a stack
-
-
 
 ***
 
@@ -1602,6 +1290,325 @@
               cnt += row.getOrDefault(sb.toString(), 0);
           }
           return cnt;
+      }
+  }
+  ```
+
+***
+
+## Binary Search
+
+* **Locate the section on which you want to search based on the situation**
+* Change the **base case or recursive case logic** of a normal binary search
+* Be aware of the out of bound problem
+
+### Q34. [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
+
+* ```java
+  class Solution {
+      public int[] searchRange(int[] nums, int target) {
+          int len = nums.length;
+          if (len == 0)   return new int[] {-1, -1};
+  
+          int first = bsFirst(nums, target, 0, len - 1);
+          if (first == -1) {
+              return new int[] {-1, -1};
+          }
+          else {
+              return new int[] {first, bsLast(nums, target, 0, len - 1)};
+          }
+      }
+  
+      private int bsFirst(int[] nums, int target, int left, int right) {
+          if (left > right)   return -1;
+          int mid = left + (right - left) / 2;
+          int tmp = mid;
+          if (target > nums[mid])
+              return bsFirst(nums, target, mid + 1, right);
+          else if (target < nums[mid])
+              return bsFirst(nums, target, left, mid - 1);
+          else {
+              if (mid == left || nums[mid - 1] != target)
+                  return mid;
+              else
+                  return bsFirst(nums, target, left, mid - 1);
+          }
+      }
+  
+      private int bsLast(int[] nums, int target, int left, int right) {
+          if (left > right)   return -1;
+          int mid = left + (right - left) / 2;
+          int tmp = mid;
+          if (target > nums[mid])
+              return bsLast(nums, target, mid + 1, right);
+          else if (target < nums[mid])
+              return bsLast(nums, target, left, mid - 1);
+          else {
+              if (mid == right || nums[mid + 1] != target)
+                  return mid;
+              else
+                  return bsLast(nums, target, mid + 1, right);
+          }
+      }
+  }
+  ```
+
+### Q35. [Search Insert Position](https://leetcode.com/problems/search-insert-position/)
+
+* ```java
+  class Solution {
+      public int searchInsert(int[] nums, int target) {
+          if(nums.length == 0)    return 0;
+          return bs(nums, target, 0, nums.length - 1);
+      }
+  
+      private int bs(int[] nums, int target, int left, int right) {
+          if (left > right) return left;
+          int mid = left + (right - left) / 2;
+          if (nums[mid] > target)
+              return bs(nums, target, left, mid - 1);
+          else if (nums[mid] < target)
+              return bs(nums, target, mid + 1, right);
+          else
+              return mid;
+      }
+  }
+  ```
+
+### Q74. [Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/)
+
+* ```java
+  class Solution {
+      public boolean searchMatrix(int[][] matrix, int target) {
+          return bsMatrix(matrix, target, 0, matrix.length - 1);
+      }
+  
+      private boolean bsMatrix(int[][] matrix, int target, int left, int right) {
+          if (left > right)   return false;
+          int mid = left + (right - left) / 2;
+          if (bs(matrix[mid], target, 0, matrix[0].length - 1) == true)
+              return true;
+          else {
+              if (target < matrix[mid][0])
+                  return bsMatrix(matrix, target, left, mid - 1);
+              else
+                  return bsMatrix(matrix, target, mid + 1, right);
+          }
+      }
+  
+      private boolean bs(int[] nums, int target, int left, int right) {
+          if (left > right)   return false;
+          int mid = left + (right - left) / 2;
+          if (target > nums[mid])
+              return bs(nums, target, mid + 1, right);
+          else if (target < nums[mid])
+              return bs(nums, target, left, mid - 1);
+          else 
+              return true;
+      }
+  }
+  ```
+
+### Q33. [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
+
+* It's about to consider all possibilities
+
+* ```java
+  class Solution {
+      public int search(int[] nums, int target) {
+          return bs(nums, target, 0, nums.length - 1);
+      }
+  
+      private int bs(int[] nums, int target, int left, int right) {
+          if (left > right)   return -1;
+  
+          int mid = left + (right - left) / 2;
+          if (target == nums[mid])    return mid;
+  
+          // mid in large section
+          if (nums[mid] > nums[right]) {
+              if (target < nums[mid] && target >= nums[left])
+                  return bs(nums, target, left, mid - 1);
+              else
+                  return bs(nums, target, mid + 1, right);
+          }
+          // mid in small section
+          else if (nums[mid] < nums[left])
+              if (target > nums[mid] && target <= nums[right])
+                  return bs(nums, target, mid + 1, right);
+              else
+                  return bs(nums, target, left, mid - 1);
+          // no rotate
+          else {
+              if (target > nums[mid])
+                  return bs(nums, target, mid + 1, right);
+              else
+                  return bs(nums, target, left, mid - 1);
+          }
+      }
+  }
+  ```
+
+### Q81. [Search in Rotated Sorted Array II](https://leetcode.com/problems/search-in-rotated-sorted-array-ii/)
+
+* Q33 + Q154
+
+* ```java
+  class Solution {
+      public boolean search(int[] nums, int target) {
+          return bsDuplicate(nums, target, 0, nums.length - 1);
+      }
+  
+      private boolean bsDuplicate(int[] nums, int target, int left, int right) {
+          if (left == right)  return nums[left] == target;
+          else if (left + 1 == right)
+              return nums[left] == target || nums[right] == target;
+          
+          // at least 3 elements 
+          int mid = left + (right - left) / 2;
+          if (nums[mid] == target)    return true;
+          if (nums[left] > nums[right]) {
+              if (nums[mid] > nums[right]) {
+                  if (target < nums[mid] && target >= nums[left])
+                      return bsDuplicate(nums, target, left, mid - 1);
+                  else 
+                      return bsDuplicate(nums, target, mid + 1, right);
+              }
+              else {
+                  if (target > nums[mid] && target <= nums[right])
+                      return bsDuplicate(nums, target, mid + 1, right);
+                  else
+                      return bsDuplicate(nums, target, left, mid - 1);
+              }
+          }
+          else if (nums[left] < nums[right]) {
+              if (target < nums[mid])
+                  return bsDuplicate(nums, target, left, mid - 1);
+              else
+                  return bsDuplicate(nums, target, mid + 1, right);
+          }
+          else 
+              return bsDuplicate(nums, target, left, mid - 1) || bsDuplicate(nums, target, mid + 1, right);
+      }
+  }
+  ```
+
+### Q153. [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
+
+* ```java
+  class Solution {
+      public int findMin(int[] nums) {
+          return bsMin(nums, 0, nums.length - 1);
+      }
+  
+      private int bsMin(int[] nums, int left, int right) {
+          if (left == right)  return nums[left];
+          int mid = left + (right - left) / 2;
+          // mid in large part
+          if (nums[mid] >= nums[left] && nums[mid] > nums[right]) 
+              return bsMin(nums, mid + 1, right);
+          // mid in small part
+          else if (nums[mid] < nums[left]) {
+              if (nums[mid] < nums[mid - 1])
+                  return nums[mid];
+              else
+                  return bsMin(nums, left, mid - 1);
+          }
+          // no rotate
+          else
+              return nums[left];
+      }
+  }
+  ```
+
+### Q154. [Find Minimum in Rotated Sorted Array II](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/)
+
+* Two solutions: recursion or loop
+
+* ```java
+  class Solution {
+      public int findMin(int[] nums) {
+          return bsMinDuplicate(nums, 0, nums.length - 1);
+      }
+  
+      private int bsMinDuplicate(int[] nums, int left, int right) {
+          if (left == right)  return nums[left];
+          else if (left + 1 == right)
+              return nums[left] < nums[right] ? nums[left] : nums[right];
+          
+          // at least 3 elements 
+          int mid = left + (right - left) / 2;
+          if (nums[left] > nums[right]) {
+              if (nums[mid] > nums[right])
+                  return bsMinDuplicate(nums, mid + 1, right);
+              else
+                  return nums[mid] < nums[mid - 1] ? nums[mid] : bsMinDuplicate(nums, left, mid - 1);
+          }
+          else if (nums[left] < nums[right])
+              return nums[left];
+          else {
+              if (nums[mid] < nums[mid - 1] && nums[mid] < nums[mid + 1])
+                  return nums[mid];
+              else {
+                  int leftMin = bsMinDuplicate(nums, left, mid - 1);
+                  int rightMin = bsMinDuplicate(nums, mid + 1, right);
+                  return leftMin < rightMin ? leftMin : rightMin;
+              }
+          }
+      }
+  }
+  ```
+
+* ```java
+  class Solution {
+      public int findMin(int[] nums) {
+           int l = 0;
+          int h = nums.length - 1;
+          
+          while (l < h) {
+              int m = l + (h - l) / 2;
+  
+              // Handle duplicates
+              if (nums[l] == nums[m] && nums[m] == nums[h]) {
+                  l++;
+                  h--;
+              } else if (nums[m] <= nums[h]) {
+                  // Right part is sorted or pivot element is to the left
+                  h = m;
+              } else {
+                  // Left part is sorted and pivot element is to the right
+                  l = m + 1;
+              }
+          }
+          
+          return nums[l];
+  
+      }
+  }
+  ```
+
+### Q278. [First Bad Version](https://leetcode.com/problems/first-bad-version/)
+
+* ```java
+  /* The isBadVersion API is defined in the parent class VersionControl.
+        boolean isBadVersion(int version); */
+  
+  public class Solution extends VersionControl {
+      public int firstBadVersion(int n) {
+          return bs(0, n - 1);
+      }
+  
+      private int bs(int left, int right) {
+          if (left > right)   return -1;
+          int mid = left + (right - left) / 2;
+          if (isBadVersion(mid + 1)) {
+              if (isBadVersion(mid))
+                  return bs(left, mid - 1);
+              else
+                  return mid + 1;
+          }
+          else
+              return bs(mid + 1, right);
       }
   }
   ```
