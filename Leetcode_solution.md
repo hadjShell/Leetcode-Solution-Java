@@ -656,6 +656,39 @@
   * The idea here is to use prefix sum and binary search
   * `O(K*N) -> O(K*MLogN)`
 
+### Q443. [String Compression](https://leetcode.com/problems/string-compression/)
+
+* ```java
+  class Solution {
+      public int compress(char[] c) {
+          int p = 0, cur = 1, num = 1;
+          while (cur < c.length) {
+              if (c[cur] == c[p]) {
+                  num++;
+              }
+              else {
+                  if (num == 1)
+                      c[++p] = c[cur];
+                  else {
+                      char[] digits = String.valueOf(num).toCharArray();
+                      for (char d : digits) 
+                          c[++p] = d;
+                      c[++p] = c[cur];
+                      num = 1;
+                  }
+              }
+              cur++;
+          }
+          if (num > 1) {
+              char[] digits = String.valueOf(num).toCharArray();
+              for (char d : digits) 
+                  c[++p] = d;
+          }
+          return p + 1;
+      }
+  }
+  ```
+
 ### Q1047. [Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
 
 * ```java
@@ -2999,37 +3032,6 @@ public int addDigits(int num) {
 // Solution 2: math
 public int addDigits(int num) {
     return 1 + (num - 1) % 9;
-}
-```
-
-***
-
-## Question 344
-
-*Reverse String*
-
-### Description
-
-Write a function that reverses a string. The input string is given as an array of characters `s`.
-
-You must do this by modifying the input array [in-place](https://en.wikipedia.org/wiki/In-place_algorithm) with `O(1)` extra memory
-
-### Example
-
-```markdown
-Input: s = ["h","e","l","l","o"]
-Output: ["o","l","l","e","h"]
-```
-
-### Solution
-
-```java
-public void reverseString(char[] s) {
-    for(int i = 0; i < s.length / 2; i++) {
-        char tmp = s[i];
-        s[i] = s[s.length - 1 - i];
-        s[s.length - 1 - i] = tmp;
-    }
 }
 ```
 
