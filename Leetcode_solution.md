@@ -307,6 +307,39 @@
   }
   ```
 
+### Q345. [Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string/)
+
+* ```java
+  class Solution {
+      public String reverseVowels(String s) {
+          char[] c = s.toCharArray();
+          int h = 0, t = c.length - 1;
+          while (h < t) {
+              while (h < c.length && !isVowel(c[h]))
+                  h++;
+              while (t >= 0 && !isVowel(c[t]))
+                  t--;
+              if (h < t) {
+                  char tmp = c[h];
+                  c[h] = c[t];
+                  c[t] = tmp;
+                  h++;
+                  t--;
+              }
+          }
+          return new String(c);
+      }
+  
+      private boolean isVowel(char c) {
+          return switch (c) {
+              case 'a', 'e', 'i', 'o', 'u',
+                   'A', 'E', 'I', 'O', 'U' -> true;
+              default -> false;
+          };
+      }
+  }
+  ```
+
 ***
 
 #### Sliding window
