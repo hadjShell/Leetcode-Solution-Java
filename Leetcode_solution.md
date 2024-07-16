@@ -2,6 +2,32 @@
 
 ## Array
 
+### :star:Q605. [Can Place Flowers](https://leetcode.com/problems/can-place-flowers/)
+
+* ```java
+  class Solution {
+      public boolean canPlaceFlowers(int[] flowerbed, int n) {
+          int pointer = 0;
+          while(pointer < flowerbed.length && n>=0){
+              if(flowerbed[pointer] == 1){
+                  pointer += 2;
+              } else{
+                  if(pointer + 1 > flowerbed.length - 1){
+                      n--;
+                      pointer += 1;
+                  } else if(flowerbed[pointer + 1] == 0){
+                      n--;
+                      pointer += 2;
+                  } else{
+                      pointer += 3; 
+                  }
+              }
+          }
+          return n <= 0;
+      }
+  }
+  ```
+
 ### Q1431. [Kids With the Greatest Number of Candies](https://leetcode.com/problems/kids-with-the-greatest-number-of-candies/)
 
 * ```java
