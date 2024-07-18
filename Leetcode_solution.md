@@ -370,28 +370,6 @@
   }
   ```
 
-### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
-
-* ```java
-  class Solution {
-      public ListNode removeNthFromEnd(ListNode head, int n) {
-          ListNode first = head, second = head;
-          for (int i = 0; i < n; i++) {
-              first = first.next;
-          }
-          if (first == null)
-              return head.next;
-          
-          while (first.next != null) {
-              first = first.next;
-              second = second.next;
-          }
-          second.next = second.next.next;
-          return head;
-      }
-  }
-  ```
-
 ### :star:Q438. [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
 
 * ```java
@@ -504,6 +482,30 @@
   }
   ```
 
+### Q1004. [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/)
+
+* ```java
+  class Solution {
+      public int longestOnes(int[] nums, int k) {
+          int l = 0, r = 0, cnt = k, len = 0;
+          while (r < nums.length) {
+              if (nums[r] == 0)
+                  cnt--;
+              if (cnt < 0) {
+                  while (nums[l] != 0) {
+                      l++;
+                  }
+                  l++;
+                  cnt++;
+              }
+              r++;
+              len = Math.max(len, r - l);
+          }
+          return len;
+      }
+  }
+  ```
+
 ### Q1456. [Maximum Number of Vowels in a Substring of Given Length](https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/)
 
 * ```java
@@ -538,6 +540,28 @@
 ***
 
 #### Others
+
+### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+
+* ```java
+  class Solution {
+      public ListNode removeNthFromEnd(ListNode head, int n) {
+          ListNode first = head, second = head;
+          for (int i = 0; i < n; i++) {
+              first = first.next;
+          }
+          if (first == null)
+              return head.next;
+          
+          while (first.next != null) {
+              first = first.next;
+              second = second.next;
+          }
+          second.next = second.next.next;
+          return head;
+      }
+  }
+  ```
 
 ### Q21. [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
 
