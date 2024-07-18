@@ -149,12 +149,11 @@
   * Reverse array
 
 * Sliding window
-  * Subarray
-  * Find Last k element
+  * Subarray, Substring problem
 
 * Etc.
 
-#### Fast and slow
+### Fast and slow
 
 ### Q141. [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
 
@@ -268,7 +267,7 @@
 
 ***
 
-#### Left and right
+### Left and right
 
 ### :star:Q11. [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
 
@@ -342,7 +341,7 @@
 
 ***
 
-#### Sliding window
+### Sliding window
 
 * When to increase the window
 * When to shrink the window
@@ -539,7 +538,7 @@
 
 ***
 
-#### Others
+### Others
 
 ### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
 
