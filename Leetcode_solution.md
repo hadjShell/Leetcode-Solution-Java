@@ -366,6 +366,32 @@
   }
   ```
 
+### Q643. [Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/)
+
+* ```java
+  class Solution {
+      public double findMaxAverage(int[] nums, int k) {
+          int i = 0, j = k - 1, maxSum = 0;
+          while (i <= j) {
+              maxSum += nums[i++];
+          }
+          i = 1;
+          j++;
+          int sum = maxSum;
+          while (j < nums.length) {
+              sum = sum - nums[i - 1] + nums[j];
+              if (sum > maxSum)  
+                  maxSum = sum;
+              i++;
+              j++;
+          }
+          return maxSum * 1.0 / k;
+      }
+  }
+  ```
+
+
+
 ***
 
 #### Others
