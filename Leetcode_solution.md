@@ -344,6 +344,32 @@
 
 #### Sliding window
 
+* When to increase the window
+* When to shrink the window
+* When to update the result
+
+### :star:Q3. [ongest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+
+* ```java
+  class Solution {
+      public int lengthOfLongestSubstring(String s) {
+          int l = 0, r = l, maxLen = 0;
+          Map<Character, Integer> cs = new HashMap<>();
+          while (r < s.length()) {
+              char c = s.charAt(r);
+              if (cs.containsKey(c)) {
+                  int p = cs.get(c);
+                  l = p < l ? l : p + 1;
+              }
+              cs.put(c, r);
+              maxLen = Math.max(maxLen, r - l + 1);
+              r++;
+          }
+          return maxLen;
+      }
+  }
+  ```
+
 ### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
 
 * ```java
@@ -362,6 +388,49 @@
           }
           second.next = second.next.next;
           return head;
+      }
+  }
+  ```
+
+### Q438. [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
+
+* ```java
+  class Solution {
+      public List<Integer> findAnagrams(String s, String p) {
+          List<Integer> indices = new ArrayList<>();      
+          if (p.length() > s.length())
+              return indices;
+          
+          Map<Character, Integer> freq = new HashMap<>();
+          for (char c : p.toCharArray()) {
+              freq.put(c, freq.getOrDefault(c, 0) + 1);
+          }
+  
+          int l = 0, r = 0;
+          char[] c = s.toCharArray();
+          while (r < p.length()) {
+              updateMap(freq, c[r], freq.getOrDefault(c[r], 0) - 1);
+              r++;
+          }
+          while (r < c.length) {
+              if (freq.isEmpty()) 
+                  indices.add(l);
+              updateMap(freq, c[l], freq.getOrDefault(c[l], 0) + 1);
+              l++;
+              updateMap(freq, c[r], freq.getOrDefault(c[r], 0) - 1);
+              r++;
+          }
+          if (freq.isEmpty())
+              indices.add(l);
+  
+          return indices;
+      }
+  
+      private void updateMap(Map<Character, Integer> freq, char c, int f) {
+          if (f == 0) 
+              freq.remove(c);
+          else
+              freq.put(c, f);
       }
   }
   ```
@@ -389,8 +458,6 @@
       }
   }
   ```
-
-
 
 ***
 
