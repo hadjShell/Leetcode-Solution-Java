@@ -348,7 +348,7 @@
 * When to shrink the window
 * When to update the result
 
-### :star:Q3. [ongest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+### :star:Q3. [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
 * ```java
   class Solution {
@@ -392,7 +392,7 @@
   }
   ```
 
-### Q438. [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
+### :star:Q438. [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
 
 * ```java
   class Solution {
@@ -424,6 +424,51 @@
               indices.add(l);
   
           return indices;
+      }
+  
+      private void updateMap(Map<Character, Integer> freq, char c, int f) {
+          if (f == 0) 
+              freq.remove(c);
+          else
+              freq.put(c, f);
+      }
+  }
+  ```
+
+### Q567. [Permutation in String](https://leetcode.com/problems/permutation-in-string/)
+
+* Variant of Q438
+
+* ```java
+  class Solution {
+      public boolean checkInclusion(String p, String s) { 
+          if (p.length() > s.length())
+              return false;
+          
+          int cnt = 0;
+          Map<Character, Integer> freq = new HashMap<>();
+          for (char c : p.toCharArray()) {
+              freq.put(c, freq.getOrDefault(c, 0) + 1);
+          }
+  
+          int l = 0, r = 0;
+          char[] c = s.toCharArray();
+          while (r < p.length()) {
+              updateMap(freq, c[r], freq.getOrDefault(c[r], 0) - 1);
+              r++;
+          }
+          while (r < c.length) {
+              if (freq.isEmpty()) 
+                  cnt++;
+              updateMap(freq, c[l], freq.getOrDefault(c[l], 0) + 1);
+              l++;
+              updateMap(freq, c[r], freq.getOrDefault(c[r], 0) - 1);
+              r++;
+          }
+          if (freq.isEmpty())
+              cnt++;
+  
+          return cnt != 0;
       }
   
       private void updateMap(Map<Character, Integer> freq, char c, int f) {
