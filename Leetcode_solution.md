@@ -346,7 +346,7 @@
 
 * When to increase the window
 * When to shrink the window
-* When to update the result
+* How to update the result (what is the operation when window size changes)
 
 ### :star:Q3. [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
@@ -500,6 +500,37 @@
               j++;
           }
           return maxSum * 1.0 / k;
+      }
+  }
+  ```
+
+### Q1456. [Maximum Number of Vowels in a Substring of Given Length](https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/)
+
+* ```java
+  class Solution {
+      public int maxVowels(String s, int k) {
+          int l = 0, r = -1, num = 0, maxNum = 0;
+          while (r < k - 1) {
+              if (isVowel(s.charAt(++r)))
+                  num++;
+          }
+          maxNum = num;
+          while (r < s.length() - 1) {
+              if (isVowel(s.charAt(l++)))
+                  num--;
+              if (isVowel(s.charAt(++r)))
+                  num++;
+              if (num > maxNum)
+                  maxNum = num; 
+          }
+          return maxNum;
+      }
+  
+      private boolean isVowel(char c) {
+          return switch (c) {
+              case 'a', 'e', 'i', 'o', 'u' -> true;
+              default -> false;
+          };
       }
   }
   ```
