@@ -966,6 +966,32 @@
 
 * Or use a stack
 
+
+***
+
+### nSUM
+
+### Q1. [Two Sum](https://leetcode.com/problems/two-sum/)
+
+* If array is ordered, we can use two pointers to save space
+
+* ```java
+  class Solution {
+      public int[] twoSum(int[] nums, int target) {
+          Map<Integer, Integer> indices = new HashMap<>();
+          for (int i = 0; i < nums.length; i++) {
+              if (indices.containsKey(target - nums[i]))
+                  return new int[] {indices.get(target - nums[i]), i};
+              else
+                  indices.put(nums[i], i);
+          }
+          return null;
+      }
+  }
+  ```
+
+
+
 ***
 
 ## Stack
