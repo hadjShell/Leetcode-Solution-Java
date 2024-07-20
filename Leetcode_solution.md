@@ -369,6 +369,44 @@
   }
   ```
 
+### :heart:Q76. [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
+
+* ```java
+  class Solution {
+      public String minWindow(String s, String t) {
+          int[] freq = new int[128];
+          for (char c : t.toCharArray()) {
+              freq[c]++;
+          }
+  
+          char[] source = s.toCharArray();
+  		    int len = source.length;	
+          int requiredChars = t.length();
+          int left = 0, right = 0, start = -1, end = len;
+  
+          for (; right < len; right++) {
+              if (--freq[source[right]] >= 0) {
+                  requiredChars--;
+              }
+  
+              while (requiredChars == 0) {
+                  //calculate minimum window
+                  if (++freq[source[left]] > 0) {
+                      if (right - left < end - start) {
+                          start = left;
+                          end = right;
+                      }
+                      requiredChars++;
+                  }
+                  left++;
+              }
+          }
+  
+          return start == -1 ? "" : s.substring(start, end + 1);
+      }
+  }
+  ```
+
 ### :star:Q438. [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
 
 * ```java
