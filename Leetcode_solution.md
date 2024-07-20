@@ -574,6 +574,30 @@
   }
   ```
 
+### Q1493. [Longest Subarray of 1's After Deleting One Element](https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/)
+
+* ```java
+  class Solution {
+      public int longestSubarray(int[] nums) {
+          int l = 0, r = 0, zero = 0, len = 0;
+          while (r < nums.length) {
+              if (nums[r] == 0) {
+                  if (zero == 0)
+                      zero++;
+                  else {  
+                      while (nums[l] != 0)
+                          l++;
+                      l++;
+                  }
+              }
+              r++;
+              len = Math.max(len, r - l - 1);
+          }
+          return len;
+      }
+  }
+  ```
+
 ***
 
 ### Others
