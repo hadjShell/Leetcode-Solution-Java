@@ -1772,6 +1772,22 @@
   }
   ```
 
+### Q1732. [Find the Highest Altitude](https://leetcode.com/problems/find-the-highest-altitude/)
+
+* ```java
+  class Solution {
+      public int largestAltitude(int[] gain) {
+          int[] preSum = new int[gain.length + 1];
+          int high = 0;
+          for (int i = 1; i < preSum.length; i++) {
+              preSum[i] = preSum[i - 1] + gain[i - 1];
+              high = high < preSum[i] ? preSum[i] : high;
+          }
+          return high;
+      }
+  }
+  ```
+
 
 
 ***
