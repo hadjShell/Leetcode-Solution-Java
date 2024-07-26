@@ -1835,6 +1835,35 @@
   }
   ```
 
+### Q523. [Continuous Subarray Sum](https://leetcode.com/problems/continuous-subarray-sum/)
+
+* ```java
+  class Solution {
+      public boolean checkSubarraySum(int[] nums, int k) {
+          Map<Integer, Integer> preSum = new HashMap<>();
+          preSum.put(0, 0);
+          int sum = 0;
+          for (int i = 1; i <= nums.length; i++) {
+              sum = (sum + nums[i - 1]) % k;
+              if (preSum.containsKey(sum)) {
+                  if (i - preSum.get(sum) > 1)
+                      return true;
+              }
+              else
+                  preSum.put(sum, i);
+          }
+          return false;
+      }
+  }
+  
+  // p[b] - p[a] = q * k
+  // mk + mod1 - nk - mod2 = qk
+  // mod1 - mod2 = nk = 0
+  // mod1, mod2 -> [0, k)
+  ```
+
+
+
 ***
 
 ## Binary Search
