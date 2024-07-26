@@ -996,7 +996,7 @@
 
 ## Stack
 
-#### Basic push and pop
+### Basic push and pop
 
 ### :star:Q71. [Simplify Path](https://leetcode.com/problems/simplify-path/)
 
@@ -1358,11 +1358,9 @@
   }
   ```
 
-
-
 ***
 
-#### Valid parentheses
+### Valid parentheses
 
 ### Q20. [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
 
@@ -1450,7 +1448,7 @@
 
 ***
 
-#### Encoding & Decoding
+### Encoding & Decoding
 
 ### :star:Q394.  [Decode String](https://leetcode.com/problems/decode-string/)
 
@@ -1513,7 +1511,7 @@
   }
   ```
 
-#### Monotonic Stack
+### Monotonic Stack
 
 
 
@@ -1811,7 +1809,31 @@
   }
   ```
 
+***
 
+### With Hashtable
+
+### :star:Q525. [Contiguous Array](https://leetcode.com/problems/contiguous-array/)
+
+* ```java
+  class Solution {
+      public int findMaxLength(int[] nums) {
+          Map<Integer, Integer> preSum = new HashMap<>();
+          preSum.put(0, 0);
+          int sum = 0, maxLen = 0;
+          for (int i = 1; i <= nums.length; i++) {
+              sum += (nums[i - 1] == 0 ? -1 : 1);
+              if (preSum.containsKey(sum)) {
+                  int len = i - preSum.get(sum);
+                  maxLen = Math.max(len, maxLen);
+              }
+              else
+                  preSum.put(sum, i);
+          }
+          return maxLen;
+      }
+  }
+  ```
 
 ***
 
