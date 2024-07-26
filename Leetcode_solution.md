@@ -1753,6 +1753,25 @@
   }
   ```
 
+### Q724. [Find Pivot Index](https://leetcode.com/problems/find-pivot-index/)
+
+* ```java
+  class Solution {
+      public int pivotIndex(int[] nums) {
+          int[] preSum = new int[nums.length + 1];
+          for (int i = 1; i < preSum.length; i++) {
+              preSum[i] = preSum[i - 1] + nums[i - 1];
+          }
+          int sum = preSum[preSum.length - 1];
+          for (int i = 1; i < preSum.length; i++) {
+              if (preSum[i - 1] == sum - preSum[i])
+                  return i - 1;
+          }
+          return -1;
+      }
+  }
+  ```
+
 
 
 ***
