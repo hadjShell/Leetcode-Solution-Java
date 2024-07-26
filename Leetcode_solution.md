@@ -1668,6 +1668,61 @@
 
 ***
 
+## Prefix Sum
+
+* Used for rapidly, frequently getting the sum of a subarray
+
+### Q303. [Range Sum Query - Immutable](https://leetcode.com/problems/range-sum-query-immutable/)
+
+* ```java
+  class NumArray {
+      int[] preSum;
+  
+      public NumArray(int[] nums) {
+          preSum = new int[nums.length + 1];
+          int i = 1;
+          preSum[0] = 0;
+          for (int n : nums) {
+              preSum[i] = preSum[i - 1] + n;
+              i++;
+          }
+      }
+      
+      public int sumRange(int left, int right) {
+          return preSum[right + 1] - preSum[left];
+      }
+  }
+  ```
+
+### :star:Q304. [Range Sum Query 2D - Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable/)
+
+* ```java
+  class NumMatrix {
+      // each element representing the sum of the rectangle in the matrix whose 
+      // upper left corner is [0][0]
+      // lower right corner is current position
+      int[][] preSum;
+  
+      public NumMatrix(int[][] matrix) {
+          int m = matrix.length;
+          int n = matrix[0].length;
+          preSum = new int[m + 1][n + 1];
+          for (int i = 1; i <= m; i++) 
+              for (int j = 1; j <= n; j++) {
+                  preSum[i][j] = preSum[i - 1][j] + preSum[i][j - 1] 
+                              + matrix[i - 1][j - 1] - preSum[i - 1][j - 1];
+              }
+      }
+      
+      public int sumRegion(int row1, int col1, int row2, int col2) {
+          return preSum[row2 + 1][col2 + 1] - preSum[row1][col2 + 1] 
+                  - preSum[row2 + 1][col1] + preSum[row1][col1];
+      }
+  }
+  ```
+
+***
+
 ## Binary Search
 
 * **Locate the section on which you want to search based on the situation**
