@@ -1671,6 +1671,7 @@
 ## Prefix Sum
 
 * Used for rapidly, frequently getting the sum of a subarray
+* Add a empty slot to normalise the loop
 
 ### Q303. [Range Sum Query - Immutable](https://leetcode.com/problems/range-sum-query-immutable/)
 
@@ -1720,6 +1721,39 @@
       }
   }
   ```
+
+### Q1314. [Matrix Block Sum](https://leetcode.com/problems/matrix-block-sum/)
+
+* Variant of Q304
+
+* ```java
+  class Solution {
+      public int[][] matrixBlockSum(int[][] matrix, int k) {
+          int m = matrix.length;
+          int n = matrix[0].length;
+          int[][] preSum = new int[m + 1][n + 1];
+          for (int i = 1; i <= m; i++) 
+              for (int j = 1; j <= n; j++) {
+                  preSum[i][j] = preSum[i - 1][j] + preSum[i][j - 1] 
+                              + matrix[i - 1][j - 1] - preSum[i - 1][j - 1];
+          }
+  
+          int[][] answer = new int[m][n];
+          for (int i = 0; i < m; i++)
+              for (int j = 0; j < n; j++) {
+                  int row1 = i - k < 0 ? 0 : i - k;
+                  int col1 = j - k < 0 ? 0 : j - k;
+                  int row2 = i + k >= m ? m - 1 : i + k;
+                  int col2 = j + k >= n ? n - 1 : j + k;
+                  answer[i][j] = preSum[row2 + 1][col2 + 1] - preSum[row1][col2 + 1] 
+                  - preSum[row2 + 1][col1] + preSum[row1][col1];
+          }
+          return answer;
+      }
+  }
+  ```
+
+
 
 ***
 
