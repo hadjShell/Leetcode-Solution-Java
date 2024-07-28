@@ -1862,6 +1862,28 @@
   // mod1, mod2 -> [0, k)
   ```
 
+### Q560. [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
+
+* ```java
+  class Solution {
+      public int subarraySum(int[] nums, int k) {
+          Map<Integer, Integer> preSum = new HashMap<>();
+          int sum = 0, cnt = 0;
+          preSum.put(0, 1);
+          for (int i = 1; i <= nums.length; i++) {
+              sum += nums[i - 1];
+              if (preSum.containsKey(sum - k))
+                  cnt += preSum.get(sum - k);
+              preSum.put(sum, preSum.getOrDefault(sum, 0) + 1);
+          }
+          return cnt;
+      }
+  }
+  
+  // preSum[b] - preSum[a] = k
+  // preSum[b] - k = preSum[a]
+  ```
+
 
 
 ***
