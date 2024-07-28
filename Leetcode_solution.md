@@ -1884,6 +1884,32 @@
   // preSum[b] - k = preSum[a]
   ```
 
+### Q974. [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/)
+
+* ```java
+  class Solution {
+      public int subarraysDivByK(int[] nums, int k) {
+          int[] preSum = new int[k];
+          preSum[0] = 1;
+          int sum = 0, cnt = 0;
+          for (int i = 1; i <= nums.length; i++) {
+              sum = (sum + nums[i - 1]) % k;
+              sum = sum < 0 ? sum + k : sum;
+              if (preSum[sum] != 0) 
+                  cnt += preSum[sum];
+              preSum[sum]++;
+          }
+          return cnt;
+      }
+  }
+  
+  // (preSum[b] - preSum[a]) % k = 0
+  // pk + a - qk - b = nk
+  // a - b = ik
+  // a, b -> (-k, k)
+  // a - b -> (-2k, 2k)
+  ```
+
 
 
 ***
