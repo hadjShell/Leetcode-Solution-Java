@@ -1545,6 +1545,8 @@
 
 ## HashTable
 
+* If the values of key are limited, array instead of hash table can be used to increase the performance
+
 ### Q1207. [Unique Number of Occurrences](https://leetcode.com/problems/unique-number-of-occurrences/)
 
 * ```java
@@ -1908,6 +1910,31 @@
   // a - b = ik
   // a, b -> (-k, k)
   // a - b -> (-2k, 2k)
+  ```
+
+### :star:Q1124. [Longest Well-Performing Interval](https://leetcode.com/problems/longest-well-performing-interval/)
+
+* Key is how to reduce the condition `preSum[b] > preSum[a]` so that we can locate the element in the hashmap
+
+* ```java
+  class Solution {
+      public int longestWPI(int[] hours) {
+          Map<Integer, Integer> preSum = new HashMap<>();
+          int largest = 0, sum = 0;
+          for (int i = 0; i < hours.length; i++) {
+              sum += (hours[i] > 8 ? 1 : -1);
+            	// in hours[0:i], more 1s than -1s
+              if (sum > 0)
+                  largest = Math.max(largest, i + 1);
+            	// get the index j where sum of hours[0:j] is sum - 1, so that sum of hours[j+1:i] is 1
+              else if (preSum.containsKey(sum - 1))
+                  largest = Math.max(largest, i - preSum.get(sum - 1));
+              if (!preSum.containsKey(sum))
+                  preSum.put(sum, i);
+          }
+          return largest;
+      }
+  }
   ```
 
 
