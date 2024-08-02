@@ -598,6 +598,49 @@
   }
   ```
 
+### :star:Q2134. [Minimum Swaps to Group All 1's Together II](https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together-ii/)
+
+* The number of swaps required is the number of 0’s in the subarray 
+
+* To eliminate the circular property of the array, we can append the original array to itself (imagination)
+
+* ```java
+  class Solution {
+      public int minSwaps(int[] nums) {
+          int n = nums.length;
+          int totalOnes = 0;
+  
+          // Count total number of 1's
+          for (int num : nums) {
+              totalOnes += num;
+          }
+  
+          // Edge cases
+          if (totalOnes == 0 || totalOnes == n) return 0;
+  
+          int currentOnes = 0;
+  
+          // Count 1's in the first window of size totalOnes
+          for (int i = 0; i < totalOnes; i++) {
+              currentOnes += nums[i];
+          }
+  
+          int maxOnes = currentOnes;
+  
+          // Use two pointers to slide the window
+          for (int i = 0; i < n; i++) {
+              currentOnes -= nums[i];
+              currentOnes += nums[(i + totalOnes) % n];
+              maxOnes = Math.max(maxOnes, currentOnes);
+          }
+  
+          return totalOnes - maxOnes;
+      }
+  }
+  ```
+
+
+
 ***
 
 ### Others
@@ -1668,7 +1711,7 @@
 
 ***
 
-## Prefix Sum
+## :white_check_mark: Prefix Sum
 
 * Used for rapidly, frequently getting the sum of a subarray
 * Add a empty slot to normalise the loop
@@ -1936,8 +1979,6 @@
       }
   }
   ```
-
-
 
 ***
 
