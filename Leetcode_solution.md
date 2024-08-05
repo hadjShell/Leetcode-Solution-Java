@@ -1581,6 +1581,27 @@
   }
   ```
 
+### Q503. [Next Greater Element II](https://leetcode.com/problems/next-greater-element-ii/)
+
+* ```java
+  class Solution {
+      public int[] nextGreaterElements(int[] nums) {
+          Deque<Integer> stack = new ArrayDeque<>();
+          int len = nums.length;
+          int[] result = new int[len];
+          for (int i = 2 * len - 1; i >= 0; i--) {
+              int num = nums[i % len];
+              while (!stack.isEmpty() && stack.peek() <= num)
+                  stack.pop();
+              int nextGreater = stack.isEmpty() ? -1 : stack.peek();
+              stack.push(num);
+              result[i % len] = nextGreater;
+          }
+          return result;
+      }
+  }
+  ```
+
 
 
 ***
