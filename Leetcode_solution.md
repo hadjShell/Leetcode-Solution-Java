@@ -1622,6 +1622,32 @@
   }
   ```
 
+### Q901. [Online Stock Span](https://leetcode.com/problems/online-stock-span/)
+
+* ```java
+  class StockSpanner {
+      private List<Integer> prices;
+      private int cnt;
+      private Deque<Integer> stack;
+  
+      public StockSpanner() {
+          prices = new ArrayList<>();
+          cnt = 0;
+          stack = new ArrayDeque<>();
+      }
+      
+      public int next(int price) {
+          prices.add(price);
+          cnt++;
+          while (!stack.isEmpty() && prices.get(stack.peek() - 1) <= price)
+              stack.pop();
+          int span = stack.isEmpty() ? cnt : cnt - stack.peek();
+          stack.push(cnt);
+          return span;
+      }
+  }
+  ```
+
 
 
 ***
