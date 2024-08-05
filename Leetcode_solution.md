@@ -1556,6 +1556,31 @@
 
 ### Monotonic Stack
 
+* Leverage stack to maintain a monotonically increasing or decreasing list
+* Next greater value or Last smaller value problem
+
+### Q496. [Next Greater Element I](https://leetcode.com/problems/next-greater-element-i/)
+
+* ```java
+  class Solution {
+      public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+          Deque<Integer> stack = new ArrayDeque<>();
+          Map<Integer, Integer> m = new HashMap<>();
+          for (int i = nums2.length - 1; i >= 0; i--) {
+              while (!stack.isEmpty() && stack.peek() <= nums2[i])
+                  stack.pop();
+              int firstGreater = stack.isEmpty() ? -1 : stack.peek();
+              m.put(nums2[i], firstGreater);
+              stack.push(nums2[i]);
+          }
+          int[] result = new int[nums1.length];
+          for (int i = 0; i < nums1.length; i++) 
+              result[i] = m.get(nums1[i]);
+          return result;
+      }
+  }
+  ```
+
 
 
 ***
