@@ -1694,7 +1694,32 @@
   }
   ```
 
+### :star:Q456. [132 Pattern](https://leetcode.com/problems/132-pattern/)
 
+* Make `C` and `B` as large as possible meanwhile `C > B`
+* Maintain a variable `max2` to store the max value smaller than the current greatest value during the iteration of the array in reverse
+* Notice the condition change from `stack.peek() <= nums[i]` to `stack.peek() < nums[i]`. It keeps `C > B` and `B` is the max value after `C`
+
+* ```java
+  class Solution {
+      public boolean find132pattern(int[] nums) {
+          if (nums.length < 3)
+              return false;
+  
+          int max2 = Integer.MIN_VALUE;
+          // increasing stack from top to bottom
+          Deque<Integer> stack = new ArrayDeque<>();
+          for (int i = nums.length - 1; i >= 0; i--) {
+              if (nums[i] < max2)
+                  return true;
+              while (!stack.isEmpty() && stack.peek() < nums[i])
+                  max2 = stack.pop();
+              stack.push(nums[i]);
+          }
+          return false;
+      }   
+  }
+  ```
 
 ***
 
