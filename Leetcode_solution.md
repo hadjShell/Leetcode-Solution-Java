@@ -1648,6 +1648,52 @@
   }
   ```
 
+### Q1019. [Next Greater Node In Linked List](https://leetcode.com/problems/next-greater-node-in-linked-list/)
+
+* ```java
+  class Solution {
+      public int[] nextLargerNodes(ListNode head) {
+          Node n = reverseList(head);
+          ListNode r = n.head;
+          Deque<Integer> stack = new ArrayDeque<>();
+          int[] answer = new int[n.size];
+          int i = n.size - 1;
+          while (r != null) {
+              while (!stack.isEmpty() && r.val >= stack.peek())
+                  stack.pop();
+              answer[i--] = stack.isEmpty() ? 0 : stack.peek();
+              stack.push(r.val);
+              r = r.next;
+          }
+          return answer;
+      }
+  
+      private Node reverseList(ListNode head) {
+          ListNode prev = null, cur = head;
+          int len = 1;
+          while (cur.next != null) {
+              ListNode tmp = cur.next;
+              cur.next = prev;
+              prev = cur;
+              cur = tmp;
+              len++;
+          }
+          cur.next = prev;
+          return new Node(cur, len);
+      }
+  
+      private class Node {
+          ListNode head;
+          int size;
+  
+          public Node(ListNode head, int size) {
+              this.head = head;
+              this.size = size;
+          }
+      }
+  }
+  ```
+
 
 
 ***
