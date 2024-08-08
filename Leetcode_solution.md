@@ -1554,7 +1554,7 @@
   }
   ```
 
-### Monotonic Stack
+### :white_check_mark: Monotonic Stack
 
 * Leverage stack to maintain a monotonically increasing or decreasing list
 * Next greater value or Last smaller value problem
@@ -1696,9 +1696,7 @@
 
 ### :star:Q456. [132 Pattern](https://leetcode.com/problems/132-pattern/)
 
-* Make `C` and `B` as large as possible meanwhile `C > B`
-* Maintain a variable `max2` to store the max value smaller than the current greatest value during the iteration of the array in reverse
-* Notice the condition change from `stack.peek() <= nums[i]` to `stack.peek() < nums[i]`. It keeps `C > B` and `B` is the max value after `C`
+* https://leetcode.com/problems/132-pattern/solutions/5605502/detailed-explanation-using-monotonic-stack-approach-java-defeat-91
 
 * ```java
   class Solution {
@@ -1718,6 +1716,40 @@
           }
           return false;
       }   
+  }
+  ```
+
+### Q84. [Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/)
+
+* ```java
+  // find first smaller height to left and to right
+  class Solution {
+      public int largestRectangleArea(int[] heights) {
+          int len = heights.length;
+          int[] prevSmall = new int[len];
+          int[] prevSmallReverse = new int[len];
+          Deque<Integer> stack = new ArrayDeque<>();
+          for (int i = 0; i < len; i++) {
+              while (!stack.isEmpty() && heights[i] <= heights[stack.peek()])
+                  stack.pop();
+              prevSmall[i] = stack.isEmpty() ? -1 : stack.peek();
+              stack.push(i);
+          }
+          stack = new ArrayDeque<>();
+          for (int i = len - 1; i >= 0; i--) {
+              while (!stack.isEmpty() && heights[i] <= heights[stack.peek()])
+                  stack.pop();
+              prevSmallReverse[i] = stack.isEmpty() ? len : stack.peek();
+              stack.push(i);
+          }
+  
+          int max = 0;
+          for (int i = 0; i < len; i++) {
+              int height = heights[i] * (prevSmallReverse[i] - prevSmall[i] - 1);
+              max = Math.max(max, height);
+          }
+          return max;
+      }
   }
   ```
 
