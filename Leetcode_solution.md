@@ -407,6 +407,30 @@
   }
   ```
 
+### :star:Q209. [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/)
+
+* ```java
+  class Solution {
+      public int minSubArrayLen(int target, int[] nums) {
+          int l = 0, r = 0, sum = 0, size = nums.length + 1;
+          while (l < nums.length) {
+              while (sum < target && r < nums.length)
+                  sum += nums[r++];
+              if (sum < target) {
+                  if (size == nums.length + 1)
+                      size = 0;
+                  break;
+              }
+              else {
+                  size = Math.min(size, r - l);
+                  sum -= nums[l++];
+              }
+          }
+          return size;
+      }
+  }
+  ```
+
 ### :star:Q438. [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
 
 * ```java
