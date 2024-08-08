@@ -1785,6 +1785,31 @@
 
 * If the values of key are limited, array instead of hash table can be used to increase the performance
 
+### Q187. [Repeated DNA Sequences](https://leetcode.com/problems/repeated-dna-sequences/)
+
+* ```java
+  class Solution {
+      public List<String> findRepeatedDnaSequences(String s) {
+          HashSet<String> dnaSeq = new HashSet<String>();
+          HashSet<String> visited = new HashSet<String>();
+          List<String> res = new ArrayList<>();
+          if (s.length() <= 10) {
+              return res;
+          }
+          int i = 0;
+          while (i < s.length() - 9) {
+              String dna = s.substring(i, i + 10);
+              if (!visited.add(dna)) {
+                  dnaSeq.add(dna);
+              }
+              i++;
+          }
+          res.addAll(dnaSeq);
+          return res;
+      }
+  }
+  ```
+
 ### Q1207. [Unique Number of Occurrences](https://leetcode.com/problems/unique-number-of-occurrences/)
 
 * ```java
@@ -3706,36 +3731,6 @@ private ListNode reverseList(ListNode head) {
     head.next = null;
     return prev;
 }
-```
-
-***
-
-## Question 237
-
-*Delete Node in a Linked List*
-
-### Description
-
-Write a function to **delete a node** in a singly-linked list. You will **not** be given access to the `head` of the list, instead you will be given access to **the node to be deleted** directly.
-
-It is **guaranteed** that the node to be deleted is **not a tail node** in the list.
-
-- The number of the nodes in the given list is in the range `[2, 1000]`.
-
-### Example
-
-```markdown
-Input: head = [4,5,1,9], node = 5
-Output: [4,1,9]
-```
-
-### Solution
-
-```java
-public void deleteNode(ListNode node) {
-        node.val = node.next.val;
-        node.next = node.next.next;
-    }
 ```
 
 ***
