@@ -76,7 +76,43 @@
   }
   ```
 
-### Q54.
+### Q54. [Spiral Matrix](https://leetcode.com/problems/spiral-matrix/)
+
+* ```java
+  class Solution {
+      public List<Integer> spiralOrder(int[][] matrix) {
+          int r = matrix.length, c = matrix[0].length;
+          return spiral(matrix, 0, 0, r - 1, c - 1);
+  
+      }
+  
+      private List<Integer> spiral(int[][] matrix, int r1, int c1, int r2, int c2) {
+          List<Integer> l = new ArrayList<>();
+          if (r1 > r2 || c1 > c2)
+              ;
+          else if (r1 == r2) {
+              for (; c1 <= c2; c1++)
+                  l.add(matrix[r1][c1]);
+          }
+          else if (c1 == c2) {
+              for (; r1 <= r2; r1++)
+                  l.add(matrix[r1][c1]);
+          }
+          else {
+              for (int i = c1; i <= c2; i++)
+                  l.add(matrix[r1][i]);
+              for (int i = r1 + 1; i < r2; i++)
+                  l.add(matrix[i][c2]);
+              for (int i = c2; i >= c1; i--)
+                  l.add(matrix[r2][i]);
+              for (int i = r2 - 1; i > r1; i--)
+                  l.add(matrix[i][c1]);
+              l.addAll(spiral(matrix, r1 + 1, c1 + 1, r2 - 1, c2 - 1));
+          }
+          return l;
+      }
+  }
+  ```
 
 ### Q59.
 
