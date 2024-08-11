@@ -540,6 +540,53 @@
   }
   ```
 
+### Q151. [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/)
+
+* ```java
+  class Solution {
+      public String reverseWords(String s) {
+          char[] c = s.trim().toCharArray();
+          int len = c.length;
+          // reverse string
+          swap(c, 0, len - 1);
+          // reverse words
+          int l = 0, r = 0;
+          while (r < len) {
+              while (r < len && c[r] != ' ')
+                  r++;
+              swap(c, l, r - 1);
+              while (r < len && c[r] == ' ')
+                  r++;
+              l = r;
+          }
+          // remove multiple spaces between words
+          l = 0; r = 0;
+          while (r < len) {
+              while (r < len && c[r] != ' ') {
+                  c[l] = c[r];
+                  l++;
+                  r++;
+              }
+              if (l < len)
+                  c[l++] = ' ';
+              else
+                  l++;
+              while (r < len && c[r] == ' ')
+                  r++;
+          }
+          return new String(c, 0, l - 1);
+      }
+  
+      private void swap(char[] c, int l, int r) {
+          for (; l < r; l++, r--) {
+              char tmp = c[l];
+              c[l] = c[r];
+              c[r] = tmp;
+          }
+      }
+  }
+  ```
+
 ### :star:Q209. [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/)
 
 * ```java
