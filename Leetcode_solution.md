@@ -50,6 +50,38 @@
   }
   ```
 
+### 2D Array
+
+### Q48. [Rotate Image](https://leetcode.com/problems/rotate-image/)
+
+* ```java
+  class Solution {
+      public void rotate(int[][] matrix) {
+          int n = matrix.length;
+          // swap matrix by diagonal
+          for (int i = 0; i < n - 1; i++)
+              for (int j = 0; j < n - i - 1; j++) {
+                  int tmp = matrix[i][j];
+                  matrix[i][j] = matrix[n - 1 - j][n - 1 - i];
+                  matrix[n - 1 - j][n - 1 - i] = tmp;
+              }
+          // swap matrix by horizontal centerline
+          for (int i = 0; i < n / 2; i++)
+              for (int j = 0; j < n; j++) {
+                  int tmp = matrix[i][j];
+                  matrix[i][j] = matrix[n - 1 - i][j];
+                  matrix[n - 1 - i][j] = tmp;
+              }
+      }
+  }
+  ```
+
+### Q54.
+
+### Q59.
+
+### Q885.
+
 ***
 
 ## Linked List
