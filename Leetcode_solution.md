@@ -114,7 +114,35 @@
   }
   ```
 
-### Q59.
+### Q59. [Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/)
+
+* ```java
+  class Solution {
+      public int[][] generateMatrix(int n) {
+          int[][] matrix = new int[n][n];
+          spiral(matrix, 1, 0, n - 1);
+          return matrix;
+      }
+  
+      private void spiral(int[][] matrix, int n, int r1, int r2) {
+          if (r1 > r2)
+              ;
+          else if (r1 == r2) 
+              matrix[r1][r1] = n;
+          else {
+              for (int i = r1; i <= r2; i++)
+                  matrix[r1][i] = n++;
+              for (int i = r1 + 1; i < r2; i++)
+                  matrix[i][r2] = n++;
+              for (int i = r2; i >= r1; i--)
+                  matrix[r2][i] = n++;
+              for (int i = r2 - 1; i > r1; i--)
+                  matrix[i][r1] = n++;
+              spiral(matrix, n, r1 + 1, r2 - 1);
+          }
+      }
+  }
+  ```
 
 ### Q885.
 
