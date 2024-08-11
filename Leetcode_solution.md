@@ -197,6 +197,31 @@
   * Two nodes
   * Operation on head node (and tail node for doubly linked list)
 
+### Q61. [Rotate List](https://leetcode.com/problems/rotate-list/)
+
+* ```java
+  class Solution {
+      public ListNode rotateRight(ListNode head, int k) {
+          if (head == null)
+              return null;
+          
+          ListNode tail = head;
+          int size = 1;
+          while (tail.next != null) {
+              tail = tail.next;
+              size++;
+          }
+          tail.next = head;
+          for (int i = 1; i < size - k % size; i++) {
+              head = head.next;
+          }
+          ListNode h = head.next;
+          head.next = null;
+          return h;
+      }
+  }
+  ```
+
 ***
 
 ## String
@@ -3197,63 +3222,6 @@ public int removeElement(int[] nums, int val) {
         }
     }
     return j + 1;
-}
-```
-
-***
-
-## Question 61
-
-*Rotate List*
-
-### Description
-
-Given the `head` of a linked list, rotate the list to the right by `k` places.
-
-- The number of nodes in the list is in the range `[0, 500]`.
-- `-100 <= Node.val <= 100`
-- `0 <= k <= 2 * 109`
-
-### Example
-
-![img](https://assets.leetcode.com/uploads/2020/11/13/rotate1.jpg)
-
-![img](https://assets.leetcode.com/uploads/2020/11/13/roate2.jpg)
-
-### Solution
-
-* Quick, slow pointer
-
-```java
-public ListNode rotateRight(ListNode head, int k) {
-    if(head == null || head.next == null)
-        return head;
-
-    ListNode cur = head;
-    int size = 0;
-    while(cur != null) {
-        size++;
-        cur = cur.next;
-    }
-
-    int rotate = k % size;
-    if(rotate == 0)
-        return head;
-
-    ListNode quick = head, tail = null;
-    cur = head;
-    while(quick != null) {
-        if(rotate < 0) {
-            cur = cur.next;
-        }
-        rotate--;
-        tail = quick;
-        quick = quick.next;
-    }
-    tail.next = head;
-    head = cur.next;
-    cur.next = null;
-    return head; 
 }
 ```
 
