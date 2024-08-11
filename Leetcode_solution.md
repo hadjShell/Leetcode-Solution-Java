@@ -144,7 +144,44 @@
   }
   ```
 
-### Q885.
+### Q885. [Spiral Matrix III](https://leetcode.com/problems/spiral-matrix-iii/)
+
+* ```java
+  class Solution {
+      private static int n = 0;
+  
+      public int[][] spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
+          int circles = Math.max(Math.max(Math.max(rStart + 1, cStart + 1), rows - rStart), cols - cStart);
+          int[][] m = new int[rows * cols][2];
+          for (int c = 0; c < circles; c++) {
+              spiral(m, rStart - c, cStart - c, rStart + c, cStart + c, rows, cols);
+          }
+          return m;
+      }
+  
+      private void spiral(int[][] m, int r1, int c1, int r2, int c2, int rows, int cols) {
+          if (r1 == r2 && c1 == c2) {
+              m[n++] = new int[] {r1, c1};
+          }
+          else {
+              for (int i = r1 + 1; i <= r2; i++)
+                  if (i >= 0 && i < rows && c2 >= 0 && c2 < cols)
+                      m[n++] = new int[] {i, c2};
+              for (int i = c2 - 1; i >= c1; i--)
+                  if (r2 >= 0 && r2 < rows && i >= 0 && i < cols)
+                      m[n++] = new int[] {r2, i};
+              for (int i = r2 - 1; i >= r1; i--)
+                  if (i >= 0 && i < rows && c1 >= 0 && c1 < cols)
+                      m[n++] = new int[] {i, c1};
+              for (int i = c1 + 1; i <= c2; i++)
+                  if (r1 >= 0 && r1 < rows && i >= 0 && i < cols)
+                      m[n++] = new int[] {r1, i};
+          }
+      }
+  }
+  ```
+
+* 
 
 ***
 
