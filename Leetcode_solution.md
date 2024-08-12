@@ -772,6 +772,68 @@
   }
   ```
 
+### Q1234. [Replace the Substring for Balanced String](https://leetcode.com/problems/replace-the-substring-for-balanced-string/)
+
+* ```java
+  // find a minimal window which contains enough character to be replaced
+  class Solution {
+      public int balancedString(String s) {
+          int[] freq = new int[4];
+          char[] c = s.toCharArray();
+          for (char ch : c) {
+              increaseFreq(freq, ch);
+          }
+          int n = c.length / 4;
+          for (int i = 0; i < 4; i++) {
+              freq[i] -= n;
+          }
+          
+          int l = 0, r = 0, minLen = c.length;
+          int[] f = new int[4];
+          if (isReplaced(freq, f))
+              return 0;
+          while (r < c.length) {
+              while (r < c.length && !isReplaced(freq, f)) {
+                  increaseFreq(f, c[r]);
+                  r++;
+              }
+              while (isReplaced(freq, f)) {
+                  decreaseFreq(f, c[l]);
+                  l++;
+              }
+              minLen = Math.min(minLen, r - l + 1);
+          }
+          return minLen;
+      }
+  
+      private boolean isReplaced(int[] freq, int[] f) {
+          for (int i = 0; i < freq.length; i++) {
+              if (f[i] < freq[i])
+                  return false;
+          }
+          return true;
+      }
+  
+      private void increaseFreq(int[] freq, char c) {
+          switch (c) {
+              case 'Q' -> freq[0]++;
+              case 'W' -> freq[1]++;
+              case 'E' -> freq[2]++;
+              case 'R' -> freq[3]++;
+          }
+      }
+  
+      private void decreaseFreq(int[] freq, char c) {
+          switch (c) {
+              case 'Q' -> freq[0]--;
+              case 'W' -> freq[1]--;
+              case 'E' -> freq[2]--;
+              case 'R' -> freq[3]--;
+          }
+      }
+  }
+  ```
+
 ### Q1456. [Maximum Number of Vowels in a Substring of Given Length](https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/)
 
 * ```java
