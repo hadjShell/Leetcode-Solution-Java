@@ -2812,6 +2812,31 @@
 
 ***
 
+## Binary Tree
+
+### Binary Search Tree
+
+### Q700. [Search in a Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree/)
+
+* ```java
+  class Solution {
+      public TreeNode searchBST(TreeNode root, int val) {
+          if (root == null)
+              return null;
+          if (root.val == val)
+              return root;
+          else if (root.val < val)
+              return searchBST(root.right, val);
+          else
+              return searchBST(root.left, val);
+      }
+  }
+  ```
+
+
+
+***
+
 ## Recursion
 
 ### :star:Q880. [Decoded String at Index](https://leetcode.com/problems/decoded-string-at-index/)
