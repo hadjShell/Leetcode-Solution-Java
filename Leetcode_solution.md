@@ -2833,6 +2833,31 @@
   }
   ```
 
+### Q701. [Insert into a Binary Search Tree](https://leetcode.com/problems/insert-into-a-binary-search-tree/)
+
+* ```java
+  class Solution {
+      public TreeNode insertIntoBST(TreeNode root, int val) {
+          TreeNode in = new TreeNode(val);
+          if (root == null)
+              return in;
+          TreeNode n = root, p = root;
+          while (n != null) {
+              p = n;
+              if (val < n.val)
+                  n = n.left;
+              else
+                  n = n.right;
+          }
+          if (val < p.val)
+              p.left = in;
+          else
+              p.right = in;
+          return root;
+      }
+  }
+  ```
+
 ### Q450. [Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst/)
 
 * ```java
