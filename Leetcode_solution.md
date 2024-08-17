@@ -504,6 +504,7 @@
 * When to increase the window
 * When to shrink the window
 * How to update the result (what is the operation when window size changes)
+* Find the qualified subarray
 
 ### :star:Q3. [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
@@ -2813,6 +2814,49 @@
 ***
 
 ## Binary Tree
+
+* Binary tree is all about making decision on what logic needs to be executed when to execute that logic (preorder, inorder, postorder)
+
+### DFS
+
+### :heart:Q104. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+
+* ```java
+  class Solution {
+      private int md = 0;
+  
+      public int maxDepth(TreeNode root) {
+          _maxDepth(root, 0);
+          return md;
+  
+      }
+  
+      private void _maxDepth(TreeNode root, int depth) {
+          if (root == null)
+              return;
+          
+          depth++;
+          md = Math.max(depth, md);
+          _maxDepth(root.left, depth);
+          _maxDepth(root.right, depth);
+          depth--;
+      }
+  }
+  ```
+
+* ```java
+  class Solution {
+      public int maxDepth(TreeNode root) {
+          if (root == null)
+              return 0;
+          return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+      }
+  }
+  ```
+
+### BFS
+
+
 
 ### Binary Search Tree
 
