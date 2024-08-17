@@ -2929,6 +2929,29 @@
   }
   ```
 
+### :star:Q98. [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)
+
+* ```java
+  class Solution {
+      public boolean isValidBST(TreeNode root) {
+          return _isValidBST(root, null, null);
+      }
+  
+      private boolean _isValidBST(TreeNode root, TreeNode min, TreeNode max) {
+          // min, max is the left and right border nearest to the current node
+          if (root == null)
+              return true;
+          if (min != null && root.val <= min.val)
+              return false;
+          if (max != null && root.val >= max.val)
+              return false;
+          
+          return _isValidBST(root.left, min, root) && 
+                  _isValidBST(root.right, root, max);
+      }
+  }
+  ```
+
 
 
 ***
