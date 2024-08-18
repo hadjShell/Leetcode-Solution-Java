@@ -2852,6 +2852,30 @@
   }
   ```
 
+### Q1448. [Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
+
+* ```java
+  class Solution {
+      private int num = 0;
+  
+      public int goodNodes(TreeNode root) {
+          _goodNodes(root, null);
+          return num;
+      }
+  
+      public void _goodNodes(TreeNode n, TreeNode max) {
+          if (n == null)
+              return;
+          if (max == null || n.val >= max.val) {
+              num++;
+              max = n;
+          }
+          _goodNodes(n.left, max);
+          _goodNodes(n.right, max);
+      }
+  }
+  ```
+
 ### Postorder
 
 ### :heart:Q104. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
