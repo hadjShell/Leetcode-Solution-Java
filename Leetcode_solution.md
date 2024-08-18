@@ -2816,6 +2816,8 @@
 ## Binary Tree
 
 * Binary tree is all about making decision on what logic needs to be executed when to execute that logic (preorder, inorder, postorder)
+* If the problem relates to the subtree, then the logic is probably located in the postorder location and the method signature probably has a return value and some other parameters except for the `TreeNode root`
+* 
 
 ### DFS
 
@@ -2853,6 +2855,29 @@
       }
   }
   ```
+
+### Q543. [Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
+
+* ```java
+  class Solution {
+      private int diameter = 0;
+  
+      public int diameterOfBinaryTree(TreeNode root) {
+          maxDepth(root);
+          return diameter;
+      }
+  
+      private int maxDepth(TreeNode root) {
+          if (root == null)
+              return 0;
+          int left = maxDepth(root.left), right = maxDepth(root.right);
+          diameter = Math.max(diameter, left + right);
+          return Math.max(left, right) + 1;
+      }
+  }
+  ```
+
+
 
 ### BFS
 
