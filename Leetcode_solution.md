@@ -2817,9 +2817,42 @@
 
 * Binary tree is all about making decision on what logic needs to be executed when to execute that logic (preorder, inorder, postorder)
 * If the problem relates to the subtree, then the logic is probably located in the postorder location and the method signature probably has a return value and some other parameters except for the `TreeNode root`
-* 
 
 ### DFS
+
+### Preorder
+
+### Q872. [Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/)
+
+* ```java
+  class Solution {
+      public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+          List<TreeNode> l1 = new ArrayList<>();
+          List<TreeNode> l2 = new ArrayList<>();
+          leaves(root1, l1);
+          leaves(root2, l2);
+          int s1 = l1.size(), s2 = l2.size();
+          if (s1 != s2)
+              return false;
+          for (int i = 0; i < s1; i++) {
+              if (l1.get(i).val != l2.get(i).val)
+                  return false;
+          }
+          return true;
+      }
+  
+      private void leaves(TreeNode root, List<TreeNode> l) {
+          if (root == null)
+              return;
+          if (root.left == null && root.right == null)
+              l.add(root);
+          leaves(root.left, l);
+          leaves(root.right, l);
+      }
+  }
+  ```
+
+### Postorder
 
 ### :heart:Q104. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
