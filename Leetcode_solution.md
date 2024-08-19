@@ -2973,7 +2973,48 @@
   }
   ```
 
+### Q114. [Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/)
 
+* ```java
+  class Solution {
+      public void flatten(TreeNode root) {
+          _flatten(root);
+      }
+  
+      public Sequence _flatten(TreeNode root) {
+          if (root == null)
+              return null;
+          Sequence left = _flatten(root.left);
+          Sequence right = _flatten(root.right);
+          if (left == null && right == null)
+              return new Sequence(root, root);
+          else if (left == null)
+              return new Sequence(root, right.end);
+          else if (right == null) {
+              root.left = null;
+              root.right = left.start;
+              return new Sequence(root, left.end);
+          }
+          else {
+              root.right = left.start;
+              left.end.right = right.start;
+              root.left = null;
+              return new Sequence(root, right.end);
+          }
+      } 
+  
+      private class Sequence {
+          TreeNode start;
+          TreeNode end;
+  
+          public Sequence() {}
+          public Sequence(TreeNode start, TreeNode end) {
+              this.start = start;
+              this.end = end;
+          }
+      }
+  }
+  ```
 
 ### Combination of Different Orders
 
