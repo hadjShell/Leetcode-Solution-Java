@@ -2934,6 +2934,41 @@
   }
   ```
 
+### Combination of Different Orders
+
+### Q437. [Path Sum III](https://leetcode.com/problems/path-sum-iii/)
+
+* DFS + Prefix sum
+
+* ```java
+  class Solution {
+      private int count = 0;
+  
+      public int pathSum(TreeNode root, int targetSum) {
+          if (root == null)
+              return 0;
+          Map<Long, Integer> preSum = new HashMap<>();
+          preSum.put(0l, 1);
+          _pathSum(root, 0l, targetSum, preSum);
+          return count;
+      }
+  
+      private void _pathSum(TreeNode root, long sum, int targetSum, Map<Long, Integer> preSum) {
+          if (root == null)
+              return;
+          long newPathSum = sum + root.val;
+          if (preSum.containsKey(newPathSum - targetSum))
+                  count += preSum.get(newPathSum - targetSum);
+          preSum.put(newPathSum, preSum.getOrDefault(newPathSum, 0) + 1);
+        
+          _pathSum(root.left, newPathSum, targetSum, preSum);
+          _pathSum(root.right, newPathSum, targetSum, preSum);
+        
+          preSum.put(newPathSum, preSum.get(newPathSum) - 1);
+      }
+  }
+  ```
+
 
 
 ### BFS
