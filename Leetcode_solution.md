@@ -2822,6 +2822,30 @@
 
 ### Preorder
 
+### Q116. [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
+
+* ```java
+  class Solution {
+      public Node connect(Node root) {
+          _connect(root, null);
+          return root;
+      }
+  
+      private void _connect(Node root, Node prev) {
+          if (root == null)
+              return;
+          if (prev == null) {
+              _connect(root.left, null);
+          }
+          else {
+              prev.next = root;
+              _connect(root.left, prev.right);
+          }
+          _connect(root.right, root.left);
+      }
+  }
+  ```
+
 ### Q872. [Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/)
 
 * ```java
