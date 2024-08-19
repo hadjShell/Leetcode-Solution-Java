@@ -2934,6 +2934,23 @@
   }
   ```
 
+### Q226. [Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
+
+* ```java
+  class Solution {
+      public TreeNode invertTree(TreeNode root) {
+          if (root == null)
+              return null;
+          TreeNode left = root.left, right = root.right;
+          root.left = invertTree(right);
+          root.right = invertTree(left);
+          return root;
+      }
+  }
+  ```
+
+
+
 ### Combination of Different Orders
 
 ### Q437. [Path Sum III](https://leetcode.com/problems/path-sum-iii/)
