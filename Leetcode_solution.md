@@ -2818,9 +2818,9 @@
 * Binary tree is all about making decision on what logic needs to be executed when to execute that logic (preorder, inorder, postorder)
 * If the problem relates to the subtree, then the logic is probably located in the postorder location and the method signature probably has a return value and some other parameters except for the `TreeNode root`
 
-### DFS
+### :bulb:DFS
 
-### Preorder
+### :bulb:Preorder
 
 ### Q116. [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
 
@@ -2900,7 +2900,7 @@
   }
   ```
 
-### Postorder
+### :bulb:Postorder
 
 ### :heart:Q104. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
@@ -3050,9 +3050,42 @@
   }
   ```
 
-### Combination of Different Orders
+### :bulb:Combination of Different Orders
 
-### Q437. [Path Sum III](https://leetcode.com/problems/path-sum-iii/)
+### Q654. [Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)
+
+* ```java
+  class Solution {
+      public TreeNode constructMaximumBinaryTree(int[] nums) {
+          return _construct(nums, 0, nums.length);
+      }
+  
+      private TreeNode _construct(int[] nums, int left, int right) {
+          if (left >= right)
+              return null;
+          int maxIndex = findMaxIndex(nums, left, right);
+          TreeNode leftNode = _construct(nums, left, maxIndex);
+          TreeNode rightNode = _construct(nums, maxIndex + 1, right);
+          TreeNode parent = new TreeNode(nums[maxIndex], leftNode, rightNode);
+          return parent;
+      }
+  
+      private int findMaxIndex(int[] nums, int left, int right) {
+          int max = nums[left], index = left;
+          for (int i = left; i < right; i++) {
+              if (nums[i] > max) {
+                  max = nums[i];
+                  index = i;
+              }
+          }
+          return index;
+      }
+  }
+  ```
+
+
+
+### :star:Q437. [Path Sum III](https://leetcode.com/problems/path-sum-iii/)
 
 * DFS + Prefix sum
 
@@ -3085,13 +3118,15 @@
   }
   ```
 
-
-
-### BFS
+### :bulb:Construction
 
 
 
-### Binary Search Tree
+### :bulb:BFS
+
+
+
+### :bulb:Binary Search Tree
 
 ### Q700. [Search in a Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree/)
 
