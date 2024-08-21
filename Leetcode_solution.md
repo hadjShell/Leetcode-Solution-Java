@@ -3016,6 +3016,40 @@
   }
   ```
 
+### Q652. [Find Duplicate Subtrees](https://leetcode.com/problems/find-duplicate-subtrees/)
+
+* ```java
+  class Solution {
+      public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+          List<TreeNode> res = new ArrayList<>();
+          Map<String, Integer> m = new HashMap<>();
+          traverse(root, res, m);
+          return res;
+      }
+  
+      private StringBuilder traverse(TreeNode root, List<TreeNode> res, Map<String, Integer> m) {
+          StringBuilder cur = new StringBuilder();
+          if (root == null) {
+              cur.append(" ,");
+          }
+          else {
+              StringBuilder left = traverse(root.left, res, m);
+              StringBuilder right = traverse(root.right, res, m);
+              cur.append(root.val);
+              cur.append(",");
+              cur.append(left);
+              cur.append(right);
+              String mid = cur.toString();
+              int freq = m.getOrDefault(mid, 0);
+              if (freq == 1)
+                  res.add(root);
+              m.put(mid, freq + 1);
+          }
+          return cur;
+      }
+  }
+  ```
+
 ### Combination of Different Orders
 
 ### Q437. [Path Sum III](https://leetcode.com/problems/path-sum-iii/)
