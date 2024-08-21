@@ -3172,6 +3172,39 @@
   }
   ```
 
+### Q889. [Construct Binary Tree from Preorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+
+* Cannot ensure there is only one answer
+
+* ```java
+  class Solution {
+      public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+          Map<Integer, Integer> postOrder = new HashMap<>();
+          int size = postorder.length;
+          for (int i = 0; i < size; i++)
+              postOrder.put(postorder[i], i);
+          
+          return _buildTree(preorder, 0, size - 1, postOrder, 0, size - 1);
+      }
+  
+       private TreeNode _buildTree(int[] preorder, int left, int right, Map<Integer, Integer> postOrder, int _left, int _right) {
+          if (left > right)
+              return null;
+          if (left == right)
+              return new TreeNode(preorder[left]);
+          
+         // Here we assume the next one is the root node of the left subtree
+         // However, left subtree can be null, hence the possibility of multiple answers
+         int l = postOrder.get(preorder[left + 1]);
+          TreeNode leftNode = _buildTree(preorder, left + 1, left + l - _left + 1,      
+                                          postOrder, _left, l);
+          TreeNode rightNode = _buildTree(preorder, left + l - _left + 2, right, 
+                                          postOrder, l + 1, _right - 1);
+          return new TreeNode(preorder[left], leftNode, rightNode);
+      }
+  }
+  ```
+
 ### :bulb:BFS
 
 
