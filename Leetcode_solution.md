@@ -3052,39 +3052,6 @@
 
 ### :bulb:Combination of Different Orders
 
-### Q654. [Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)
-
-* ```java
-  class Solution {
-      public TreeNode constructMaximumBinaryTree(int[] nums) {
-          return _construct(nums, 0, nums.length);
-      }
-  
-      private TreeNode _construct(int[] nums, int left, int right) {
-          if (left >= right)
-              return null;
-          int maxIndex = findMaxIndex(nums, left, right);
-          TreeNode leftNode = _construct(nums, left, maxIndex);
-          TreeNode rightNode = _construct(nums, maxIndex + 1, right);
-          TreeNode parent = new TreeNode(nums[maxIndex], leftNode, rightNode);
-          return parent;
-      }
-  
-      private int findMaxIndex(int[] nums, int left, int right) {
-          int max = nums[left], index = left;
-          for (int i = left; i < right; i++) {
-              if (nums[i] > max) {
-                  max = nums[i];
-                  index = i;
-              }
-          }
-          return index;
-      }
-  }
-  ```
-
-
-
 ### :star:Q437. [Path Sum III](https://leetcode.com/problems/path-sum-iii/)
 
 * DFS + Prefix sum
@@ -3119,6 +3086,64 @@
   ```
 
 ### :bulb:Construction
+
+### Q654. [Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)
+
+* ```java
+  class Solution {
+      public TreeNode constructMaximumBinaryTree(int[] nums) {
+          return _construct(nums, 0, nums.length);
+      }
+  
+      private TreeNode _construct(int[] nums, int left, int right) {
+          if (left >= right)
+              return null;
+          int maxIndex = findMaxIndex(nums, left, right);
+          TreeNode leftNode = _construct(nums, left, maxIndex);
+          TreeNode rightNode = _construct(nums, maxIndex + 1, right);
+          TreeNode parent = new TreeNode(nums[maxIndex], leftNode, rightNode);
+          return parent;
+      }
+  
+      private int findMaxIndex(int[] nums, int left, int right) {
+          int max = nums[left], index = left;
+          for (int i = left; i < right; i++) {
+              if (nums[i] > max) {
+                  max = nums[i];
+                  index = i;
+              }
+          }
+          return index;
+      }
+  }
+  ```
+
+### :star:Q105. [Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+
+* ```java 
+  class Solution {
+      public TreeNode buildTree(int[] preorder, int[] inorder) {
+          Map<Integer, Integer> inOrder = new HashMap<>();
+          int size = inorder.length;
+          for (int i = 0; i < size; i++)
+              inOrder.put(inorder[i], i);
+          
+          return _buildTree(preorder, 0, size - 1, inOrder, 0, size - 1);
+      }
+  
+      private TreeNode _buildTree(int[] preorder, int left, int right, Map<Integer, Integer> inOrder, int inLeft, int inRight) {
+          if (left > right)
+              return null;
+          
+          int in = inOrder.get(preorder[left]);
+          TreeNode leftNode = _buildTree(preorder, left + 1, left + in - inLeft,      
+                                          inOrder, inLeft, in - 1);
+          TreeNode rightNode = _buildTree(preorder, left + in - inLeft + 1, right, 
+                                          inOrder, in + 1, inRight);
+          return new TreeNode(preorder[left], leftNode, rightNode);
+      }
+  }
+  ```
 
 
 
