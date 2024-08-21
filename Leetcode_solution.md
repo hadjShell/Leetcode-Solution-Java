@@ -3145,7 +3145,32 @@
   }
   ```
 
+### Q106. [Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
 
+* ```java
+  class Solution {
+      public TreeNode buildTree(int[] inorder, int[] postorder) {
+          Map<Integer, Integer> inOrder = new HashMap<>();
+          int size = inorder.length;
+          for (int i = 0; i < size; i++)
+              inOrder.put(inorder[i], i);
+          
+          return _buildTree(postorder, 0, size - 1, inOrder, 0, size - 1);
+      }
+  
+      private TreeNode _buildTree(int[] postorder, int left, int right, Map<Integer, Integer> inOrder, int inLeft, int inRight) {
+          if (left > right)
+              return null;
+          
+          int in = inOrder.get(postorder[right]);
+          TreeNode leftNode = _buildTree(postorder, left, left + in - inLeft - 1,      
+                                          inOrder, inLeft, in - 1);
+          TreeNode rightNode = _buildTree(postorder, left + in - inLeft, right - 1, 
+                                          inOrder, in + 1, inRight);
+          return new TreeNode(postorder[right], leftNode, rightNode);
+      }
+  }
+  ```
 
 ### :bulb:BFS
 
