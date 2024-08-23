@@ -3132,6 +3132,75 @@
   }
   ```
 
+### Q1644. [Lowest Common Ancestor of a Binary Tree ii](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/)
+
+* ```java
+  class Solution {
+    	private int count = 0;
+    
+    	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        	TreeNode lca = dfs(root, p, q);
+        	return count == 2 ? lca : null;
+      }  
+    
+    	private TreeNode dfs(TreeNode root, TreeNode p, TreeNode q) {
+          if (root == null)
+              return null;
+  
+          if (root == p || root == q) {
+            	count++;
+            	return root;
+          }
+          TreeNode left = dfs(root.left, p, q);
+          TreeNode right = dfs(root.right, p, q);
+          if (left != null && right != null)
+              return root;
+          return left == null ? right : left;
+      }
+  }
+  ```
+
+### Q1650. [Lowest Common Ancestor of a Binary Tree iii](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/)
+
+* Same question as Q160. Intersection of two linked list
+
+* ```java
+  class Solution {
+      public TreeNode lowestCommonAncestor(Node p, Node q) {
+          Node a = p, b = q;
+        	while (a != b) {
+            	a = a == null ? q : a.parent;
+            	b = b == null ? p : b.parent
+          }
+        	return a;
+      }
+  }
+  ```
+
+### Q1676. [Lowest Common Ancestor of a Binary Tree iv](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iv/)
+
+* ```java
+  class Solution {
+    	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode[] nodes) {
+        	Set<TreeNode> s = new HashSet<>(Arrays.asList(nodes));
+        	return dfs(root, s);
+      }
+    
+      public TreeNode dfs(TreeNode root, Set<TreeNode> nodes) {
+          if (root == null)
+              return null;
+  
+          if (nodes.contains(root))
+              return root;
+          TreeNode left = dfs(root.left, nodes);
+          TreeNode right = dfs(root.right, nodes);
+          if (left != null && right != null)
+              return root;
+          return left == null ? right : left;
+      }
+  }
+  ```
+
 ### :bulb:Construction
 
 ### Q654. [Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)
@@ -3263,7 +3332,7 @@
   * 如果你给出的是前序或者后序，那么你可以还原出唯一的一棵二叉树。
   * 如果你给出的是中序，那么你无法还原出唯一的一棵二叉树。
 
-### Q297. [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
+### :star:Q297. [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
 
 * ```java
   public class Codec {
