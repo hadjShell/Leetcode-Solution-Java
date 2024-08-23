@@ -3205,6 +3205,58 @@
   }
   ```
 
+### :bulb:Serialisation
+
+* If a binary tree has nodes of distinct value,
+* 如果你的序列化结果中**不包含空指针的信息**，且你只给出**一种**遍历顺序，那么你无法还原出唯一的一棵二叉树。
+* 如果你的序列化结果中**不包含空指针的信息**，且你会给出**两种**遍历顺序，分两种情况：
+  * 如果你给出的是前序和中序，或者后序和中序，那么你可以还原出唯一的一棵二叉树。
+  * 如果你给出前序和后序，那么你无法还原出唯一的一棵二叉树。
+* 如果你的序列化结果中**包含空指针的信息**，且你只给出**一种**遍历顺序，也要分两种情况：
+  * 如果你给出的是前序或者后序，那么你可以还原出唯一的一棵二叉树。
+  * 如果你给出的是中序，那么你无法还原出唯一的一棵二叉树。
+
+### Q297. [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
+
+* ```java
+  public class Codec {
+      // Encodes a tree to a single string.
+      public String serialize(TreeNode root) {
+          StringBuilder sb = new StringBuilder();
+          _serialize(root, sb);
+          System.out.println(sb.toString());
+          return sb.toString();
+      }
+  
+      // Decodes your encoded data to tree.
+      public TreeNode deserialize(String data) {
+          String[] arr = data.split(",");
+          Deque<String> preorder = new ArrayDeque<>(Arrays.asList(arr));
+          return _deserialize(preorder);
+      }
+  
+      private void _serialize(TreeNode root, StringBuilder sb) {
+          if (root == null) {
+              sb.append("#,");
+              return;
+          }
+          sb.append(root.val).append(',');
+          _serialize(root.left, sb);
+          _serialize(root.right, sb);
+      }
+  
+      private TreeNode _deserialize(Deque<String> preorder) {
+          String s = preorder.removeFirst();
+          if (s.equals("#"))       
+              return null;
+          TreeNode root = new TreeNode(Integer.parseInt(s));
+          root.left = _deserialize(preorder);
+          root.right = _deserialize(preorder);
+          return root;
+      }
+  }
+  ```
+
 ### :bulb:BFS
 
 
