@@ -2815,10 +2815,10 @@
 
 ## Binary Tree
 
+### :bulb:DFS
+
 * Binary tree is all about making decision on what logic needs to be executed when to execute that logic (preorder, inorder, postorder)
 * If the problem relates to the subtree, then the logic is probably located in the postorder location and the method signature probably has a return value and some other parameters except for the `TreeNode root`
-
-### :bulb:DFS
 
 ### :bulb:Preorder
 
@@ -3081,6 +3081,34 @@
           _pathSum(root.right, newPathSum, targetSum, preSum);
         
           preSum.put(newPathSum, preSum.get(newPathSum) - 1);
+      }
+  }
+  ```
+
+### :star:Q1372. [Longest ZigZag Path in a Binary Tree](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
+
+* ```java
+  class Solution {
+      private int longestPath = 0;
+  
+      public int longestZigZag(TreeNode root) {
+          _longestZigZag(root, true, 0);
+          _longestZigZag(root, false, 0);
+          return longestPath;
+      }
+  
+      public void _longestZigZag(TreeNode root, boolean isLeft, int steps) {
+          if (root == null)
+              return;
+          longestPath = Math.max(longestPath, steps);
+          if (isLeft) {
+              _longestZigZag(root.left, false, steps + 1);
+              _longestZigZag(root.left, true, 0);
+          }    
+          else {
+              _longestZigZag(root.right, true, steps + 1);
+              _longestZigZag(root.right, false, 0);
+          }
       }
   }
   ```
