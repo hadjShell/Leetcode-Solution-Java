@@ -311,7 +311,7 @@
 
 * Etc.
 
-### Fast and slow
+### :bulb:Fast and slow
 
 ### Q141. [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
 
@@ -425,7 +425,7 @@
 
 ***
 
-### Left and right
+### :bulb:Left and right
 
 ### :star:Q11. [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
 
@@ -499,7 +499,7 @@
 
 ***
 
-### Sliding window
+### :bulb:Sliding window
 
 * When to increase the window
 * When to shrink the window
@@ -935,7 +935,7 @@
 
 ***
 
-### Others
+### :bulb:Others
 
 ### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
 
@@ -1304,7 +1304,7 @@
 
 ***
 
-### nSUM
+### :bulb:nSUM
 
 ### Q1. [Two Sum](https://leetcode.com/problems/two-sum/)
 
@@ -1331,7 +1331,7 @@
 
 ## Stack
 
-### Basic push and pop
+### :bulb:Basic push and pop
 
 ### :star:Q71. [Simplify Path](https://leetcode.com/problems/simplify-path/)
 
@@ -1695,7 +1695,7 @@
 
 ***
 
-### Valid parentheses
+### :bulb:Valid parentheses
 
 ### Q20. [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
 
@@ -1783,7 +1783,7 @@
 
 ***
 
-### Encoding & Decoding
+### :bulb:Encoding & Decoding
 
 ### :star:Q394.  [Decode String](https://leetcode.com/problems/decode-string/)
 
@@ -1846,7 +1846,7 @@
   }
   ```
 
-### :white_check_mark: Monotonic Stack
+### :bulb: Monotonic Stack
 
 * Leverage stack to maintain a monotonically increasing or decreasing list
 * Next greater value or Last smaller value problem
@@ -2368,7 +2368,7 @@
 
 ***
 
-### With Hashtable
+### :bulb:With Hashtable
 
 ### :star:Q525. [Contiguous Array](https://leetcode.com/problems/contiguous-array/)
 
@@ -3115,6 +3115,8 @@
 
 ### :heart:Q236. [Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
 
+* The basic idea is to find a node in a binary tree
+
 * ```java
   class Solution {
       public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
@@ -3511,6 +3513,55 @@
           
           return _isValidBST(root.left, min, root) && 
                   _isValidBST(root.right, root, max);
+      }
+  }
+  ```
+
+### Q230. [Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
+
+* ```java
+  class Solution {
+      public int kthSmallest(TreeNode root, int k) {
+          int[] res = new int[2];
+          res[0] = k;
+          dfs(root, res);
+          return res[1];
+      }
+  
+      private void dfs(TreeNode root, int[] res) {
+          if (root == null)
+              return;
+          dfs(root.left, res);
+          if (res[0] == 0)
+              return;
+          res[0]--;
+          res[1] = root.val;
+          dfs(root.right, res);
+      }
+  }
+  ```
+
+* Follow up solution
+
+  * Every `TreeNode` maintain another information `size` which store the size of current subtree whose root node is current node
+
+### Q538. [Convert BST to Greater Tree](https://leetcode.com/problems/convert-bst-to-greater-tree/)
+
+* ```java
+  class Solution {
+      public TreeNode convertBST(TreeNode root) {
+          int[] sum = new int[1];
+          dfs(root, sum);
+          return root;
+      }
+  
+      private void dfs(TreeNode root, int[] sum) {
+          if (root == null)
+              return;
+          dfs(root.right, sum);
+          sum[0] += root.val;
+          root.val = sum[0];
+          dfs(root.left, sum);
       }
   }
   ```
@@ -4243,48 +4294,6 @@ public ListNode deleteDuplicates(ListNode head) {
     }
 
     return head;
-}
-```
-
-***
-
-## Question 88
-
-*Merge Sorted Array*
-
-### Description
-
-You are given two integer arrays `nums1` and `nums2`, sorted in **non-decreasing order**, and two integers `m` and `n`, representing the number of elements in `nums1` and `nums2` respectively.
-
-**Merge** `nums1` and `nums2` into a single array sorted in **non-decreasing order**.
-
-The final sorted array should not be returned by the function, but instead be *stored inside the array* `nums1`. To accommodate this, `nums1` has a length of `m + n`, where the first `m` elements denote the elements that should be merged, and the last `n` elements are set to `0` and should be ignored. `nums2` has a length of `n`.
-
-### Example
-
-```markdown
-Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
-Output: [1,2,2,3,5,6]
-Explanation: The arrays we are merging are [1,2,3] and [2,5,6].
-The result of the merge is [1,2,2,3,5,6] with the underlined elements coming from nums1.
-```
-
-### Solution
-
-* Two pointers
-
-```java
-public void merge(int[] nums1, int m, int[] nums2, int n) {
-    int i = m - 1, j = n - 1;
-    while(i > -1 && j > -1) {
-        nums1[i + j + 1] = (nums2[j] >= nums1[i]) ? nums2[j--] : nums1[i--];
-    }
-    if(i == -1) {
-        while(j > -1) {
-            nums1[j] = nums2[j];
-            j--;
-        }
-    }
 }
 ```
 
