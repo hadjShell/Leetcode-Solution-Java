@@ -1,6 +1,4 @@
-# Leetcode Solution
-
-## Array
+# Array
 
 ### :star:Q605. [Can Place Flowers](https://leetcode.com/problems/can-place-flowers/)
 
@@ -181,11 +179,7 @@
   }
   ```
 
-* 
-
-***
-
-## Linked List
+# Linked List
 
 * Tricks
   * Two pointers
@@ -222,9 +216,7 @@
   }
   ```
 
-***
-
-## String
+# String
 
 ### Q224. [Basic Calculator](https://leetcode.com/problems/basic-calculator/)
 
@@ -295,9 +287,7 @@
   }
   ```
 
-***
-
-## Two Pointers
+# Two Pointers
 
 * Fast and slow pointers
   * Find middle element
@@ -309,9 +299,10 @@
 * Sliding window
   * Subarray, Substring problem
 
-* Etc.
+* Etc
 
-### :bulb:Fast and slow
+
+## :bulb:Fast and slow
 
 ### Q141. [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
 
@@ -425,7 +416,7 @@
 
 ***
 
-### :bulb:Left and right
+## :bulb:Left and right
 
 ### :star:Q11. [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
 
@@ -499,7 +490,7 @@
 
 ***
 
-### :bulb:Sliding window
+## :bulb:Sliding window
 
 * When to increase the window
 * When to shrink the window
@@ -931,11 +922,9 @@
   }
   ```
 
-
-
 ***
 
-### :bulb:Others
+## :bulb:O​thers
 
 ### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
 
@@ -1304,7 +1293,7 @@
 
 ***
 
-### :bulb:nSUM
+## :bulb:nSUM
 
 ### Q1. [Two Sum](https://leetcode.com/problems/two-sum/)
 
@@ -1325,13 +1314,9 @@
   }
   ```
 
+# Stack
 
-
-***
-
-## Stack
-
-### :bulb:Basic push and pop
+## :bulb:Basic push and pop
 
 ### :star:Q71. [Simplify Path](https://leetcode.com/problems/simplify-path/)
 
@@ -1695,7 +1680,7 @@
 
 ***
 
-### :bulb:Valid parentheses
+## :bulb:Valid parentheses
 
 ### Q20. [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
 
@@ -1783,7 +1768,7 @@
 
 ***
 
-### :bulb:Encoding & Decoding
+## :bulb:Encoding & Decoding
 
 ### :star:Q394.  [Decode String](https://leetcode.com/problems/decode-string/)
 
@@ -1846,7 +1831,9 @@
   }
   ```
 
-### :bulb: Monotonic Stack
+***
+
+## :bulb: Monotonic Stack
 
 * Leverage stack to maintain a monotonically increasing or decreasing list
 * Next greater value or Last smaller value problem
@@ -2045,9 +2032,7 @@
   }
   ```
 
-***
-
-## Queue
+# Queue
 
 ### Q933. [Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)
 
@@ -2069,11 +2054,7 @@
   }
   ```
 
-
-
-***
-
-## HashTable
+# HashTable
 
 * If the values of key are limited, array instead of hash table can be used to increase the performance
 
@@ -2221,9 +2202,7 @@
   }
   ```
 
-***
-
-## :white_check_mark: Prefix Sum
+# Prefix Sum
 
 * Used for rapidly, frequently getting the sum of a subarray
 * Add a empty slot to normalise the loop
@@ -2492,9 +2471,7 @@
   }
   ```
 
-***
-
-## Binary Search
+# Binary Search
 
 * **Locate the section on which you want to search based on the situation**
 * Change the **base case or recursive case logic** of a normal binary search
@@ -2811,11 +2788,9 @@
   }
   ```
 
-***
+# Binary Tree
 
-## Binary Tree
-
-### :bulb:DFS
+## :bulb:DFS
 
 * Binary tree is all about making decision on what logic needs to be executed when to execute that logic (preorder, inorder, postorder)
 * If the problem relates to the subtree, then the logic is probably located in the postorder location and the method signature probably has a return value and some other parameters except for the `TreeNode root`
@@ -3479,11 +3454,39 @@
   }
   ```
 
-### :bulb:BFS
+## :bulb:BFS
+
+### Q111. [Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
+
+* ```java
+  class Solution {
+      public int minDepth(TreeNode root) {
+          if (root == null)
+              return 0;
+          Deque<TreeNode> q = new ArrayDeque<>();
+          int depth = 1;
+          q.offer(root);
+          while (!q.isEmpty()) {
+              int size = q.size();
+              for (int i = 0; i < size; i++) {
+                  TreeNode n = q.poll();
+                  if (n.left == null && n.right == null)
+                      return depth;
+                  if (n.left != null)
+                      q.offer(n.left);
+                  if (n.right != null)
+                      q.offer(n.right);
+              }
+              depth++;
+          }
+          return depth;
+      }
+  }
+  ```
 
 
 
-### :bulb:Binary Search Tree
+## :bulb:Binary Search Tree
 
 ### Q700. [Search in a Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree/)
 
@@ -3728,9 +3731,7 @@
   }
   ```
 
-***
-
-## Recursion
+# Recursion
 
 ### :star:Q880. [Decoded String at Index](https://leetcode.com/problems/decoded-string-at-index/)
 
@@ -3774,17 +3775,11 @@
 
 * 
 
-***
-
-## Dynamic Programming
+# Dynamic Programming
 
 ### Q1823. [Find the Winner of the Circular Game](https://leetcode.com/problems/find-the-winner-of-the-circular-game/)
 
-
-
-***
-
-## Greedy Algorithm
+# Greedy Algorithm
 
 ### Q1717. [Maximum Score From Removing Substrings](https://leetcode.com/problems/maximum-score-from-removing-substrings/)
 
