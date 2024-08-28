@@ -2900,6 +2900,37 @@
   }
   ```
 
+### :star:Q222. [Count Complete Tree Nodes](https://leetcode.com/problems/count-complete-tree-nodes/)
+
+* A complete tree consist of a full subtree and another complete subtree
+* `O(LogN * logN)`
+
+* ```java
+  class Solution {
+      public int countNodes(TreeNode root) {
+          if (root == null)
+              return 0;
+          
+          TreeNode left = root.left, right = root.right;
+          int hl = 0, hr = 0;
+          while (left != null) {
+              left = left.left;
+              hl++;
+          }
+          while (right != null) {
+              right = right.right;
+              hr++;
+          }
+          if (hl == hr) {
+              return (int) Math.pow(2, hl + 1) - 1;
+          }
+          else {
+              return 1 + countNodes(root.left) + countNodes(root.right);
+          }
+      }
+  }
+  ```
+
 ### :bulb:Postorder
 
 ### :heart:Q104. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
