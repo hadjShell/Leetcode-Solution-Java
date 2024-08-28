@@ -3454,6 +3454,8 @@
   }
   ```
 
+***
+
 ## :bulb:BFS
 
 ### Q111. [Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
@@ -3856,6 +3858,68 @@
   ```
 
 * 
+
+# Backtracking
+
+* Brute-force approach
+
+* There are multiple solutions and you want all of them
+
+* DFS a solution tree (state space tree), every leaf node stores a legal or illegal solution, collect all of them with the help of bounding function (examine the solution legal or not)
+
+* For each node, considerring
+
+  * Path: the decision already made
+  * Options: the decisions that can be made at the moment
+  * End: reaching the end of a solution tree, no more options that can be chosen
+
+* Framework
+
+  * ```java
+    void backtrack(path, options):
+        if bound(path):
+            result.add(path)
+            return
+        
+        for option in options:
+            make decision
+            backtrack(path, options)
+            revoke decision
+    ```
+
+* Backtracking combines preorder, "inorder", postorder DFS for a non-binary tree
+
+### Q46. [Permutations](https://leetcode.com/problems/permutations/)
+
+* ```java
+  class Solution {
+      public List<List<Integer>> permute(int[] nums) {
+          List<List<Integer>> res = new ArrayList<>();
+          List<Integer> l = new LinkedList<>();
+          boolean[] used = new boolean[nums.length];
+          backtrack(res, nums, used, l);
+          return res;
+      }
+  
+      private void backtrack(List<List<Integer>> res, int[] nums, boolean[] used, List<Integer> l) {
+          if (l.size() == nums.length) {
+              res.add(new LinkedList<>(l));
+              return;
+          }
+          for (int i = 0; i < nums.length; i++) {
+              if (used[i] == true)
+                  continue;
+              l.add(nums[i]);
+              used[i] = true;
+              backtrack(res, nums, used, l);
+              l.removeLast();
+              used[i] = false;
+          }
+      }
+  }
+  ```
+
+### Q
 
 # Dynamic Programming
 
