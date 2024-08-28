@@ -48,7 +48,7 @@
   }
   ```
 
-### 2D Array
+## :bulb:2D Array
 
 ### Q48. [Rotate Image](https://leetcode.com/problems/rotate-image/)
 
@@ -2347,7 +2347,7 @@
 
 ***
 
-### :bulb:With Hashtable
+## :bulb:With Hashtable
 
 ### :star:Q525. [Contiguous Array](https://leetcode.com/problems/contiguous-array/)
 
@@ -3480,6 +3480,58 @@
               depth++;
           }
           return depth;
+      }
+  }
+  ```
+
+### Q199. [Binary Tree Right Side View](https://leetcode.com/problems/binary-tree-right-side-view/)
+
+* ```java
+  class Solution {
+      public List<Integer> rightSideView(TreeNode root) {
+          List<Integer> l = new ArrayList<>();
+          if (root == null)
+              return l;
+          Deque<TreeNode> q = new ArrayDeque<>();
+          q.offer(root);
+          while (!q.isEmpty()) {
+              int size = q.size();
+              TreeNode n = null;
+              for (int i = 0; i < size; i++) {
+                  n = q.poll();
+                  if (n.left != null)
+                      q.offer(n.left);
+                  if (n.right != null)
+                      q.offer(n.right);
+              }
+              l.add(n.val);
+          }
+          return l;
+      }
+  }
+  ```
+
+* Or DFS preorder approach
+
+* ```java
+  class Solution {
+      int maxlevel = 0;
+      public List<Integer> rightSideView(TreeNode root) {
+          List<Integer> list  = new ArrayList<>();
+          right(root,1,list);
+          return list ;
+      }
+      void right(TreeNode root,int level,List<Integer> list){
+          if(root==null){
+              return ;
+          }
+          if(maxlevel<level){
+              list.add(root.val);
+              maxlevel=level;
+          }
+          right(root.right,level+1,list);
+          right(root.left,level+1,list);
+          
       }
   }
   ```
