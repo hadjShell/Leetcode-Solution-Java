@@ -3203,6 +3203,79 @@
   }
   ```
 
+### :star:Q1373. [Maximum Sum BST in Binary Tree](https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/)
+
+* ```java
+  class Solution {
+      private int sum = 0;
+  
+      public int maxSumBST(TreeNode root) {
+          dfs(root);
+          return sum;
+      }
+  
+      private Node dfs(TreeNode root) {
+          if (root == null)
+              return new Node(true, null, null, 0);
+          Node leftNode = dfs(root.left);
+          Node rightNode = dfs(root.right);
+          Node res = null;
+          if (leftNode.isBST && rightNode.isBST) {
+              TreeNode leftMax = leftNode.max, rightMin = rightNode.min;
+              if (leftMax == null && rightMin == null) {
+                  res = new Node(true, root, root, root.val);
+              }
+              else if (leftMax == null) {
+                  if (root.val >= rightMin.val)
+                      res = new Node(false);
+                  else
+                      res = new Node(true, root, rightNode.max, 
+                                      root.val + rightNode.sum);
+              }
+              else if (rightMin == null) {
+                  if (root.val <= leftMax.val)
+                      res = new Node(false);
+                  else
+                      res = new Node(true, leftNode.min, root, 
+                                      root.val + leftNode.sum);
+              }
+              else {
+                  if (root.val <= leftMax.val || root.val >= rightMin.val)
+                      res = new Node(false);
+                  else
+                      res = new Node(true, leftNode.min, rightNode.max, 
+                                      root.val + leftNode.sum + rightNode.sum);
+              }
+          }
+          else
+              res = new Node(false);
+  
+          if (res.isBST) {
+              sum = Math.max(sum, res.sum);
+          }
+          return res;
+      }
+  
+      private class Node {
+          boolean isBST;
+          TreeNode min;
+          TreeNode max;
+          int sum;
+  
+          public Node() {}
+          public Node(boolean isBST) {
+              this.isBST = isBST;
+          }
+          public Node(boolean isBST, TreeNode min, TreeNode max, int sum) {
+              this.isBST = isBST;
+              this.max = max;
+              this.min = min;
+              this.sum = sum;
+          }
+      }
+  }
+  ```
+
 ### :bulb:Construction
 
 ### Q654. [Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)
