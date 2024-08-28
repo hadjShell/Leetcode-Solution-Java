@@ -3536,7 +3536,37 @@
   }
   ```
 
+### Q1161. [Maximum Level Sum of a Binary Tree](https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree/)
 
+* ```java
+  class Solution {
+      public int maxLevelSum(TreeNode root) {
+          Deque<TreeNode> q = new ArrayDeque<>();
+          int depth = 1, maxSum = Integer.MIN_VALUE, res = 1;
+          q.offer(root);
+          while (!q.isEmpty()) {
+              int size = q.size();
+              int sum = 0;
+              for (int i = 0; i < size; i++) {
+                  TreeNode n = q.poll();
+                  sum += n.val;
+                  if (n.left != null)
+                      q.offer(n.left);
+                  if (n.right != null)
+                      q.offer(n.right);
+              }
+              if (maxSum < sum) {
+                  maxSum = sum;
+                  res = depth;
+              }
+              depth++;
+          }
+          return res;
+      }
+  }
+  ```
+
+***
 
 ## :bulb:Binary Search Tree
 
