@@ -496,6 +496,22 @@
 * When to shrink the window
 * How to update the result (what is the operation when window size changes)
 * Find the qualified subarray
+* Framework
+
+  * ```java
+    int left = 0, right = 0;
+    
+    while (right < nums.size()) {
+        window.addLast(nums[right]);
+        right++;
+        
+        while (window needs shrink) {
+            window.removeFirst(nums[left]);
+            left++;
+        }
+    }
+    ```
+
 
 ### :star:Q3. [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
