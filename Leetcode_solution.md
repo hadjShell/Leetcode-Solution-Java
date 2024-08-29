@@ -3873,7 +3873,44 @@
   }
   ```
 
-* 
+
+### :star:Q395. [Longest Substring with At Least K Repeating Characters](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/)
+
+* ```java
+  class Solution {
+      public int longestSubstring(String s, int k) {
+          char[] c = s.toCharArray();
+          return _longestSubstring(c, k, 0, c.length);
+      }
+  
+      private int _longestSubstring(char[] c, int k, int l, int r) {
+          if (r - l < k)
+              return 0;
+          int[] freq = new int[26];
+          for (int i = l; i < r; i++) 
+              freq[c[i] - 'a']++;
+          
+          boolean flag = true;
+          for (int i = 0; i < 26; i++) {
+              if (freq[i] > 0 && freq[i] < k) flag = false;
+          }
+          if (flag == true) 
+              return r - l;
+          
+          int ans = 0, start = 0;
+          for (int i = l; i < r; i++) {
+              if (freq[c[i] - 'a'] < k) {
+                  ans = Math.max(_longestSubstring(c, k, start, i), ans);
+                  start = i + 1;
+              }
+          }
+          ans = Math.max(_longestSubstring(c, k, start, r), ans);
+          return ans;
+      }
+  }
+  ```
+
+
 
 # Backtracking
 
