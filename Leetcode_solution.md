@@ -3957,7 +3957,7 @@
   class Solution {
       public List<List<Integer>> permute(int[] nums) {
           List<List<Integer>> res = new ArrayList<>();
-          List<Integer> l = new LinkedList<>();
+          List<Integer> l = new ArrayList<>();
           boolean[] used = new boolean[nums.length];
           backtrack(res, nums, used, l);
           return res;
@@ -3965,7 +3965,7 @@
   
       private void backtrack(List<List<Integer>> res, int[] nums, boolean[] used, List<Integer> l) {
           if (l.size() == nums.length) {
-              res.add(new LinkedList<>(l));
+              res.add(new ArrayList<>(l));
               return;
           }
           for (int i = 0; i < nums.length; i++) {
@@ -3987,13 +3987,13 @@
   class Solution {
       public List<List<Integer>> subsets(int[] nums) {
           List<List<Integer>> res = new ArrayList<>();
-          List<Integer> track = new LinkedList<>();
+          List<Integer> track = new ArrayList<>();
           backtrack(nums, res, 0, track);
           return res;
       }
   
       private void backtrack(int[] nums, List<List<Integer>> res, int start, List<Integer> track) {
-          res.add(new LinkedList<>(track));
+          res.add(new ArrayList<>(track));
           for (int i = start; i < nums.length; i++) {
               track.add(nums[i]);
               backtrack(nums, res, i + 1, track);
@@ -4003,7 +4003,34 @@
   }
   ```
 
-* 
+### Q77. [Combinations](https://leetcode.com/problems/combinations/)
+
+* Subset problem with restricted base case
+
+* ```java
+  class Solution {
+      public List<List<Integer>> combine(int n, int k) {
+          List<List<Integer>> res = new ArrayList<>();
+          List<Integer> track = new ArrayList<>();
+          backtrack(res, track, n, k, 1);
+          return res;
+      }
+  
+      private void backtrack(List<List<Integer>> res, List<Integer> track, int n, int k, int start) {
+          if (track.size() == k) {
+              res.add(new ArrayList<>(track));
+              return;
+          }
+          for (int i = start; i <= n; i++) {
+              track.add(i);
+              backtrack(res, track, n, k, i + 1);
+              track.removeLast();
+          }
+      }
+  }
+  ```
+
+
 
 # Dynamic Programming
 
