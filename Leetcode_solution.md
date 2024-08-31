@@ -3942,7 +3942,7 @@
 
 * **Backtracking combines preorder, "inorder", postorder DFS for a non-binary tree**
 
-## :bulb: Combination & Permutation & Subset
+## :bulb: Permutation & Subset and Combination
 
 * Three variations
   * Distinct values, only selected once
@@ -4159,7 +4159,60 @@
   }
   ```
 
+## :bulb: Island Problems
 
+
+
+## :bulb: Sudoku
+
+### Q37. [Sudoku Solver](https://leetcode.com/problems/sudoku-solver/)
+
+* ```java
+  class Solution {
+      private static final int SIZE = 9;
+  
+      public void solveSudoku(char[][] board) {
+          backtrack(board, 0, 0);
+      }
+  
+      public boolean backtrack(char[][] board, int i, int j) {
+          if (j == SIZE) {
+              i++;
+              j = 0;
+          }
+          if (i == SIZE)
+              return true;
+          if (board[i][j] != '.') {
+              return backtrack(board, i, j + 1);
+          }
+          for (char c = '1'; c <= '9'; c++) {
+              if (!isValid(board, i, j, c))
+                  continue;
+              board[i][j] = c;
+              if (backtrack(board, i, j + 1) == true)
+                  return true;
+              board[i][j] = '.';
+          }
+          return false;
+      }
+  
+      private boolean isValid(char[][] board, int i, int j, char c) {
+          for (int k = 0; k < SIZE; k++) {
+              if (board[i][k] == c)
+                  return false;
+              if (board[k][j] == c)
+                  return false;
+          }
+          int p = ((int) i / 3) * 3, q = ((int) j / 3) * 3;
+          for (int a = p; a < p + 3; a++)
+              for (int b = q; b < q + 3; b++) {
+                  if (board[a][b] == c)
+                      return false;
+              }
+          return true;
+      }
+  }
+  ```
 
 # Dynamic Programming
 
