@@ -4030,6 +4030,8 @@
   }
   ```
 
+### :bulb: Second Viriation
+
 ### Q90. [Subsets II](https://leetcode.com/problems/subsets-ii/)
 
 * ```java
@@ -4050,6 +4052,37 @@
                   continue;
               track.add(nums[i]);
               backtrack(nums, res, i + 1, track);
+              track.removeLast();
+          }
+      }
+  }
+  ```
+
+### Q40. [Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)
+
+* ```java
+  class Solution {
+      public List<List<Integer>> combinationSum2(int[] nums, int target) {
+          List<List<Integer>> res = new ArrayList<>();
+          List<Integer> track = new ArrayList<>();
+        	Arrays.sort(nums);
+          backtrack(nums, res, 0, track, 0, target);
+          return res;
+      }
+  
+      private void backtrack(int[] nums, List<List<Integer>> res, int start, List<Integer> track, int sum, int target) {
+          if (sum == target) {
+              res.add(new ArrayList<>(track));
+              return;
+          }
+          if (sum > target)
+              return;
+          for (int i = start; i < nums.length; i++) {
+              if (i > start && nums[i] == nums[i - 1])
+                  continue;
+              if (nums[i] > target) break;
+              track.add(nums[i]);
+              backtrack(nums, res, i + 1, track, sum + nums[i], target);
               track.removeLast();
           }
       }
