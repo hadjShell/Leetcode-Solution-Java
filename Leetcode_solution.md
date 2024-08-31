@@ -4032,6 +4032,8 @@
 
 ### :bulb: Second Viriation
 
+* Need to sort the array first
+
 ### Q90. [Subsets II](https://leetcode.com/problems/subsets-ii/)
 
 * ```java
@@ -4039,7 +4041,6 @@
       public List<List<Integer>> subsetsWithDup(int[] nums) {
           List<List<Integer>> res = new ArrayList<>();
           List<Integer> track = new ArrayList<>();
-          // need to sort the array first
         	Arrays.sort(nums);
           backtrack(nums, res, 0, track);
           return res;
@@ -4089,7 +4090,42 @@
   }
   ```
 
-* 
+### Q47. [Permutations II](https://leetcode.com/problems/permutations-ii/)
+
+* ```java
+  class Solution {
+      public List<List<Integer>> permuteUnique(int[] nums) {
+          List<List<Integer>> res = new ArrayList<>();
+          List<Integer> track = new ArrayList<>();
+          boolean[] used = new boolean[nums.length];
+          Arrays.sort(nums);
+          backtrack(res, nums, used, track);
+          return res;
+      }
+  
+       private void backtrack(List<List<Integer>> res, int[] nums, boolean[] used, List<Integer> track) {
+          if (track.size() == nums.length) {
+              res.add(new ArrayList<>(track));
+              return;
+          }
+          int selected = -11;
+          for (int i = 0; i < nums.length; i++) {
+              if (used[i] == true || nums[i] == selected)
+                  continue;
+              selected = nums[i];
+              track.add(nums[i]);
+              used[i] = true;
+              backtrack(res, nums, used, track);
+              track.removeLast();
+              used[i] = false;
+          }
+      }
+  }
+  ```
+
+### :bulb: Third Viriation
+
+### Q39. 
 
 # Dynamic Programming
 
