@@ -4125,7 +4125,41 @@
 
 ### :bulb: Third Viriation
 
-### Q39. 
+### Q39. [Combination Sum](https://leetcode.com/problems/combination-sum/)
+
+* ```java
+  class Solution {
+      public List<List<Integer>> combinationSum(int[] nums, int target) {
+          List<List<Integer>> res = new ArrayList<>();
+          List<Integer> track = new ArrayList<>();
+        	Arrays.sort(nums);
+          backtrack(nums, res, nums.length - 1, track, 0, target);
+          return res;
+      }
+  
+      private void backtrack(int[] nums, List<List<Integer>> res, int start, List<Integer> track, int sum, int target) {
+          if (sum == target) {
+              res.add(new ArrayList<>(track));
+              return;
+          }
+          if (sum > target)
+              return;
+          for (int i = start; i >= 0; i--) {
+              if (nums[i] > target) continue;
+              track.add(nums[i]);
+              if (target - sum < nums[i]) {
+                  backtrack(nums, res, i - 1, track, sum + nums[i], target);
+              }
+              else {
+                  backtrack(nums, res, i, track, sum + nums[i], target);
+              }
+              track.removeLast();
+          }
+      }
+  }
+  ```
+
+
 
 # Dynamic Programming
 
