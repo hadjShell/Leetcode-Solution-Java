@@ -3940,7 +3940,16 @@
             revoke decision
     ```
 
-* Backtracking combines preorder, "inorder", postorder DFS for a non-binary tree
+* **Backtracking combines preorder, "inorder", postorder DFS for a non-binary tree**
+
+## :bulb: Combination & Permutation & Subset
+
+* Three variations
+  * Distinct values, only selected once
+  * Dulplicate values, only selected once
+  * Distince values, can be selected more than once
+
+### :bulb: First Viriation
 
 ### Q46. [Permutations](https://leetcode.com/problems/permutations/)
 
@@ -3972,7 +3981,29 @@
   }
   ```
 
-### Q
+### Q78. [Subsets](https://leetcode.com/problems/subsets/)
+
+* ```java
+  class Solution {
+      public List<List<Integer>> subsets(int[] nums) {
+          List<List<Integer>> res = new ArrayList<>();
+          List<Integer> track = new LinkedList<>();
+          backtrack(nums, res, 0, track);
+          return res;
+      }
+  
+      private void backtrack(int[] nums, List<List<Integer>> res, int start, List<Integer> track) {
+          res.add(new LinkedList<>(track));
+          for (int i = start; i < nums.length; i++) {
+              track.add(nums[i]);
+              backtrack(nums, res, i + 1, track);
+              track.removeLast();
+          }
+      }
+  }
+  ```
+
+* 
 
 # Dynamic Programming
 
