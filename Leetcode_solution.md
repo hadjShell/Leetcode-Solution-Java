@@ -48,6 +48,26 @@
   }
   ```
 
+### Q2022. [Convert 1D Array Into 2D Array](https://leetcode.com/problems/convert-1d-array-into-2d-array/)
+
+* ```java
+  class Solution {
+      public int[][] construct2DArray(int[] original, int m, int n) {
+          if (original.length != m * n)
+              return new int[0][0];
+          
+          int k = 0;
+          int[][] res = new int[m][n];
+          for (int i = 0; i < m; i++)
+              for (int j = 0; j < n; j++) {
+                  res[i][j] = original[k];
+                  k++;
+              }
+          return res;
+      }
+  }
+  ```
+
 ## :bulb:2D Array
 
 ### Q48. [Rotate Image](https://leetcode.com/problems/rotate-image/)
