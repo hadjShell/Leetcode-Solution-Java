@@ -48,6 +48,25 @@
   }
   ```
 
+### Q1894. [Find the Student that Will Replace the Chalk](https://leetcode.com/problems/find-the-student-that-will-replace-the-chalk/)
+
+* ```java
+  class Solution {
+      public int chalkReplacer(int[] chalk, int k) {
+          long sum = 0;
+          for (int i = 0; i < chalk.length; i++)
+              sum += chalk[i];
+          long left = (long) k % sum;
+          for (int i = 0; i < chalk.length; i++) {
+              if (left < chalk[i])
+                  return i;
+              left -= chalk[i];
+          }
+          return 0;
+      }
+  }
+  ```
+
 ### Q2022. [Convert 1D Array Into 2D Array](https://leetcode.com/problems/convert-1d-array-into-2d-array/)
 
 * ```java
