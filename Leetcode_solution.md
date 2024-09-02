@@ -4253,6 +4253,40 @@
   }
   ```
 
+## :bulb: Generate Parentheses
+
+### Q22. [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)
+
+* ```java
+  class Solution {
+      public List<String> generateParenthesis(int n) {
+          List<String> res = new ArrayList<>();
+          StringBuilder sb = new StringBuilder();
+          backtrack(sb, res, n, 0, 0);
+          return res;
+      }
+  
+      private void backtrack(StringBuilder sb, List<String> res, int n, int open, int close) {
+          if (close > open)
+              return;
+          if (open > n)
+              return;
+          if (close == n) {
+              res.add(sb.toString());
+              return;
+          }
+          sb.append('(');
+          backtrack(sb, res, n, open + 1, close);
+          sb.setLength(sb.length() - 1);
+          sb.append(')');
+          backtrack(sb, res, n, open, close + 1);
+          sb.setLength(sb.length() - 1);
+      }
+  }
+  ```
+
+
+
 # Dynamic Programming
 
 ### Q1823. [Find the Winner of the Circular Game](https://leetcode.com/problems/find-the-winner-of-the-circular-game/)
