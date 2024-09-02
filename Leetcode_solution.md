@@ -4069,6 +4069,65 @@
   }
   ```
 
+### Q216. [Combination Sum III](https://leetcode.com/problems/combination-sum-iii/)
+
+* ```java
+  class Solution {
+      public List<List<Integer>> combinationSum3(int k, int n) {
+          List<List<Integer>> res = new ArrayList<>();
+          List<Integer> track = new ArrayList<>();
+          backtrack(res, track, k, n, 0, 1);
+          return res;
+      }
+  
+      private void backtrack(List<List<Integer>> res, List<Integer> track, int k, int n, int sum, int start) {
+          if (track.size() > k || sum > n)
+              return;
+          if (track.size() == k && sum == n) {
+              res.add(new ArrayList(track));
+              return;
+          }
+          for (int i = start; i <= 9; i++) {
+              track.add(i);
+              backtrack(res, track, k, n, sum + i, i + 1);
+              track.removeLast();
+          }
+      }
+  }
+  ```
+
+### Q17. [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)
+
+* ```java
+  class Solution {
+      public static final String[] PHONE_MAP = {"", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+  
+  
+      public List<String> letterCombinations(String digits) {
+          List<String> res = new ArrayList<>();
+          StringBuilder sb = new StringBuilder();
+          if (digits.length() == 0)
+              return res;
+          backtrack(res, sb, digits, 0);
+          return res;
+      }
+  
+      private void backtrack(List<String> res, StringBuilder sb, String digits, int index) {
+          if (index == digits.length()) {
+              res.add(sb.toString());
+              return;
+          }
+          char digit = digits.charAt(index);
+          String letters = PHONE_MAP[digit - '1'];
+          for (int i = 0; i < letters.length(); i++) {
+              sb.append(letters.charAt(i));
+              backtrack(res, sb, digits, index + 1);
+              sb.setLength(sb.length() - 1);
+          }
+      }
+  }
+  ```
+
 ### :bulb: Second Viriation
 
 * Need to sort the array first
