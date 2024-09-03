@@ -3896,6 +3896,34 @@
 
 ## :bulb: DFS
 
+### Q797. [All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/)
+
+* ```java
+  class Solution {
+      public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+          List<List<Integer>> res = new ArrayList<>();
+          List<Integer> track = new ArrayList<>();
+          dfs(graph, res, track, 0);
+          return res;
+      }
+  
+      private void dfs(int[][] graph, List<List<Integer>> res, List<Integer> track, int n) {
+          track.add(n);
+          if (n == graph.length - 1) {
+              res.add(new ArrayList(track));
+              track.removeLast();
+              return;
+          }
+          for (int i : graph[n]) {
+              dfs(graph, res, track, i);
+          }
+          track.removeLast();
+      }
+  }
+  ```
+
+
+
 ## :bulb: BFS
 
 
