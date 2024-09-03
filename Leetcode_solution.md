@@ -326,6 +326,28 @@
   }
   ```
 
+### Q1945. [Sum of Digits of String After Convert](https://leetcode.com/problems/sum-of-digits-of-string-after-convert/)
+
+* ```java
+  class Solution {
+      public int getLucky(String s, int k) {
+          StringBuilder sb = new StringBuilder();
+          for (int i = 0; i < s.length(); i++) {
+              sb.append(s.charAt(i) - 'a' + 1);
+          }
+          for (int i = 0; i < k; i++) {
+              int sum = 0;
+              for (int j = 0; j < sb.length(); j++) {
+                  sum += sb.charAt(j) - '0';
+              }
+              sb.setLength(0);
+              sb.append(sum);
+          }
+          return Integer.parseInt(sb.toString());
+      }
+  }
+  ```
+
 # Two Pointers
 
 * Fast and slow pointers
@@ -3870,6 +3892,14 @@
   }
   ```
 
+# Graph
+
+## :bulb: DFS
+
+## :bulb: BFS
+
+
+
 # Recursion
 
 ### :star:Q880. [Decoded String at Index](https://leetcode.com/problems/decoded-string-at-index/)
@@ -3948,8 +3978,6 @@
       }
   }
   ```
-
-
 
 # Backtracking
 
