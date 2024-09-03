@@ -3946,6 +3946,36 @@
   }
   ```
 
+### Q547. [Number of Provinces](https://leetcode.com/problems/number-of-provinces/)
+
+* ```java
+  class Solution {
+      public int findCircleNum(int[][] isConnected) {
+          boolean[] visited = new boolean[isConnected.length];
+          int provinces = 0;
+          for (int i = 0; i < isConnected.length; i++) {
+              if (visited[i] == false) {
+                  dfs(isConnected, i, visited);
+                  provinces++;
+              }
+          }
+          return provinces;
+      }
+  
+      private void dfs(int[][] isConnected, int city, boolean[] visited) {
+          if (visited[city] == true)
+              return;
+          int[] connection = isConnected[city];
+          visited[city] = true;
+          for (int i  = 0; i < connection.length; i++) {
+              if (connection[i] == 0 || visited[i] == true)
+                  continue;
+              dfs(isConnected, i, visited);
+          }
+      }
+  }
+  ```
+
 
 
 ## :bulb: BFS
