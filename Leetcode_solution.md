@@ -2160,6 +2160,75 @@
   }
   ```
 
+### :star: Q874. [Walking Robot Simulation](https://leetcode.com/problems/walking-robot-simulation/)
+
+* How to hash a 2D coordinate: store two integers into one long number
+
+* ```java
+  class Solution {
+      public int robotSim(int[] commands, int[][] obstacles) {
+          Set<Long> obs = new HashSet<>();
+          for (int[] o : obstacles) {
+              obs.add(hashCoordinate(o));
+          }
+          // d[0] = 1 : north, d[0] = -1: south, d[1] = 1: east, d[1] = -1: west
+          int[] direction = new int[2];
+          direction[0] = 1;
+          int[] coordinate = new int[2];
+          int maxDis = 0;
+          for (int c : commands) {
+              if (c >= 1 && c <= 9) {
+                  for (int i = 1; i <= c; i++) {
+                      coordinate[0] += direction[1];
+                      coordinate[1] += direction[0];
+                      if (obs.contains(hashCoordinate(coordinate))) {
+                          coordinate[0] -= direction[1];
+                          coordinate[1] -= direction[0];
+                          break;
+                      }
+                  }
+                  maxDis = Math.max(distance(coordinate), maxDis);
+              }
+              else {
+                  changeDirection(direction, c);
+              }
+          }
+          return maxDis; 
+      }
+  
+      private void changeDirection(int[] direction, int signal) {
+          if (signal == -2) {
+              if (direction[1] == 0) {
+                  direction[1] = -1 * direction[0];
+                  direction[0] = 0;
+              }
+              else {
+                  direction[0] = direction[1];
+                  direction[1] = 0;
+              }
+          }
+          else {
+              if (direction[1] == 0) {
+                  direction[1] = direction[0];
+                  direction[0] = 0;
+              }
+              else {
+                  direction[0] = -1 * direction[1];
+                  direction[1] = 0;
+              }
+          }
+      }
+  
+      private int distance(int[] coordinate) {
+          return coordinate[0] * coordinate[0] + coordinate[1] * coordinate[1];
+      }
+  
+      private long hashCoordinate(int[] c) {
+          return ((long) c[1] << 32) ^ c[0];
+      }
+  }
+  ```
+
 ### Q1207. [Unique Number of Occurrences](https://leetcode.com/problems/unique-number-of-occurrences/)
 
 * ```java
