@@ -4045,7 +4045,9 @@
   }
   ```
 
+### :star:Q1466. [Reorder Routes to Make All Paths Lead to the City Zero](https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/)
 
+* 
 
 ## :bulb: BFS
 
@@ -4583,11 +4585,32 @@
   }
   ```
 
-* 
+# Math
 
+### Q2028. [Find Missing Observations](https://leetcode.com/problems/find-missing-observations/)
 
-
-
+* ```java
+  class Solution {
+      public int[] missingRolls(int[] rolls, int mean, int n) {
+          int nSum = mean * (rolls.length + n);
+          for (int i : rolls) {
+              nSum -= i;
+          }
+          if (nSum > 6 * n || nSum < n) {
+              return new int[0];
+          }
+          int[] res = new int[n];
+          for (int i = 0; i < n; i++) {
+              res[i] = nSum / n;
+          }
+          nSum %= n;
+          for (int i = 0; i < nSum; i++) {
+              res[i]++;
+          }
+          return res;
+      }
+  }
+  ```
 
 ***
 
