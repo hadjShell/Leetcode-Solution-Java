@@ -1368,6 +1368,33 @@
 * Or use a stack
 
 
+### Q3217. [Delete Nodes From Linked List Present in Array](https://leetcode.com/problems/delete-nodes-from-linked-list-present-in-array/)
+
+* ```java
+  class Solution {
+      public ListNode modifiedList(int[] nums, ListNode head) {
+          Set<Integer> s = new HashSet<>();
+          for (int n : nums) {
+              s.add(n);
+          }
+          ListNode dummy = new ListNode(0, head);
+          ListNode n = dummy;
+          while (head != null) {
+              if (s.contains(head.val)) {
+                  head = head.next;
+                  n.next = head;
+              }
+              else {
+                  head = head.next;
+                  n = n.next;
+              }
+          }
+          return dummy.next;
+      }
+  }
+  ```
+
+
 ***
 
 ## :bulb:nSUM
