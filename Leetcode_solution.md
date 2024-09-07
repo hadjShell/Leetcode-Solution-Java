@@ -3455,6 +3455,31 @@
   }
   ```
 
+### :star: Q1367. [Linked List in Binary Tree](https://leetcode.com/problems/linked-list-in-binary-tree/)
+
+* ```java
+  class Solution {
+      public boolean isSubPath(ListNode head, TreeNode root) {
+          if (root == null)
+              return false;
+          if (dfs(head, root) == true)
+              return true;
+          else
+              return isSubPath(head, root.left) || isSubPath(head, root.right);
+      }
+  
+      private boolean dfs(ListNode head, TreeNode root) {
+          if (head == null)
+              return true;
+          else if (root == null)
+              return false;
+          else
+              return head.val == root.val && 
+                      (dfs(head.next, root.left) || dfs(head.next, root.right));
+      }
+  }
+  ```
+
 ### :bulb:Construction
 
 ### Q654. [Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)
