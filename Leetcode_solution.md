@@ -255,6 +255,47 @@
   }
   ```
 
+### Q725. [Split Linked List in Parts](https://leetcode.com/problems/split-linked-list-in-parts/)
+
+* ```java
+  class Solution {
+      public ListNode[] splitListToParts(ListNode head, int k) {
+          int size = 0;
+          ListNode n = head;
+          while (n != null) {
+              n = n.next;
+              size++;
+          }
+          int base = size / k;
+          int remaining = size % k;
+          ListNode[] res = new ListNode[k];
+          int cnt = 0;
+          n = head;
+          for (int i = 0; i < remaining; i++) {
+              res[cnt++] = n;
+              for (int j = 0; j < base; j++) {
+                  n = n.next;
+              }
+              ListNode tmp = n.next;
+              n.next = null;
+              n = tmp;
+          }
+          for (int i = 0; i < k - remaining; i++) {
+              res[cnt++] = n;
+              if (n != null) {
+                  for (int j = 0; j < base - 1; j++) {
+                      n = n.next;
+                  }
+                  ListNode tmp = n.next;
+                  n.next = null;
+                  n = tmp;
+              }
+          }
+          return res;
+      }
+  }
+  ```
+
 # String
 
 ### Q224. [Basic Calculator](https://leetcode.com/problems/basic-calculator/)
