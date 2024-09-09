@@ -4386,9 +4386,7 @@
     void BFS(Node start, Node target) {
         Queue<Node> q;
         Set<Node> visited;
-        
         q.offer(start);
-        visited.add(start);
     
         while (q not empty) {
             int sz = q.size();
@@ -4396,10 +4394,10 @@
                 Node cur = q.poll();
                 if (cur is target)
                     return;
+              	visited.add(start);
                 for (Node x : cur.adj()) {
                     if (x not in visited) {
                         q.offer(x);
-                        visited.add(x);
                     }
                 }
             }
@@ -4551,6 +4549,111 @@
               }
           }
           return res;
+      }
+  }
+  ```
+
+### Q773. [Sliding Puzzle](https://leetcode.com/problems/sliding-puzzle/)
+
+* ```java
+  class Solution {
+      public int slidingPuzzle(int[][] board) {
+          int target = 1193040;
+          int i = 0, j = 0;
+          for (int r = 0; r < board.length; r++) 
+              for(int c = 0; c < board[0].length; c++) {
+                  if (board[r][c] == 0) {
+                      i = r;
+                      j = c;
+                  }
+              }
+  
+          Set<Integer> visited = new HashSet<>();
+          Deque<Board> q = new ArrayDeque<>();
+          int moves = 0;
+          q.offer(new Board(board, i, j));
+  
+          while (!q.isEmpty()) {
+              int size = q.size();
+              for (int k = 0; k < size; k++) {
+                  Board b = q.poll();
+                  int hashValue = b.hash();
+                  if (hashValue == target)
+                      return moves;
+                  visited.add(hashValue);
+                  List<Board> nextMoves = b.nextMoves();
+                  for (Board next : nextMoves) {
+                      if (!visited.contains(next.hash()))
+                          q.offer(next);
+                  }
+              }
+              moves++;
+          }
+  
+          return -1;
+      }
+  
+      private class Board {
+          int[][] board;
+          int i;
+          int j;
+  
+          public Board() {}
+  
+          public Board(int[][] board, int i, int j) {
+              this.board = board;
+              this.i = i;
+              this.j = j;
+          }
+  
+          public int hash() {
+              int res = 0;
+              for (int[] row : board)
+                  for (int c : row) {
+                      res = (res << 4) ^ c;
+                  }
+              return res;
+          }
+  
+          public int[][] copyBoard() {
+              int[][] copy = new int[board.length][];
+              for(int i = 0; i < board.length; i++)
+                  copy[i] = board[i].clone();
+              return copy;
+          }
+  
+          public List<Board> nextMoves() {
+              List<Board> next = new ArrayList<>();
+              // go up
+              if (i - 1 >= 0) {
+                  int[][] copy = copyBoard();
+                  copy[i][j] = copy[i - 1][j];
+                  copy[i - 1][j] = 0;
+                  next.add(new Board(copy, i - 1, j));
+              }
+              // go down
+              if (i + 1 < 2) {
+                  int[][] copy = copyBoard();
+                  copy[i][j] = copy[i + 1][j];
+                  copy[i + 1][j] = 0;
+                  next.add(new Board(copy, i + 1, j));
+              }
+              // go left
+              if (j - 1 >= 0) {
+                  int[][] copy = copyBoard();
+                  copy[i][j] = copy[i][j - 1];
+                  copy[i][j - 1] = 0;
+                  next.add(new Board(copy, i, j - 1));
+              }
+              /// go right
+              if (j + 1 < 3) {
+                  int[][] copy = copyBoard();
+                  copy[i][j] = copy[i][j + 1];
+                  copy[i][j + 1] = 0;
+                  next.add(new Board(copy, i, j + 1));
+              }
+              return next;
+          }
       }
   }
   ```
