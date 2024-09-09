@@ -3750,6 +3750,31 @@
 
 ## :bulb:BFS
 
+* Framework
+
+  * ```java
+    void BFS(TreeNode root) {
+        if (root == null)
+            return;
+      
+        Deque<TreeNode> q = new ArrayDeque<>();
+        q.add(root);
+        int depth = 1;
+        while (!q.isEmpty()) {
+            int sz = q.size();
+            for (int i = 0; i < sz; i++) {
+                TreeNode cur = q.remove();
+                System.out.println("depth = " + depth + ", val = " + cur.val);
+                if (cur.left != null) 
+                    q.add(cur.left);
+                if (cur.right != null)
+                    q.add(cur.right);
+            }
+            depth++;
+        }
+    }
+    ```
+
 ### Q111. [Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
 
 * ```java
@@ -4353,9 +4378,107 @@
   }
   ```
 
-* 
-
 ## :bulb: BFS
+
+* Framework
+
+  * ```java
+    int BFS(Node start, Node target) {
+        Queue<Node> q;
+        Set<Node> visited;
+        
+        q.offer(start);
+        visited.add(start);
+    
+        while (q not empty) {
+            int sz = q.size();
+            for (int i = 0; i < sz; i++) {
+                Node cur = q.poll();
+                if (cur is target)
+                    return step;
+                for (Node x : cur.adj()) {
+                    if (x not in visited) {
+                        q.offer(x);
+                        visited.add(x);
+                    }
+                }
+            }
+        }
+        // no found
+    }
+    ```
+
+### :star:Q752. [Open the Lock](https://leetcode.com/problems/open-the-lock/)
+
+* ```java
+  class Solution {
+      public int openLock(String[] deadends, String target) {
+          if (target.equals("0000"))
+              return 0;
+          
+          Deque<String> q = new ArrayDeque<>();
+          Set<String> visited = new HashSet<>();
+          Set<String> dead = new HashSet<>(Arrays.asList(deadends));
+  
+          if (dead.contains(target) || dead.contains("0000"))
+              return -1;
+  
+          q.offer("0000");
+          visited.add("0000");
+          int step = 0;
+  
+          while (!q.isEmpty()) {
+              int size = q.size();
+              for (int i = 0; i < size; i++) {
+                  String s = q.poll();
+                  if (s.equals(target))
+                      return step;
+                  List<String> adj = adjacent(s);
+                  for (String neighbor : adj) {
+                      if (!dead.contains(neighbor) && !visited.contains(neighbor)) {
+                          q.offer(neighbor);
+                          visited.add(neighbor);
+                      }
+                  }
+              }
+              step++;
+          }
+          return -1;
+      }
+  
+      private List<String> adjacent(String s) {
+          List<String> res = new ArrayList<>();
+          char[] c = s.toCharArray();
+          for (int i = 0; i < 4; i++) {
+              if (c[i] == '0') {
+                  c[i]++;
+                  res.add(new String(c));
+                  c[i]--;
+                  c[i] = '9';
+                  res.add(new String(c));
+                  c[i] = '0';
+              }
+              else if (c[i] == '9') {
+                  c[i] = '0';
+                  res.add(new String(c));
+                  c[i] = '9';
+                  c[i]--;
+                  res.add(new String(c));
+                  c[i]++;
+              }
+              else {
+                  c[i]++;
+                  res.add(new String(c));
+                  c[i]--;
+                  c[i]--;
+                  res.add(new String(c));
+                  c[i]++;
+              }
+          }
+          return res;
+      }
+  }
+  ```
 
 
 
