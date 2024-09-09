@@ -4241,6 +4241,67 @@
   }
   ```
 
+### Q399. [Evaluate Division](https://leetcode.com/problems/evaluate-division/)
+
+* ```java
+  class Solution {
+      public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+          Map<String, List<Equation>> adj = new HashMap<>();
+          for (int i = 0; i < values.length; i++) {
+              String A = equations.get(i).get(0);
+              String B = equations.get(i).get(1);
+              if (!adj.containsKey(A)) {
+                  adj.put(A, new ArrayList<Equation>());
+              }
+                  
+              if (!adj.containsKey(B)) {
+                  adj.put(B, new ArrayList<Equation>());
+              }
+              adj.get(A).add(new Equation(B, values[i]));
+              adj.get(B).add(new Equation(A, 1.0 / values[i]));
+          }
+          double[] answers = new double[queries.size()];
+          int i = 0;
+          for (List<String> q : queries) {
+              answers[i++] = compute(q.get(0), q.get(1), 1.0, adj, new HashSet<String>());
+          }
+          return answers;
+      }
+  
+      private double compute(String C, String D, double res, Map<String, List<Equation>> adj, Set<String> visited) {
+          if (!adj.containsKey(C) || !adj.containsKey(D))
+              return -1.0;
+          if (C.equals(D))
+              return 1.0;
+          visited.add(C);
+          for (Equation e : adj.get(C)) {
+              String neighbor = e.divisor;
+              if (visited.contains(neighbor))
+                  continue;
+              if (neighbor.equals(D))
+                  return res * e.result;
+              double r = compute(neighbor, D, res * e.result, adj, visited);
+              if (r > 0.0)
+                  return r;
+          }
+          return -1.0;
+      }
+  
+      private class Equation {
+          String divisor;
+          double result;
+  
+          public Equation() {}
+          public Equation(String divisor, double result) {
+              this.divisor = divisor;
+              this.result = result;
+          }
+      }
+  }
+  ```
+
+* 
+
 ## :bulb: BFS
 
 
