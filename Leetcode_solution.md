@@ -218,6 +218,59 @@
   }
   ```
 
+### Q2326. [Spiral Matrix IV](https://leetcode.com/problems/spiral-matrix-iv/)
+
+* ```java
+  class Solution {
+      public int[][] spiralMatrix(int m, int n, ListNode head) {
+          int[][] matrix = new int[m][];
+          for (int i = 0; i < m; i++) {
+              matrix[i] = new int [n];
+              Arrays.fill(matrix[i], -1);
+          }
+          int a = 0, b = 0, p = m - 1, q = n - 1;
+          while (head != null) {
+              if (a == p) {
+                  for (; head != null && b <= q; b++) {
+                      matrix[a][b] = head.val;
+                      head = head.next;
+                  }
+              }
+              else if (b == q) {
+                  for (; head != null && a <= p; a++) {
+                      matrix[a][b] = head.val;
+                      head = head.next;
+                  }
+              }
+              else {
+                  int i = a, j = b;
+                  for (; head != null && b < q; b++) {
+                      matrix[a][b] = head.val;
+                      head = head.next;
+                  }
+                  for (; head != null && a < p; a++) {
+                      matrix[a][b] = head.val;
+                      head = head.next;
+                  }
+                  for (; head != null && b > j; b--) {
+                      matrix[a][b] = head.val;
+                      head = head.next;
+                  }
+                  for (; head != null && a > i; a--) {
+                      matrix[a][b] = head.val;
+                      head = head.next;
+                  }
+                  a++;
+                  b++;
+                  p--;
+                  q--;
+              }
+          }
+          return matrix;
+      }
+  }
+  ```
+
 # Linked List
 
 * Tricks
