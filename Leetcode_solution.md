@@ -4408,7 +4408,9 @@
     }
     ```
 
-### :star:Q752. [Open the Lock](https://leetcode.com/problems/open-the-lock/)
+* Optimise BFS: double-way BFS
+
+### :heart:Q752. [Open the Lock](https://leetcode.com/problems/open-the-lock/)
 
 * ```java
   class Solution {
@@ -4480,7 +4482,78 @@
   }
   ```
 
-
+* ```java
+  // Two-way BFS
+  class Solution {
+      public int openLock(String[] deadends, String target) {
+          if (target.equals("0000"))
+              return 0;
+          
+          Set<String> q1 = new HashSet<>();
+          Set<String> q2 = new HashSet<>();
+          Set<String> visited = new HashSet<>(Arrays.asList(deadends));
+  
+          if (visited.contains(target) || visited.contains("0000"))
+              return -1;
+  
+          q1.add("0000");
+          q2.add(target);
+          int step = 0;
+  
+        	// Notice when to update visited set
+          while (!q1.isEmpty() && !q2.isEmpty()) {
+              Set<String> temp = new HashSet<>();
+              for (String s : q1) {
+                  if (q2.contains(s))
+                      return step;
+                  visited.add(s);
+                  List<String> adj = adjacent(s);
+                  for (String neighbor : adj) {
+                      if (!visited.contains(neighbor)) {
+                          temp.add(neighbor);
+                      }
+                  }
+              }
+              step++;
+              q1 = q2;
+              q2 = temp;
+          }
+          return -1;
+      }
+  
+      private List<String> adjacent(String s) {
+          List<String> res = new ArrayList<>();
+          char[] c = s.toCharArray();
+          for (int i = 0; i < 4; i++) {
+              if (c[i] == '0') {
+                  c[i]++;
+                  res.add(new String(c));
+                  c[i]--;
+                  c[i] = '9';
+                  res.add(new String(c));
+                  c[i] = '0';
+              }
+              else if (c[i] == '9') {
+                  c[i] = '0';
+                  res.add(new String(c));
+                  c[i] = '9';
+                  c[i]--;
+                  res.add(new String(c));
+                  c[i]++;
+              }
+              else {
+                  c[i]++;
+                  res.add(new String(c));
+                  c[i]--;
+                  c[i]--;
+                  res.add(new String(c));
+                  c[i]++;
+              }
+          }
+          return res;
+      }
+  }
+  ```
 
 # Recursion
 
