@@ -4058,6 +4058,24 @@
 
 ## :bulb: DFS
 
+* Framework
+
+  * ```java
+    boolean[] visited;
+    boolean[] onPath;
+    
+    void dfs(Graph graph, int s) {
+        if (visited[s]) return;
+    
+        visited[s] = true;
+        onPath[s] = true;
+        for (int neighbor : graph.neighbors(s)) {
+            dfs(graph, neighbor);
+        }
+        onPath[s] = false;
+    }
+    ```
+
 ### Q797. [All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/)
 
 * ```java
@@ -4138,9 +4156,90 @@
   }
   ```
 
-### :star:Q1466. [Reorder Routes to Make All Paths Lead to the City Zero](https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/)
+### :heart:Q1466. [Reorder Routes to Make All Paths Lead to the City Zero](https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/)
 
-* 
+* ```java
+  class Solution {
+      private static int count;
+      public int minReorder(int n, int[][] connections) {
+        // convert to adjacent list then dfs  
+        List<List<Integer>> adj = new ArrayList<>();
+          for(int i = 0; i < n; i++) adj.add(new ArrayList<>());
+          for(int[] conn : connections) {
+              int src = conn[0];
+              int dest = conn[1];
+              adj.get(src).add(dest);
+              adj.get(dest).add(-src);
+          }
+          boolean[] visited = new boolean[n];
+          count = 0;
+          dfs(0, adj, visited);
+          return count;
+      }
+  
+      private void dfs(int k, List<List<Integer>> adj, boolean[] visited) {
+          visited[k] = true;
+          List<Integer> children = adj.get(k);
+          for (int c : children) {
+              int absC = Math.abs(c);
+              if (visited[absC] == true)
+                  continue;
+              if (c >= 0)
+                  count++;
+              dfs(absC, adj, visited);
+          }
+      }
+  }
+  ```
+
+* ```java
+  // issues
+  class Solution { 
+      private static int count = 0;
+      
+      public int minReorder(int n, int[][] connections) {
+          boolean[] visited = new boolean[n];
+          visited[0] = true;
+          count = 0;
+  
+          for(int i = 0; i < n; i++) {
+              compute(i, connections, visited);
+          }
+          return count;
+      }
+      
+      public void compute(int currentEdge,int[][] connections, boolean[] visited)
+      {
+          if (currentEdge >= connections.length)
+              return;
+          int u = connections[currentEdge][0];
+          int v = connections[currentEdge][1];
+          // three cases: visited[v], visited[u], or neither is visited
+          // It's impossible that two nodes are both visited cuz no circle in the graph
+          if (visited[v]) {
+              visited[u] = true;
+              return;
+          }
+          if (visited[u]) {
+              count++;
+              visited[v] = true;
+              return;
+          }
+          else {
+              compute(currentEdge + 1, connections, visited);
+              if (visited[v]) {
+                  visited[u] = true;
+                  return;
+              }
+              if (visited[u]) {
+                  count++;
+                  visited[v] = true;
+                  return;
+              }
+          }
+      }
+  }
+  ```
 
 ## :bulb: BFS
 
