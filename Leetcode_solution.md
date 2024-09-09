@@ -4383,7 +4383,7 @@
 * Framework
 
   * ```java
-    int BFS(Node start, Node target) {
+    void BFS(Node start, Node target) {
         Queue<Node> q;
         Set<Node> visited;
         
@@ -4395,7 +4395,7 @@
             for (int i = 0; i < sz; i++) {
                 Node cur = q.poll();
                 if (cur is target)
-                    return step;
+                    return;
                 for (Node x : cur.adj()) {
                     if (x not in visited) {
                         q.offer(x);
@@ -4417,10 +4417,10 @@
               return 0;
           
           Deque<String> q = new ArrayDeque<>();
-          Set<String> visited = new HashSet<>();
-          Set<String> dead = new HashSet<>(Arrays.asList(deadends));
+        	// Initialise visited with deadends, more elegant
+          Set<String> visited = new HashSet<>(Arrays.asList(deadends));
   
-          if (dead.contains(target) || dead.contains("0000"))
+          if (visited.contains(target) || visited.contains("0000"))
               return -1;
   
           q.offer("0000");
@@ -4435,7 +4435,7 @@
                       return step;
                   List<String> adj = adjacent(s);
                   for (String neighbor : adj) {
-                      if (!dead.contains(neighbor) && !visited.contains(neighbor)) {
+                      if (!visited.contains(neighbor)) {
                           q.offer(neighbor);
                           visited.add(neighbor);
                       }
@@ -4567,7 +4567,7 @@
 
 * There are multiple solutions and you want all of them
 
-* DFS a solution tree (state space tree), every leaf node stores a legal or illegal solution, collect all of them with the help of bounding function (examine the solution legal or not)
+* DFS a solution tree (**state space tree**), every leaf node stores a legal or illegal solution, collect all of them with the help of bounding function (examine the solution legal or not)
 
 * For each node, considerring
 
