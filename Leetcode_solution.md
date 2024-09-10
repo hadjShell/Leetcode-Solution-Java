@@ -1462,6 +1462,32 @@
 * Or use a stack
 
 
+### Q2807. [Insert Greatest Common Divisors in Linked List](https://leetcode.com/problems/insert-greatest-common-divisors-in-linked-list/)
+
+* ```java
+  class Solution {
+      public ListNode insertGreatestCommonDivisors(ListNode head) {
+          if (head.next == null)
+              return head;
+          ListNode a = head, b = head.next;
+          while (b != null) {
+              int value = gcd(a.val, b.val);
+              a.next = new ListNode(value, b);
+              a = b;
+              b = b.next;
+          }
+          return head;
+      }
+  
+      private int gcd(int a, int b) {
+          if (b == 0)
+              return a;
+          else
+              return gcd(b, a % b);
+      }
+  }
+  ```
+
 ### Q3217. [Delete Nodes From Linked List Present in Array](https://leetcode.com/problems/delete-nodes-from-linked-list-present-in-array/)
 
 * ```java
