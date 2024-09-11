@@ -5243,6 +5243,34 @@
   }
   ```
 
+# Bit Manipulation
+
+### Q2220. [Minimum Bit Flips to Convert Number](https://leetcode.com/problems/minimum-bit-flips-to-convert-number/)
+
+* ```java
+  class Solution {
+      public int minBitFlips(int start, int goal) {
+          int[] x = toBinaryArray(start ^ goal);
+          int flips = 0;
+          for (int i = 31; i >= 0; i--) {
+              if (x[i] == 1)
+                  flips++;
+          }
+          return flips;
+      }
+  
+      private int[] toBinaryArray(int n) {
+          int[] binaryNumber = new int[32];
+          int i = 31;
+          while (n != 0) {
+              binaryNumber[i--] = n % 2;
+              n /= 2;
+          }
+          return binaryNumber;
+      }
+  }
+  ```
+
 ***
 
 ## Question 2
