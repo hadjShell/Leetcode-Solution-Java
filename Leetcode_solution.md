@@ -397,6 +397,30 @@
   }
   ```
 
+### Q1684. [Count the Number of Consistent Strings](https://leetcode.com/problems/count-the-number-of-consistent-strings/)
+
+* ```java
+  class Solution {
+      public int countConsistentStrings(String allowed, String[] words) {
+          boolean[] appeared = new boolean[26];
+          int count = 0;
+          for (char c : allowed.toCharArray()) {
+              appeared[c - 'a'] = true;
+          }
+          for (String w : words) {
+              int i = 0;
+              for (; i < w.length(); i++) {
+                  if (appeared[w.charAt(i) - 'a'] == false)
+                      break;
+              }
+              if (i == w.length())
+                  count++;
+          }
+          return count;
+      }
+  }
+  ```
+
 ### Q1768. [Merge Strings Alternately](https://leetcode.com/problems/merge-strings-alternately/)
 
 * ```java
@@ -439,7 +463,6 @@
           }
           return Integer.parseInt(sb.toString());
       }
-  }
   ```
 
 # Two Pointers
