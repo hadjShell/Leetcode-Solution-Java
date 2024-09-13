@@ -5268,6 +5268,24 @@
 
 # Bit Manipulation
 
+### Q1310. [XOR Queries of a Subarray](https://leetcode.com/problems/xor-queries-of-a-subarray/)
+
+* ```java
+  class Solution {
+      public int[] xorQueries(int[] arr, int[][] queries) {
+          int[] preXOR = new int[arr.length + 1];
+          for (int i = 0; i < arr.length; i++) {
+              preXOR[i + 1] = arr[i] ^ preXOR[i];
+          }
+          int[] answer = new int[queries.length];
+          for (int i = 0; i < queries.length; i++) {
+              answer[i] = preXOR[queries[i][1] + 1] ^ preXOR[queries[i][0]];
+          }
+          return answer;
+      }
+  }
+  ```
+
 ### Q2220. [Minimum Bit Flips to Convert Number](https://leetcode.com/problems/minimum-bit-flips-to-convert-number/)
 
 * ```java
