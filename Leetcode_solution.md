@@ -670,22 +670,30 @@
 
 ## :bulb:Sliding window
 
-* When to increase the window
-* When to shrink the window
-* How to update the result (what is the operation when window size changes)
-* Find the qualified subarray
+* Fixed-size window
+* Dynamically resizable window
+
+  * When to increase the window
+  * When to shrink the window
+  * How to update the result (what is the operation when window size changes)
+  * Find the qualified subarray
+
 * Framework
 
   * ```java
     int left = 0, right = 0;
+    // Use appropriate data structures based on the problem
+    Data data;
     
     while (right < nums.size()) {
         window.addLast(nums[right]);
         right++;
+      	update(data);
         
-        while (window needs shrink) {
+        while (left < right && window needs shrink) {
             window.removeFirst(nums[left]);
             left++;
+          	update(data);
         }
     }
     ```
@@ -2783,6 +2791,38 @@
                   preSum.put(sum, i);
           }
           return largest;
+      }
+  }
+  ```
+
+### :heart:Q1371. [Find the Longest Substring Containing Vowels in Even Counts](https://leetcode.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/)
+
+* ```java
+  class Solution {
+      public int findTheLongestSubstring(String s) {
+          // represent at current location is there vowels in odd count
+          // with last five bit representing five different vowels
+          int isOdd = 0;
+          Map<Integer, Integer> m = new HashMap<>();
+          m.put(0, -1);
+          int maxLen = 0;
+          for (int i = 0; i < s.length(); i++) {
+              char c = s.charAt(i);
+              switch (c) {
+                  case 'a' -> isOdd ^= 1;
+                  case 'e' -> isOdd ^= 2;
+                  case 'i' -> isOdd ^= 4;
+                  case 'o' -> isOdd ^= 8;
+                  case 'u' -> isOdd ^= 16;
+              }
+              if (m.containsKey(isOdd)) {
+                  maxLen = Math.max(maxLen, i - m.get(isOdd));
+              }
+              else {
+                  m.put(isOdd, i);
+              }
+          }
+          return maxLen;
       }
   }
   ```
