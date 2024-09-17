@@ -399,6 +399,30 @@
 * ==Need to be done again==
 
 
+### Q884. [Uncommon Words from Two Sentences](https://leetcode.com/problems/uncommon-words-from-two-sentences/)
+
+* ```java
+  class Solution {
+      public String[] uncommonFromSentences(String s1, String s2) {
+          String[] words1 = s1.split(" "), words2 = s2.split(" ");
+          Map<String, Integer> freq = new HashMap<>();
+          for (String w : words1) {
+              freq.put(w, freq.getOrDefault(w, 0) + 1);
+          }
+          for (String w : words2) {
+              freq.put(w, freq.getOrDefault(w, 0) + 1);
+          }
+          List<String> uncommon = new ArrayList<>();
+          freq.forEach((key, value) -> {
+              if (value == 1)
+                  uncommon.add(key);
+          });
+          return uncommon.toArray(new String[0]);
+      }
+  }
+  ```
+
+
 ### :star:Q1071. [Greatest Common Divisor of Strings](https://leetcode.com/problems/greatest-common-divisor-of-strings/)
 
 * ```java
@@ -4529,6 +4553,7 @@
                     }
                 }
             }
+          	level++;
         }
         // no found
     }
@@ -4781,6 +4806,85 @@
                   next.add(new Board(copy, i, j + 1));
               }
               return next;
+          }
+      }
+  }
+  ```
+
+### Q1926. [Nearest Exit from Entrance in Maze](https://leetcode.com/problems/nearest-exit-from-entrance-in-maze/)
+
+* ```java
+  class Solution {
+      public int nearestExit(char[][] maze, int[] entrance) {
+          Deque<int[]> moves = new ArrayDeque<>();
+          Set<Integer> visited = new HashSet<>();
+          int steps = 0;
+          Maze m = new Maze(maze, entrance);
+          moves.offer(entrance);
+          visited.add(m.hashLocation(entrance));
+  
+          while (!moves.isEmpty()) {
+              int size = moves.size();
+              for (int i = 0; i < size; i++) {
+                  int[] location = moves.poll();
+                  if (m.isExit(location))
+                      return steps;
+                  List<int[]> nextMoves = m.nextMoves(location);
+                  for (int[] next : nextMoves) {
+                      if (!visited.contains(m.hashLocation(next))) {
+                          moves.offer(next);
+                          visited.add(m.hashLocation(next));
+                      }
+                  }
+              }
+              steps++;
+          }
+          return -1;
+      }
+  
+      private class Maze {
+          char[][] maze;
+          int[] entrance;
+  
+          public Maze() {}
+          public Maze(char[][] maze, int[] entrance) {
+              this.maze = maze;
+              this.entrance = entrance;
+          }
+  
+          public boolean isExit(int[] location) {
+              if (location[0] == 0 || location[0] == maze.length - 1 ||
+                  location[1] == 0 || location[1] == maze[0].length - 1) {
+                      if (location[0] != entrance[0] || location[1] != entrance[1])
+                          return true;
+                  }
+              return false;
+          }
+  
+          public List<int[]> nextMoves(int[] location) {
+              List<int[]> next = new ArrayList<>();
+              int i = location[0], j = location[1];
+              // go up
+              if (i - 1 >= 0 && maze[i - 1][j] != '+') {
+                  next.add(new int[] {i - 1, j});
+              }
+              // go down
+              if (i + 1 < maze.length && maze[i + 1][j] != '+') {
+                  next.add(new int[] {i + 1, j});
+              }
+              // go left
+              if (j - 1 >= 0 && maze[i][j - 1] != '+') {
+                  next.add(new int[] {i, j - 1});
+              }
+              /// go right
+              if (j + 1 < maze[0].length && maze[i][j + 1] != '+') {
+                  next.add(new int[] {i, j + 1});
+              }
+              return next;
+          }
+  
+          public int hashLocation(int[] location) {
+              return (location[0] << 16) ^ location[1];
           }
       }
   }
