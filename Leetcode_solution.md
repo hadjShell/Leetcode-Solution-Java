@@ -5366,6 +5366,51 @@
 
 # Dynamic Programming
 
+### :heart:Q241. [Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/)
+
+* ```java
+  class Solution {
+      public List<Integer> diffWaysToCompute(String exp) {
+          List<Integer> result = new ArrayList<>();
+          if (exp.length() == 1 || exp.length() == 2) {
+              result.add(Integer.parseInt(exp));
+              return result;
+          } 
+          int i = 0;
+          while (i < exp.length()) {
+              if (exp.charAt(i) >= '0' && exp.charAt(i) <= '9') {
+                  i++;
+                  continue;
+              }
+              List<Integer> a = diffWaysToCompute(exp.substring(0, i));
+              List<Integer> b = diffWaysToCompute(exp.substring(i + 1));
+              switch (exp.charAt(i)) {
+                  case '+' -> {
+                      for (int p : a)
+                          for (int q : b) {
+                              result.add(p + q);
+                          }
+                  }
+                  case '-' -> {
+                      for (int p : a)
+                          for (int q : b) {
+                              result.add(p - q);
+                          }
+                  }
+                  case '*' -> {
+                      for (int p : a)
+                          for (int q : b) {
+                              result.add(p * q);
+                          }
+                  }
+              }
+              i++;
+          }
+          return result;
+      }
+  }
+  ```
+
 ### Q1823. [Find the Winner of the Circular Game](https://leetcode.com/problems/find-the-winner-of-the-circular-game/)
 
 # Greedy Algorithm
