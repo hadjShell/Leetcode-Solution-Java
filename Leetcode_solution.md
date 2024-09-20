@@ -5366,6 +5366,37 @@
 
 # Dynamic Programming
 
+* The idea is to exhaust every solution to find a extreme value
+
+* The key: find the state transfer equation
+
+* Top-down: recursion; Bottom-up: iteration
+
+* Optimisation
+
+  * Reduce to sub-problem whose answer is the answer of the original problem
+  * Memoization(caching): overlapping subproblems
+
+* Framework
+
+  * ```java
+    // Top-down
+    void dp(state1, state2, ...):
+        for option in options:
+            // the states have been changed because of the dicision made
+            result = maxOrMin(result, dp(state1, state2, ...))
+        return result
+    
+    // Bottom-up
+    // initialisation
+    dp[0][0][...] = base case
+    // updating
+    for state1 in options1：
+        for state2 in options2：
+            for ...
+                dp[state1][state2][...] = maxOrMin(option1，option2...)
+    ```
+
 ### :heart:Q241. [Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/)
 
 * ```java
@@ -5407,6 +5438,23 @@
               i++;
           }
           return result;
+      }
+  }
+  ```
+
+### Q509. [Fibonacci Number](https://leetcode.com/problems/fibonacci-number/)
+
+* ```java
+  class Solution {
+      public int fib(int n) {
+          if (n == 0 || n == 1)
+              return n;
+          int a = 0, b = 1;
+          for (int i = 2; i <= n; i++) {
+              b += a;
+              a = b - a;
+          }
+          return b;
       }
   }
   ```
