@@ -5442,6 +5442,57 @@
   }
   ```
 
+### :heart:Q322. [Coin Change](https://leetcode.com/problems/coin-change/)
+
+* ```java
+  // Bottom-up
+  class Solution {
+      public int coinChange(int[] coins, int amount) {
+          int[] memo = new int[amount + 1];
+          Arrays.fill(memo, Integer.MAX_VALUE);
+          memo[0] = 0;
+          for (int a = 1; a <= amount; a++) {
+              for (int c : coins) {
+                  if (a - c < 0 || memo[a - c] == -1)
+                      continue;
+                  memo[a] = Math.min(memo[a], memo[a - c] + 1);
+              }
+              if (memo[a] == Integer.MAX_VALUE)
+                  memo[a] = -1;
+          }
+          return memo[amount];
+      }
+  }
+  ```
+
+* ```java
+  // Top-down
+  class Solution {
+      public int coinChange(int[] coins, int amount) {
+          int[] memo = new int[amount + 1];
+          Arrays.fill(memo, -2);
+          memo[0] = 0;
+          return dp(coins, amount, memo);
+      }
+  
+      public int dp(int[] coins, int amount, int[] memo) {
+          if (amount < 0)
+              return -1;
+          if (memo[amount] != -2)
+              return memo[amount];
+          int res = Integer.MAX_VALUE;
+          for (int c : coins) {
+              int cnt = dp(coins, amount - c, memo);
+              if (cnt == -1)
+                  continue;
+              res = Math.min(res, cnt + 1);
+          }
+          memo[amount] = res == Integer.MAX_VALUE ? -1 : res;
+          return memo[amount];
+      }
+  }
+  ```
+
 ### Q509. [Fibonacci Number](https://leetcode.com/problems/fibonacci-number/)
 
 * ```java
