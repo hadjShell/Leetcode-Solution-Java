@@ -4530,6 +4530,30 @@
   }
   ```
 
+### :star:Q386. [Lexicographical Numbers](https://leetcode.com/problems/lexicographical-numbers/)
+
+* ```java
+  class Solution {
+      public List<Integer> lexicalOrder(int n) {
+          List<Integer> res = new ArrayList<>();
+          dfs(0, n, res);
+          return res;
+      }
+  
+      public void dfs(int val, int n, List<Integer> res) {
+          for (int i = 0; i <= 9; i++) {
+              int v = val * 10 + i;
+              if (v == 0)
+                  continue;
+              if (v > n)
+                  break;
+              res.add(v);
+              dfs(v, n, res);
+          }
+      }
+  }
+  ```
+
 ## :bulb: BFS
 
 * Framework
