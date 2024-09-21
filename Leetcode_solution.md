@@ -5366,9 +5366,9 @@
 
 # Dynamic Programming
 
-* The idea is to exhaust every solution to find a extreme value
+* The problem is to exhaust every solution to find a extreme value
 
-* The key: find the state transfer equation
+* The key: find the state transfer equation (mathematical induction)
 
 * Top-down: recursion; Bottom-up: iteration
 
@@ -5441,6 +5441,51 @@
       }
   }
   ```
+
+### Q300. [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
+
+* ```java
+  // O(n^2)
+  // DP
+  class Solution {
+      public int lengthOfLIS(int[] nums) {
+          int[] dp = new int[nums.length];
+          Arrays.fill(dp, 1);
+          int max = 1;
+          for (int i = 1; i < nums.length; i++) {
+              for (int j = 0; j < i; j++) {
+                  if (nums[j] < nums[i])
+                      dp[i] = Math.max(dp[i], dp[j] + 1);
+              }
+              max = Math.max(max, dp[i]);
+          }
+          return max;
+      }
+  }
+  ```
+
+* ```java
+  // O(NlogN)
+  // Spider Card game
+  class Solution {
+      public int lengthOfLIS(int[] nums) {
+          List<Integer> l = new ArrayList<>();
+          for (int n : nums) {
+              int insert = Collections.binarySearch(l, n);
+              if (insert < 0) {
+                  insert = -1 * insert - 1;
+                  if (insert == l.size())
+                      l.add(n);
+                  else
+                      l.set(insert, n);
+              }
+          }
+          return l.size();
+      }
+  }
+  ```
+
+* 
 
 ### :heart:Q322. [Coin Change](https://leetcode.com/problems/coin-change/)
 
