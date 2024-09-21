@@ -4811,6 +4811,56 @@
   }
   ```
 
+### :heart:Q994. [Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
+
+* ```java
+  class Solution {
+      public int orangesRotting(int[][] grid) {
+          Deque<int[]> rotten = new ArrayDeque<>();
+          int m = grid.length, n = grid[0].length;
+          int oranges = 0;
+          for (int i = 0; i < m; i++)
+              for (int j= 0 ; j < n; j++) {
+                  if (grid[i][j] != 0)
+                      oranges++;
+                  if (grid[i][j] == 2)
+                      rotten.offer(new int[] {i, j});
+              }
+          if (oranges == 0)
+              return 0;
+  
+          int cnt = 0, minute = -1;
+          while (!rotten.isEmpty()) {
+              int size = rotten.size();
+              for (int i = 0; i < size; i++) {
+                  int[] r = rotten.poll();
+                  cnt++;
+                  int up = r[0] - 1, down = r[0] + 1, left = r[1] - 1, right = r[1] + 1;
+                  if (up >= 0 && grid[up][r[1]] == 1) {
+                      grid[up][r[1]] = 2;
+                      rotten.offer(new int[] {up, r[1]});
+                  }
+                  if (down < m && grid[down][r[1]] == 1) {
+                      grid[down][r[1]] = 2;
+                      rotten.offer(new int[] {down, r[1]});
+                  }
+                  if (left >= 0 && grid[r[0]][left] == 1) {
+                      grid[r[0]][left] = 2;
+                      rotten.offer(new int[] {r[0], left});
+                  }
+                  if (right < n && grid[r[0]][right] == 1) {
+                      grid[r[0]][right] = 2;
+                      rotten.offer(new int[] {r[0], right});
+                  }
+              }
+              minute++;
+          }
+  
+          return cnt == oranges ? minute : -1;
+      }
+  }
+  ```
+
 ### Q1926. [Nearest Exit from Entrance in Maze](https://leetcode.com/problems/nearest-exit-from-entrance-in-maze/)
 
 * ```java
