@@ -5698,6 +5698,29 @@
   }
   ```
 
+### :star:Q790. [Domino and Tromino Tiling](https://leetcode.com/problems/domino-and-tromino-tiling/)
+
+* ```java
+  class Solution {
+      static final int M = 1000000007;
+  
+      public int numTilings(int n) {
+          if (n == 1 || n == 2) {
+              return n;
+          }
+        
+          int[] dp = new int[n+1];
+          dp[1] = 1;
+          dp[2] = 2;
+          dp[3] = 5;
+          for (int i = 4; i<=n; i++) {
+              dp[i] = (2*dp[i-1] % M + dp[i-3] % M) % M;
+          }
+          return dp[n];
+      }
+  }
+  ```
+
 ### Q1137. [N-th Tribonacci Number](https://leetcode.com/problems/n-th-tribonacci-number/)
 
 * ```java
