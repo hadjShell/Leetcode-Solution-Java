@@ -5468,7 +5468,9 @@
     for state1 in options1：
         for state2 in options2：
             for ...
-                dp[state1][state2][...] = maxOrMin(option1，option2...)
+                dp[state1][state2][...] = dp[prev1][prev2][...] ...
+    for v : dp
+      	result = maxOrMin(result, v)
     ```
 
 ## :bulb: Longest Increasing Subsequence (LIS)
@@ -5541,6 +5543,30 @@
   ```
 
 ***
+
+### Q198. [House Robber](https://leetcode.com/problems/house-robber/)
+
+* ```java
+  class Solution {
+      public int rob(int[] nums) {
+          // the maxmimum money if you rob this house and stopped
+          int[] dp = new int [nums.length];
+          dp[0] = nums[0];
+          for (int i = 1; i < dp.length; i++) {
+              int prevMax = 0;
+              for (int j = 0; j < i - 1; j++) {
+                  prevMax = Math.max(prevMax, dp[j]);
+              }
+              dp[i] = prevMax + nums[i];
+          }
+          int max = 0;
+          for (int i = 0; i < dp.length; i++) {
+              max = Math.max(max, dp[i]);
+          }
+          return max;
+      }
+  }
+  ```
 
 ### :heart:Q241. [Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/)
 
@@ -5651,6 +5677,23 @@
               a = b - a;
           }
           return b;
+      }
+  }
+  ```
+
+### Q746. [Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/)
+
+* ```java
+  class Solution {
+      public int minCostClimbingStairs(int[] cost) {
+          // minimal cost to start from a stair
+          int[] dp = new int[cost.length];
+          dp[0] = cost[0];
+          dp[1] = cost[1];
+          for (int i = 2; i < dp.length; i++) {
+              dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i];
+          }
+          return Math.min(dp[dp.length - 1], dp[dp.length - 2]);
       }
   }
   ```
