@@ -5544,6 +5544,34 @@
 
 ***
 
+### :star:Q115. [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
+
+* ```java 
+  class Solution {
+      public int numDistinct(String s, String t) {
+          Integer[][] dp = new Integer[s.length()][t.length()];
+          return compute(s, t, 0, 0, dp);
+      }
+  
+      public int compute(String s, String t, int is, int it, Integer[][] dp) {
+          if (s.length() - is < t.length() - it)
+              return 0;
+          if (it == t.length()) {
+              return 1;
+          }
+          int res = 0;
+          if (dp[is][it] != null)
+              return dp[is][it];
+          if (s.charAt(is) != t.charAt(it))
+              res += compute(s, t, is + 1, it, dp);
+          else
+              res += compute(s, t, is + 1, it, dp) + compute(s, t, is + 1, it + 1, dp);
+          dp[is][it] = res;
+          return res;
+      }
+  }
+  ```
+
 ### Q198. [House Robber](https://leetcode.com/problems/house-robber/)
 
 * ```java
