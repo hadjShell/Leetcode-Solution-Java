@@ -5456,9 +5456,14 @@
   * ```java
     // Top-down
     void dp(state1, state2, ...):
-        for option in options:
+        if (base case)
+          	return;
+    		if (memo[state1][state2][...] != null)
+          	return;
+    
+    		for option in options:
             // the states have been changed because of the dicision made
-            result = maxOrMin(result, dp(state1, state2, ...))
+            result = maxOrMin(result, dp(nextState1, nextState2, ...))
         return result
     
     // Bottom-up
@@ -5468,7 +5473,7 @@
     for state1 in options1：
         for state2 in options2：
             for ...
-                dp[state1][state2][...] = dp[prev1][prev2][...] ...
+                dp[state1][state2][...] = dp[prevState1][prevState2][...] ...
     for v : dp
       	result = maxOrMin(result, v)
     ```
@@ -5745,6 +5750,36 @@
               dp[i] = (2*dp[i-1] % M + dp[i-3] % M) % M;
           }
           return dp[n];
+      }
+  }
+  ```
+
+### Q931. [Minimum Falling Path Sum](https://leetcode.com/problems/minimum-falling-path-sum/)
+
+* ```java
+  class Solution {
+      public int minFallingPathSum(int[][] matrix) {
+          Integer[][] memo = new Integer[matrix.length][matrix.length];
+          int shortest = Integer.MAX_VALUE;
+          for (int j = 0; j < matrix.length; j++) {
+              shortest = Math.min(shortest, dp(matrix, 0, j, memo));
+          }
+          return shortest;
+      }
+  
+      private int dp(int[][] matrix, int i, int j, Integer[][] memo) {
+          if (i == matrix.length - 1) 
+              return matrix[i][j];
+          if (memo[i][j] != null)
+              return memo[i][j];
+              
+          int path = dp(matrix, i + 1, j, memo);
+          if (j - 1 >= 0)
+              path = Math.min(path, dp(matrix, i + 1, j - 1, memo));
+          if (j + 1 < matrix.length)
+              path = Math.min(path, dp(matrix, i + 1, j + 1, memo));
+          memo[i][j] = matrix[i][j] + path;
+          return memo[i][j];
       }
   }
   ```
