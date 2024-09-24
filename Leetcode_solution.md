@@ -5587,6 +5587,27 @@
 
 ## :bulb: Others
 
+### :star:Q53. [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
+
+* The key is to transform the current question to another question, i.e., find the correct definition of `memo`
+
+* ```java
+  class Solution {
+      public int maxSubArray(int[] nums) {
+          // max subarray ending at index i
+          int memo = nums[0], max = nums[0];
+          for (int i = 1; i < nums.length; i++) {
+              if (memo < 0) 
+                  memo = nums[i];
+              else
+                  memo += nums[i];
+              max = Math.max(max, memo);
+          }
+          return max;
+      }
+  }
+  ```
+
 ### :star:Q115. [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
 
 * ```java 
