@@ -5577,6 +5577,78 @@
   }
   ```
 
+### Q139. [Word Break](https://leetcode.com/problems/word-break/)
+
+* ```java
+  class Solution {
+      public boolean wordBreak(String s, List<String> wordDict) {
+          Set<String> d = new HashSet<>(wordDict);
+          Set<Integer> len = new HashSet<>();
+          for (String word : d) {
+              len.add(word.length());
+          }
+          Boolean[] memo = new Boolean[s.length()];
+          return dp(s, 0, d, len, memo);
+      }
+  
+      private boolean dp(String s, int i, Set<String> d, Set<Integer> len, Boolean[] memo) {
+          if (i == s.length())
+              return true;
+          
+          if (memo[i] != null)
+              return memo[i];
+          
+          boolean res = false;
+          for (int l : len) {
+              if (l + i <= s.length() && d.contains(s.substring(i, l + i))) {
+                  res = dp(s, i + l, d, len, memo);
+              }
+              if (res)
+                  break;
+          }
+          memo[i] = res;
+          return res;
+      }
+  }
+  ```
+
+### :star:Q2707. [Extra Characters in a String](https://leetcode.com/problems/extra-characters-in-a-string/)
+
+* Similiar quesiton as Q115. feel it
+
+* ```java
+  class Solution {
+      public int minExtraChar(String s, String[] dictionary) {
+          Set<String> d = new HashSet<>(Arrays.asList(dictionary));
+          Set<Integer> len = new HashSet<>();
+          for (String word : dictionary) {
+              len.add(word.length());
+          }
+          // minimum extra chars in s[i:]
+          Integer[] memo = new Integer[s.length()];
+          return dp(s, 0, d, len, memo);
+      }
+  
+      private int dp(String s, int i, Set<String> d, Set<Integer> len, Integer[] memo) {
+          if (i == s.length())
+              return 0;
+          
+          if (memo[i] != null)
+              return memo[i];
+          
+          int res = s.length();
+          for (int l : len) {
+              if (l + i <= s.length() && d.contains(s.substring(i, l + i))) {
+                  res = Math.min(res, dp(s, i + l, d, len, memo));
+              }
+          }
+          res = Math.min(res, 1 + dp(s, i + 1, d, len, memo));
+          memo[i] = res;
+          return res;
+      }
+  }
+  ```
+
 ### Q198. [House Robber](https://leetcode.com/problems/house-robber/)
 
 * ```java
@@ -5808,43 +5880,6 @@
   ```
 
 ### Q1823. [Find the Winner of the Circular Game](https://leetcode.com/problems/find-the-winner-of-the-circular-game/)
-
-### :star:Q2707. [Extra Characters in a String](https://leetcode.com/problems/extra-characters-in-a-string/)
-
-* Similiar quesiton as Q115. feel it
-
-* ```java
-  class Solution {
-      public int minExtraChar(String s, String[] dictionary) {
-          Set<String> d = new HashSet<>(Arrays.asList(dictionary));
-          Set<Integer> len = new HashSet<>();
-          for (String word : dictionary) {
-              len.add(word.length());
-          }
-          // minimum extra chars in s[i:]
-          Integer[] memo = new Integer[s.length()];
-          return dp(s, 0, d, len, memo);
-      }
-  
-      private int dp(String s, int i, Set<String> d, Set<Integer> len, Integer[] memo) {
-          if (i == s.length())
-              return 0;
-          
-          if (memo[i] != null)
-              return memo[i];
-          
-          int res = s.length();
-          for (int l : len) {
-              if (l + i <= s.length() && d.contains(s.substring(i, l + i))) {
-                  res = Math.min(res, dp(s, i + l, d, len, memo));
-              }
-          }
-          res = Math.min(res, 1 + dp(s, i + 1, d, len, memo));
-          memo[i] = res;
-          return res;
-      }
-  }
-  ```
 
 # Greedy Algorithm
 
