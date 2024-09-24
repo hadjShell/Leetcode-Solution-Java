@@ -5446,6 +5446,8 @@
 
 * Top-down: recursion; Bottom-up: iteration
 
+* **Backtracking loops a decision tree by DFS. DP, indeed, dfs the tree too; however, it breaks down the tree to subtrees**
+
 * Optimisation
 
   * Reduce to sub-problem whose answer is the answer of the original problem
@@ -5605,6 +5607,52 @@
               }
               if (res)
                   break;
+          }
+          memo[i] = res;
+          return res;
+      }
+  }
+  ```
+
+### Q140. [Word Break II](https://leetcode.com/problems/word-break-ii/)
+
+* ```java
+  class Solution {
+      public List<String> wordBreak(String s, List<String> wordDict) {
+          Set<String> d = new HashSet<>(wordDict);
+          Set<Integer> len = new HashSet<>();
+          for (String word : d) {
+              len.add(word.length());
+          }
+          List<String>[] memo = new List[s.length()];
+          return dp(s, 0, d, len, memo);
+      }
+  
+      private List<String> dp(String s, int i, Set<String> d, Set<Integer> len, List<String>[] memo) {
+          List<String> res = new ArrayList<>();
+          if (i == s.length()) {
+              res.add("");
+              return res;
+          }
+          
+          if (memo[i] != null)
+              return memo[i];
+          
+          for (int l : len) {
+              if (l + i <= s.length()) {
+                  String word = s.substring(i, l + i);
+                  if (d.contains(word)) {
+                      List<String> nextSentence = dp(s, i + l, d, len, memo);
+                      if (!nextSentence.isEmpty()) {
+                          for (String sen : nextSentence) {
+                              if (sen.length() == 0)
+                                  res.add(word);
+                              else
+                                  res.add(word + " " + sen);
+                          }
+                      }
+                  }
+              }
           }
           memo[i] = res;
           return res;
@@ -6051,201 +6099,6 @@
       }
   }
   ```
-
-***
-
-## Question 2
-
-*Add Two Numbers*
-
-### Description
-
-You are given two **non-empty** linked lists representing two non-negative integers. The digits are stored in **reverse order**, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
-
-You may assume the two numbers do not contain any leading zero, except the number 0 itself.
-
-### Example
-
-```markdown
-Input: l1 = [2,4,3], l2 = [5,6,4]
-Output: [7,0,8]
-
-Input: l1 = [2,4,3], l2 = [5,6,4]
-Output: [7,0,8]
-
-Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
-Output: [8,9,9,9,0,0,0,1]
-```
-
-### Solution
-
-* Usage of singly linked list
-* Consider **carry**, and the method used for calculating it
-
-```java
-public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-    ListNode cur = l2;
-    ListNode sum = cur;
-    int carry = 0;
-    ListNode prev = null;
-
-    while(l1 != null && cur != null) {
-        cur.val = l1.val + cur.val + carry;
-        carry = cur.val / 10;
-        cur.val %= 10;
-
-        l1 = l1.next;
-        prev = cur;
-        cur = cur.next;
-    }
-
-    /* if l1 go to the end, go with cur, do nothing
-        ** if cur go to the end, link prev node to l1 current node
-        */
-    if(cur == null) {
-        prev.next = l1;
-        cur = l1;
-    } 
-
-    while(cur != null) {
-        cur.val += carry;
-        carry = cur.val / 10;
-        cur.val %= 10;
-
-        if(carry == 0)  break;
-
-        prev = cur;
-        cur = cur.next;
-    }
-
-    // cur go the end, check carry, if 1, create a new node
-    if(carry == 1) {
-        prev.next = new ListNode(1, null);
-    }
-
-    return sum;
-}
-```
-
-***
-
-## Question 9 
-
-*Palindrome Number*
-
-### Description
-
-Give an integer `x`, return `true` if `x` is palindrome integer.
-
-### Example
-
-```markdown
-Input: x = 121
-Output: true
-
-Input: x = -121
-Output: false
-
-Input: x = 10
-Output: false
-```
-
-### Solution
-
-* Save time by operating on half of the number
-
-```java
-public boolean isPalindrome(int x) {
-    if(x < 0)
-        return false;
-
-    if(x < 10)
-        return true;
-
-    // Special case: end with 0, couldn't get the last half properly
-    if(x % 10 == 0)
-        return false;
-
-    // reversed last half part of x, save time for reversing the whole number
-    int lastHalf = 0;
-    while(x > lastHalf) {
-        lastHalf = lastHalf * 10 + x % 10;
-        x /= 10;
-    }
-
-    return x == lastHalf || x == lastHalf / 10;  
-}
-```
-
-***
-
-## Question 13
-
-*Roman to Integer*
-
-### Description
-
-Roman numerals are represented by seven different symbols: `I`, `V`, `X`, `L`, `C`, `D` and `M`.
-
-```markdown
-Symbol       Value
-I             1
-V             5
-X             10
-L             50
-C             100
-D             500
-M             1000
-```
-
-For example, `2` is written as `II` in Roman numeral, just two ones added together. `12` is written as `XII`, which is simply `X + II`. The number `27` is written as `XXVII`, which is `XX + V + II`.
-
-Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not `IIII`. Instead, the number four is written as `IV`. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as `IX`. There are six instances where subtraction is used:
-
-- `I` can be placed before `V` (5) and `X` (10) to make 4 and 9. 
-- `X` can be placed before `L` (50) and `C` (100) to make 40 and 90. 
-- `C` can be placed before `D` (500) and `M` (1000) to make 400 and 900.
-
-Given a roman numeral, convert it to an integer.
-
-- `1 <= s.length <= 15`
-- It is **guaranteed** that `s` is a valid roman numeral in the range `[1, 3999]`.
-
-### Example
-
-```markdown
-Input: s = "MCMXCIV"
-Output: 1994
-Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
-```
-
-### Solution
-
-```java
-public int romanToInt(String s) {
-    Map<Character, Integer> m = new HashMap<>();
-    m.put('I', 1);
-    m.put('V', 5);
-    m.put('X', 10);
-    m.put('L', 50);
-    m.put('C', 100);
-    m.put('D', 500);
-    m.put('M', 1000);
-
-    int ret = 0;
-    char[] letters = s.toCharArray();
-    int prev = 0;
-    for(int i = letters.length - 1; i > -1; i--) {
-        int val = m.get(letters[i]);
-        if(val >= prev)
-            ret += val;
-        else
-            ret -= val;
-        prev = val;
-    }
-    return ret;
-}
-```
 
 ***
 
