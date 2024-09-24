@@ -5448,7 +5448,7 @@
 
 * **Backtracking loops a decision tree by DFS. DP, indeed, dfs the tree too; however, it breaks down the tree to subtrees**
 
-* Optimisation
+* How does DP work?
 
   * Reduce to sub-problem whose answer is the answer of the original problem
   * Memoization(caching): overlapping subproblems
@@ -5480,7 +5480,41 @@
       	result = maxOrMin(result, v)
     ```
 
-## :bulb: Longest Increasing Subsequence (LIS)
+* Sometimes we can optimise the space complexity of DP by compressing the 2D memoization to 1D
+
+## :bulb: Subsequence
+
+### :star:Q72. [Edit Distance](https://leetcode.com/problems/edit-distance/)
+
+* ```java
+  class Solution {
+      public int minDistance(String word1, String word2) {
+          StringBuilder sb = new StringBuilder(word1);
+          Integer[][] memo = new Integer[word1.length()][word2.length()];
+          return dp(word1, word2, 0, 0, memo);
+      }
+  
+      private int dp(String word1, String word2, int i1, int i2, Integer[][] memo) {
+          if (i1 == word1.length())
+              return word2.length() - i2;
+          if (i2 == word2.length())
+              return word1.length() - i1;
+          if (memo[i1][i2] != null)
+              return memo[i1][i2];
+          
+          int res = Integer.MAX_VALUE;
+          if (word1.charAt(i1) == word2.charAt(i2))
+              res = Math.min(res, dp(word1, word2, i1 + 1, i2 + 1, memo));
+          else {
+              res = Math.min(res, 1 + dp(word1, word2, i1, i2 + 1, memo));
+              res = Math.min(res, 1 + dp(word1, word2, i1 + 1, i2, memo));
+              res = Math.min(res, 1 + dp(word1, word2, i1 + 1, i2 + 1, memo));
+          }
+          memo[i1][i2] = res;
+          return res;
+      }
+  }
+  ```
 
 ### :heart:Q300. [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
 
@@ -5550,6 +5584,8 @@
   ```
 
 ***
+
+## :bulb: Others
 
 ### :star:Q115. [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
 
