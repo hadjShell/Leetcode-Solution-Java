@@ -5446,7 +5446,7 @@
 
 * Top-down: recursion; Bottom-up: iteration
 
-* **Backtracking loops a decision tree by DFS. DP, indeed, dfs the tree too; however, it breaks down the tree to subtrees**
+* **Backtracking loops a decision tree by DFS. DP, indeed, dfs the tree too; however, it breaks down the tree to subtrees and cut off unnecessary branches**
 
 * How does DP work?
 
@@ -5511,6 +5511,34 @@
               res = Math.min(res, 1 + dp(word1, word2, i1 + 1, i2 + 1, memo));
           }
           memo[i1][i2] = res;
+          return res;
+      }
+  }
+  ```
+
+### :star:Q115. [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
+
+* ```java 
+  class Solution {
+      public int numDistinct(String s, String t) {
+          Integer[][] dp = new Integer[s.length()][t.length()];
+          return compute(s, t, 0, 0, dp);
+      }
+  
+      public int compute(String s, String t, int is, int it, Integer[][] dp) {
+          if (s.length() - is < t.length() - it)
+              return 0;
+          if (it == t.length()) {
+              return 1;
+          }
+          int res = 0;
+          if (dp[is][it] != null)
+              return dp[is][it];
+          if (s.charAt(is) != t.charAt(it))
+              res += compute(s, t, is + 1, it, dp);
+          else
+              res += compute(s, t, is + 1, it, dp) + compute(s, t, is + 1, it + 1, dp);
+          dp[is][it] = res;
           return res;
       }
   }
@@ -5583,6 +5611,36 @@
   }
   ```
 
+### Q1143. [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
+
+* ```java
+  class Solution {
+      public int longestCommonSubsequence(String text1, String text2) {
+          Integer[][] memo = new Integer[text1.length()][text2.length()];
+          return dp(text1, text2, 0, 0, memo);
+      }
+  
+      private int dp(String s1, String s2, int i1, int i2, Integer[][] memo) {
+          if (i1 == s1.length() || i2 == s2.length())
+              return 0;
+          if (memo[i1][i2] != null)
+              return memo[i1][i2];
+          
+          int res = 0;
+          if (s1.charAt(i1) == s2.charAt(i2)) {
+              res = 1 + dp(s1, s2, i1 + 1, i2 + 1, memo);
+          }
+          else {
+              res = Math.max(dp(s1, s2, i1 + 1, i2, memo), dp(s1, s2, i1, i2 + 1, memo));
+          }
+          memo[i1][i2] = res;
+          return res;
+      }
+  }
+  ```
+
+
+
 ***
 
 ## :bulb: Others
@@ -5604,34 +5662,6 @@
               max = Math.max(max, memo);
           }
           return max;
-      }
-  }
-  ```
-
-### :star:Q115. [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
-
-* ```java 
-  class Solution {
-      public int numDistinct(String s, String t) {
-          Integer[][] dp = new Integer[s.length()][t.length()];
-          return compute(s, t, 0, 0, dp);
-      }
-  
-      public int compute(String s, String t, int is, int it, Integer[][] dp) {
-          if (s.length() - is < t.length() - it)
-              return 0;
-          if (it == t.length()) {
-              return 1;
-          }
-          int res = 0;
-          if (dp[is][it] != null)
-              return dp[is][it];
-          if (s.charAt(is) != t.charAt(it))
-              res += compute(s, t, is + 1, it, dp);
-          else
-              res += compute(s, t, is + 1, it, dp) + compute(s, t, is + 1, it + 1, dp);
-          dp[is][it] = res;
-          return res;
       }
   }
   ```
