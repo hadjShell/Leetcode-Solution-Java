@@ -5484,38 +5484,6 @@
 
 ## :bulb: Subsequence
 
-### :star:Q72. [Edit Distance](https://leetcode.com/problems/edit-distance/)
-
-* ```java
-  class Solution {
-      public int minDistance(String word1, String word2) {
-          StringBuilder sb = new StringBuilder(word1);
-          Integer[][] memo = new Integer[word1.length()][word2.length()];
-          return dp(word1, word2, 0, 0, memo);
-      }
-  
-      private int dp(String word1, String word2, int i1, int i2, Integer[][] memo) {
-          if (i1 == word1.length())
-              return word2.length() - i2;
-          if (i2 == word2.length())
-              return word1.length() - i1;
-          if (memo[i1][i2] != null)
-              return memo[i1][i2];
-          
-          int res = Integer.MAX_VALUE;
-          if (word1.charAt(i1) == word2.charAt(i2))
-              res = Math.min(res, dp(word1, word2, i1 + 1, i2 + 1, memo));
-          else {
-              res = Math.min(res, 1 + dp(word1, word2, i1, i2 + 1, memo));
-              res = Math.min(res, 1 + dp(word1, word2, i1 + 1, i2, memo));
-              res = Math.min(res, 1 + dp(word1, word2, i1 + 1, i2 + 1, memo));
-          }
-          memo[i1][i2] = res;
-          return res;
-      }
-  }
-  ```
-
 ### :star:Q115. [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
 
 * ```java 
@@ -5640,6 +5608,38 @@
   }
   ```
 
+### :star:Q72. [Edit Distance](https://leetcode.com/problems/edit-distance/)
+
+* ```java
+  class Solution {
+      public int minDistance(String word1, String word2) {
+          StringBuilder sb = new StringBuilder(word1);
+          Integer[][] memo = new Integer[word1.length()][word2.length()];
+          return dp(word1, word2, 0, 0, memo);
+      }
+  
+      private int dp(String word1, String word2, int i1, int i2, Integer[][] memo) {
+          if (i1 == word1.length())
+              return word2.length() - i2;
+          if (i2 == word2.length())
+              return word1.length() - i1;
+          if (memo[i1][i2] != null)
+              return memo[i1][i2];
+          
+          int res = Integer.MAX_VALUE;
+          if (word1.charAt(i1) == word2.charAt(i2))
+              res = Math.min(res, dp(word1, word2, i1 + 1, i2 + 1, memo));
+          else {
+              res = Math.min(res, 1 + dp(word1, word2, i1, i2 + 1, memo));
+              res = Math.min(res, 1 + dp(word1, word2, i1 + 1, i2, memo));
+              res = Math.min(res, 1 + dp(word1, word2, i1 + 1, i2 + 1, memo));
+          }
+          memo[i1][i2] = res;
+         return res;
+      }
+  }
+  ```
+
 ### Q583. [Delete Operation for Two Strings](https://leetcode.com/problems/delete-operation-for-two-strings/)
 
 * Variation of Q1143. or Q72
@@ -5701,7 +5701,45 @@
   }
   ```
 
+### Q712. [Minimum ASCII Delete Sum for Two Strings](https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/)
 
+* Variation of LCS
+
+* ```java
+  class Solution {
+      public int minimumDeleteSum(String word1, String word2) {
+          Integer[][] memo = new Integer[word1.length() + 1][word2.length() + 1];
+          return dp(word1, word2, 0, 0, memo);
+      }
+  
+      private int dp(String word1, String word2, int i1, int i2, Integer[][] memo) {
+          if (memo[i1][i2] != null)
+              return memo[i1][i2];
+          int res = 0;
+          if (i1 == word1.length()) {
+              for (int i = i2; i < word2.length(); i++)
+                  res += word2.charAt(i);
+              memo[i1][i2] = res;
+              return res;
+          }
+          if (i2 == word2.length()) {
+              for (int i = i1; i < word1.length(); i++)
+                  res += word1.charAt(i);
+              memo[i1][i2] = res;
+              return res;
+          }
+          
+          if (word1.charAt(i1) == word2.charAt(i2))
+              res = dp(word1, word2, i1 + 1, i2 + 1, memo);
+          else {
+              res = Math.min(word1.charAt(i1) + dp(word1, word2, i1 + 1, i2, memo), 
+                              word2.charAt(i2) + dp(word1, word2, i1, i2 + 1, memo));
+          }
+          memo[i1][i2] = res;
+          return res;
+      }
+  }
+  ```
 
 ***
 
