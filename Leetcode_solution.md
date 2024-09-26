@@ -2352,6 +2352,34 @@
 
 # Queue
 
+### :heart:Q649. [Dota2 Senate](https://leetcode.com/problems/dota2-senate/)
+
+* ```java
+  class Solution {
+      public String predictPartyVictory(String senate) {
+          Deque<Integer> radiantIndices = new ArrayDeque<>(), direIndices = new ArrayDeque<>();
+          int n = senate.length();
+          for (int i = 0; i < n; i++) {
+              if (senate.charAt(i) == 'R') {
+                  radiantIndices.offer(i);
+              } else if (senate.charAt(i) == 'D') {
+                  direIndices.offer(i);
+              }
+          }
+  
+          while (!radiantIndices.isEmpty() && !direIndices.isEmpty()) {
+              if (radiantIndices.poll() < direIndices.poll()) {
+                  radiantIndices.offer(n++);
+              } else {
+                  direIndices.offer(n++);
+              }
+          }
+  
+          return radiantIndices.isEmpty() ? "Dire" : "Radiant";
+      }
+  }
+  ```
+
 ### Q933. [Number of Recent Calls](https://leetcode.com/problems/number-of-recent-calls/)
 
 * ```java
