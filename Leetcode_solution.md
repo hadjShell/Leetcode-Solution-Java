@@ -3267,6 +3267,51 @@
   }
   ```
 
+### Q729. [My Calendar I](https://leetcode.com/problems/my-calendar-i/)
+
+* ```java
+  class MyCalendar {
+      List<int[]> booked;
+  
+      public MyCalendar() {
+          booked = new ArrayList();
+      }
+      
+      public boolean book(int start, int end) {
+          int[] time = {start, end};
+          if (booked.isEmpty()) {
+              booked.add(time);
+              return true;
+          }
+          int index = Collections.binarySearch(booked, time, (a, b) -> a[0] - b[0]);
+          if (index < 0) {
+              index = -1 * index - 1;
+              if (index == 0) {
+                  if (end <= booked.get(index)[0]) {
+                      booked.add(index, time);
+                      return true;
+                  }
+                  else
+                      return false;
+              }
+              else if (index == booked.size()) {
+                  if (start >= booked.get(index - 1)[1]) {
+                      booked.add(index, time);
+                      return true;
+                  }
+                  else
+                      return false;
+              }
+              else if (start >= booked.get(index - 1)[1] && end <= booked.get(index)[0]) {
+                  booked.add(index, time);
+                  return true;
+              }
+          }
+          return false;
+      }
+  }
+  ```
+
 # Binary Tree
 
 ## :bulb:DFS
