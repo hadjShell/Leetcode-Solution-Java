@@ -2528,6 +2528,38 @@
   }
   ```
 
+### Q1679. [Max Number of K-Sum Pairs](https://leetcode.com/problems/max-number-of-k-sum-pairs/)
+
+* ```java
+  class Solution {
+      public int maxOperations(int[] nums, int k) {
+          Map<Integer, Integer> freq = new HashMap();
+          for (int n : nums) {
+              freq.put(n, freq.getOrDefault(n, 0) + 1);
+          }
+          int[] max = new int[1];
+          freq.forEach((key, value) -> {
+              if (freq.containsKey(k - key)) {
+                  if (key == k - key) {
+                      int a = freq.get(key);
+                      int remove = a / 2;
+                      max[0] += remove;
+                      freq.put(key, a % 2);
+                  }
+                  else {
+                      int a = freq.get(key), b = freq.get(k - key);
+                      int remove = Math.min(a, b);
+                      max[0] += remove;
+                      freq.put(key, a - remove);
+                      freq.put(k - key, b - remove);
+                  }
+              }
+          });
+          return max[0];
+      }
+  }
+  ```
+
 ### Q2215. [Find the Difference of Two Arrays](https://leetcode.com/problems/find-the-difference-of-two-arrays/)
 
 * ```java
@@ -5774,6 +5806,12 @@
       }
   }
   ```
+
+***
+
+## :bulb: Backpack Problem
+
+
 
 ***
 
