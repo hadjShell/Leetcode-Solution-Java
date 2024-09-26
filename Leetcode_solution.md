@@ -5741,6 +5741,40 @@
   }
   ```
 
+### Q516. [Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/)
+
+* Variation of LCS
+
+* ```java
+  class Solution {
+      public int longestPalindromeSubseq(String s) {
+          return LCS(s, new StringBuilder(s).reverse().toString());
+      }
+  
+      public int LCS(String text1, String text2) {
+          Integer[][] memo = new Integer[text1.length()][text2.length()];
+          return dp(text1, text2, 0, 0, memo);
+      }
+  
+      private int dp(String s1, String s2, int i1, int i2, Integer[][] memo) {
+          if (i1 == s1.length() || i2 == s2.length())
+              return 0;
+          if (memo[i1][i2] != null)
+              return memo[i1][i2];
+          
+          int res = 0;
+          if (s1.charAt(i1) == s2.charAt(i2)) {
+              res = 1 + dp(s1, s2, i1 + 1, i2 + 1, memo);
+          }
+          else {
+              res = Math.max(dp(s1, s2, i1 + 1, i2, memo), dp(s1, s2, i1, i2 + 1, memo));
+          }
+          memo[i1][i2] = res;
+          return res;
+      }
+  }
+  ```
+
 ***
 
 ## :bulb: Others
