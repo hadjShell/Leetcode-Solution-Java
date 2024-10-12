@@ -5882,10 +5882,42 @@
 
 ***
 
-## :bulb: Backpack Problem
+## :bulb: Knapsack Problem
 
 * The definition of `memo`
   * `memo[i][w]`: for first `i` items, if the volumn of the backpack is `w`, the maximum value it can hold is `memo[i][w]`
+
+### Q416. [Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)
+
+* ```java
+  class Solution {
+      public boolean canPartition(int[] nums) {
+          int sum = 0;
+          for (int n : nums) {
+              sum += n;
+          }
+          if (sum % 2 == 1)
+              return false;
+          Boolean[][] memo = new Boolean[nums.length][sum / 2 + 1];
+          return dp(0, sum / 2, nums, memo);
+      }
+  
+      private boolean dp(int i, int sum, int[] nums, Boolean[][] memo) {
+          if (sum == 0)
+              return true;
+          else if (i == nums.length)
+              return false;
+          if (memo[i][sum] != null)
+              return memo[i][sum];
+          
+          boolean res = dp(i + 1, sum, nums, memo);
+          if (nums[i] > sum)
+              return memo[i][sum] = res;
+          else 
+              return memo[i][sum] = dp(i + 1, sum - nums[i], nums, memo) || res;
+      }
+  }
+  ```
 
 ### :star:Q1235. [Maximum Profit in Job Scheduling](https://leetcode.com/problems/maximum-profit-in-job-scheduling/)
 
