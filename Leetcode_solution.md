@@ -5884,7 +5884,54 @@
 
 ## :bulb: Backpack Problem
 
+* The definition of `memo`
+  * `memo[i][w]`: for first `i` items, if the volumn of the backpack is `w`, the maximum value it can hold is `memo[i][w]`
 
+### :star:Q1235. [Maximum Profit in Job Scheduling](https://leetcode.com/problems/maximum-profit-in-job-scheduling/)
+
+* ```java
+  class Solution {
+      public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
+          // Sort by the start time
+          List<int[]> st = new ArrayList();
+          for (int i = 0; i < startTime.length; i++) {
+              st.add(new int[] {startTime[i], i});
+          }
+          Collections.sort(st, (a , b) -> a[0] - b[0]);
+          int size = profit.length;
+          int[] sortedStart = new int[size];
+          int[] sortedEnd = new int[size];
+          int[] sortedProfit = new int[size];
+          for (int i = 0; i < size; i++) {
+              sortedStart[i] = startTime[st.get(i)[1]];
+              sortedEnd[i] = endTime[st.get(i)[1]];
+              sortedProfit[i] = profit[st.get(i)[1]];
+          }
+          // DP
+          // Max profit start at and include index i job
+          Integer[] memo = new Integer[profit.length];
+          return dp(0, memo, sortedStart, sortedEnd, sortedProfit);
+      }
+  
+      public int dp(int i, Integer[] memo, int[] start, int[] end, int[] profit) {
+          if (i == memo.length)
+              return 0;
+          if (memo[i] != null)
+              return memo[i];
+          // find next available job
+          int nextStart = Arrays.binarySearch(start, end[i]);
+          if (nextStart < 0)
+              nextStart = -1 * nextStart - 1;
+          else {
+              while (start[nextStart] == end[i])
+                  nextStart--;
+              nextStart++;
+          }
+          return memo[i] = Math.max(dp(i + 1, memo, start, end, profit), 
+                          dp(nextStart, memo, start, end, profit) + profit[i]);
+      }
+  }
+  ```
 
 ***
 
