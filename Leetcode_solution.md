@@ -5609,7 +5609,122 @@
   }
   ```
 
+### Q509. [Fibonacci Number](https://leetcode.com/problems/fibonacci-number/)
 
+* ```java
+  class Solution {
+      public int fib(int n) {
+          if (n == 0 || n == 1)
+              return n;
+          int a = 0, b = 1;
+          for (int i = 2; i <= n; i++) {
+              b += a;
+              a = b - a;
+          }
+          return b;
+      }
+  }
+  ```
+
+### Q746. [Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/)
+
+* ```java
+  class Solution {
+      public int minCostClimbingStairs(int[] cost) {
+          // minimal cost to start from a stair
+          int[] dp = new int[cost.length];
+          dp[0] = cost[0];
+          dp[1] = cost[1];
+          for (int i = 2; i < dp.length; i++) {
+              dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i];
+          }
+          return Math.min(dp[dp.length - 1], dp[dp.length - 2]);
+      }
+  }
+  ```
+
+### Q1137. [N-th Tribonacci Number](https://leetcode.com/problems/n-th-tribonacci-number/)
+
+* ```java
+  class Solution {
+      public int tribonacci(int n) {
+          if (n == 0)
+              return 0;
+          if (n == 1)
+              return 1;
+          if (n == 2)
+              return 1;
+          int[] dp = new int[n + 1];
+          dp[0] = 0;
+          dp[1] = 1;
+          dp[2] = 1;
+          for (int i = 3; i <= n; i++) {
+              dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];
+          }
+          return dp[n];
+      }
+  }
+  ```
+
+## :bulb: House Robber
+
+### :star:Q198. [House Robber](https://leetcode.com/problems/house-robber/)
+
+* ```java
+  class Solution {
+      public int rob(int[] nums) {
+          // the maxmimum money if you rob this house and stopped
+          int[] dp = new int [nums.length];
+          dp[0] = nums[0];
+          for (int i = 1; i < dp.length; i++) {
+              int prevMax = 0;
+              for (int j = 0; j < i - 1; j++) {
+                  prevMax = Math.max(prevMax, dp[j]);
+              }
+              dp[i] = prevMax + nums[i];
+          }
+          int max = 0;
+          for (int i = 0; i < dp.length; i++) {
+              max = Math.max(max, dp[i]);
+          }
+          return max;
+      }
+  }
+  ```
+
+### :heart:Q740. [Delete and Earn](https://leetcode.com/problems/delete-and-earn/)
+
+* ```java
+  class Solution {
+      public int deleteAndEarn(int[] nums) {
+          // Step 1: Find the maximum number in the array
+          int maxVal = 0;
+          for (int num : nums) {
+              maxVal = Math.max(maxVal, num);
+          }
+  
+          // Step 2: Create a points array to hold the total points for each number
+          int[] points = new int[maxVal + 1];
+          for (int num : nums) {
+              points[num] += num;  // Accumulate points for each number
+          }
+  
+          // Step 3: Apply DP to decide pick or not pick
+          int[] dp = new int[maxVal + 1];
+          
+          dp[0] = points[0];
+          dp[1] = points[1]; // Base case
+  
+          for (int i = 2; i <= maxVal; i++) {
+              // Either pick this number (points[i] + dp[i-2]) or don't pick it (dp[i-1])
+              dp[i] = Math.max(dp[i - 1], points[i] + dp[i - 2]);
+          }
+  
+          // Step 4: The last element in dp[] will contain the answer
+          return dp[maxVal];
+      }
+  }
+  ```
 
 ## :bulb: Subsequence
 
@@ -6268,30 +6383,6 @@
   }
   ```
 
-### Q198. [House Robber](https://leetcode.com/problems/house-robber/)
-
-* ```java
-  class Solution {
-      public int rob(int[] nums) {
-          // the maxmimum money if you rob this house and stopped
-          int[] dp = new int [nums.length];
-          dp[0] = nums[0];
-          for (int i = 1; i < dp.length; i++) {
-              int prevMax = 0;
-              for (int j = 0; j < i - 1; j++) {
-                  prevMax = Math.max(prevMax, dp[j]);
-              }
-              dp[i] = prevMax + nums[i];
-          }
-          int max = 0;
-          for (int i = 0; i < dp.length; i++) {
-              max = Math.max(max, dp[i]);
-          }
-          return max;
-      }
-  }
-  ```
-
 ### :heart:Q241. [Different Ways to Add Parentheses](https://leetcode.com/problems/different-ways-to-add-parentheses/)
 
 * ```java
@@ -6388,40 +6479,6 @@
   }
   ```
 
-### Q509. [Fibonacci Number](https://leetcode.com/problems/fibonacci-number/)
-
-* ```java
-  class Solution {
-      public int fib(int n) {
-          if (n == 0 || n == 1)
-              return n;
-          int a = 0, b = 1;
-          for (int i = 2; i <= n; i++) {
-              b += a;
-              a = b - a;
-          }
-          return b;
-      }
-  }
-  ```
-
-### Q746. [Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/)
-
-* ```java
-  class Solution {
-      public int minCostClimbingStairs(int[] cost) {
-          // minimal cost to start from a stair
-          int[] dp = new int[cost.length];
-          dp[0] = cost[0];
-          dp[1] = cost[1];
-          for (int i = 2; i < dp.length; i++) {
-              dp[i] = Math.min(dp[i - 1], dp[i - 2]) + cost[i];
-          }
-          return Math.min(dp[dp.length - 1], dp[dp.length - 2]);
-      }
-  }
-  ```
-
 ### :star:Q790. [Domino and Tromino Tiling](https://leetcode.com/problems/domino-and-tromino-tiling/)
 
 * ```java
@@ -6471,29 +6528,6 @@
               path = Math.min(path, dp(matrix, i + 1, j + 1, memo));
           memo[i][j] = matrix[i][j] + path;
           return memo[i][j];
-      }
-  }
-  ```
-
-### Q1137. [N-th Tribonacci Number](https://leetcode.com/problems/n-th-tribonacci-number/)
-
-* ```java
-  class Solution {
-      public int tribonacci(int n) {
-          if (n == 0)
-              return 0;
-          if (n == 1)
-              return 1;
-          if (n == 2)
-              return 1;
-          int[] dp = new int[n + 1];
-          dp[0] = 0;
-          dp[1] = 1;
-          dp[2] = 1;
-          for (int i = 3; i <= n; i++) {
-              dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];
-          }
-          return dp[n];
       }
   }
   ```
