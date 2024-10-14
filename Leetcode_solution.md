@@ -5587,6 +5587,30 @@
 
 * Sometimes we can optimise the space complexity of DP by compressing the 2D memoization to 1D
 
+## :bulb: Fibonacci Style
+
+### Q70. [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
+
+* ```java
+  class Solution {
+      public int climbStairs(int n) {
+          if (n == 1)
+              return 1;
+          if (n == 2)
+              return 2;
+          int a = 1, b = 2, c = 0;
+          for (int i = 3; i <= n; i++) {
+              c = a + b;
+              a = b;
+              b = c;
+          }
+          return c;
+      }
+  }
+  ```
+
+
+
 ## :bulb: Subsequence
 
 ### :star:Q115. [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
