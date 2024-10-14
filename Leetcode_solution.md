@@ -5890,6 +5890,7 @@
   * The range of the optional items
 * The definition of `memo`
   * `memo[w][i]`: for first `i` items, if the volume of the backpack is `w`, the maximum value it can hold is `memo[w][i]`
+* Sometimes an item can only be picked once; sometimes it can be picked multiple times
 
 ### Q279. [Perfect Squares](https://leetcode.com/problems/perfect-squares/)
 
@@ -5912,6 +5913,33 @@
           if (n >= square)
               res = Math.min(res, 1 + dp(n - square, i, memo));
           return memo[n][i] = res;
+      }
+  }
+  ```
+
+### :star:Q377. [Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/)
+
+* ```java
+  class Solution {
+      public int combinationSum4(int[] nums, int target) {
+          Integer[] memo = new Integer[target + 1];
+          return dp(target, nums, memo);
+      }
+  
+      private int dp(int target,int nums[], Integer[] memo) {
+          if (target == 0)
+              return 1;
+          if (memo[target] != null)
+              return memo[target];
+  
+          int res = 0;
+          for (int num : nums) {
+              if (target < num)
+                  continue;
+              res += dp(target - num, nums, memo);
+          }
+          
+          return memo[target] = res;
       }
   }
   ```
