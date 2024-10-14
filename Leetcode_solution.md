@@ -5976,6 +5976,36 @@
   }
   ```
 
+### :star:Q474. [Ones and Zeroes](https://leetcode.com/problems/ones-and-zeroes/)
+
+* ```java
+  class Solution {
+      public int findMaxForm(String[] strs, int m, int n) {
+          Integer[][][] memo = new Integer[m + 1][n + 1][strs.length + 1];
+          return dp(m, n, strs.length, strs, memo);
+      }
+  
+      private int dp(int m, int n, int range, String[] strs, Integer[][][] memo) {
+          if (m < 0 || n < 0)
+              return Integer.MIN_VALUE;
+          if (range == 0)
+              return 0;
+          if (memo[m][n][range] != null)
+              return memo[m][n][range];
+          
+          String s = strs[range - 1];
+          int zero = 0, one = 0;
+          for (char c : s.toCharArray()) {
+              if (c == '1')
+                  one++;
+              else
+                  zero++;
+          }
+          return memo[m][n][range] = Math.max(dp(m, n, range - 1, strs, memo), 1 + dp(m - zero, n - one, range - 1, strs, memo));
+      }
+  }
+  ```
+
 ### Q494. [Target Sum](https://leetcode.com/problems/target-sum/)
 
 * ```java
