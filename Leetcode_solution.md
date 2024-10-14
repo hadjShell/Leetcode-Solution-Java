@@ -5923,7 +5923,27 @@
   }
   ```
 
-### Q494. 
+### Q494. [Target Sum](https://leetcode.com/problems/target-sum/)
+
+* ```java
+  class Solution {
+      public int findTargetSumWays(int[] nums, int target) {
+          Integer[][] memo = new Integer[4001][nums.length + 1];
+          // target [-2000, 2000]
+          return dp(target, nums.length, nums, memo);
+      }
+  
+      private int dp(int target, int range, int[] nums, Integer[][] memo) {
+          if (range == 0) 
+              return target == 0 ? 1 : 0;
+          if (memo[target + 2000][range] != null)
+              return memo[target + 2000][range];
+          
+          int num = nums[range - 1];
+          return memo[target + 2000][range] = dp(target + num, range - 1, nums, memo) + dp(target - num, range - 1, nums, memo);
+      }
+  }
+  ```
 
 ### :star:Q518. [Coin Change II](https://leetcode.com/problems/coin-change-ii/)
 
