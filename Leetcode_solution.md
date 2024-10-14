@@ -5884,8 +5884,12 @@
 
 ## :bulb: Knapsack Problem
 
+* 2D DP
+* Two states
+  * The volume of the backpack
+  * The range of the optional items
 * The definition of `memo`
-  * `memo[i][w]`: for first `i` items, if the volumn of the backpack is `w`, the maximum value it can hold is `memo[i][w]`
+  * `memo[w][i]`: for first `i` items, if the volume of the backpack is `w`, the maximum value it can hold is `memo[w][i]`
 
 ### Q416. [Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)
 
@@ -5915,6 +5919,35 @@
               return memo[i][sum] = res;
           else 
               return memo[i][sum] = dp(i + 1, sum - nums[i], nums, memo) || res;
+      }
+  }
+  ```
+
+### Q494. 
+
+### :star:Q518. [Coin Change II](https://leetcode.com/problems/coin-change-ii/)
+
+* ```java
+  class Solution {
+      public int change(int amount, int[] coins) {
+          Integer[][] memo = new Integer[amount + 1][coins.length + 1];
+          return dp(amount, coins.length, coins, memo);
+      }
+  
+      private int dp(int amount, int cnt, int[] coins, Integer[][] memo) {
+          if (amount == 0)
+              return 1;
+          if (cnt == 0)
+              return 0;
+          if (memo[amount][cnt] != null)
+              return memo[amount][cnt];
+          
+          int res = 0, coin = coins[cnt - 1]; 
+          if (coin > amount)
+              res = dp(amount, cnt - 1, coins, memo);
+          else
+              res = dp(amount - coin, cnt, coins, memo) + dp(amount, cnt - 1, coins, memo);
+          return memo[amount][cnt] = res;
       }
   }
   ```
