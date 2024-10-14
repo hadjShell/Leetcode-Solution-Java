@@ -5891,6 +5891,31 @@
 * The definition of `memo`
   * `memo[w][i]`: for first `i` items, if the volume of the backpack is `w`, the maximum value it can hold is `memo[w][i]`
 
+### Q279. [Perfect Squares](https://leetcode.com/problems/perfect-squares/)
+
+* ```java
+  class Solution {
+      public int numSquares(int n) {
+          Integer[][] memo = new Integer[n + 1][101];
+          return dp(n, 100, memo);
+      }
+  
+      private int dp(int n, int i, Integer[][] memo) {
+          if (n == 0)
+              return 0;
+          if (i == 0)
+              return Integer.MAX_VALUE;
+          if (memo[n][i] != null)
+              return memo[n][i];
+          
+          int square = i * i, res = dp(n, i - 1, memo);
+          if (n >= square)
+              res = Math.min(res, 1 + dp(n - square, i, memo));
+          return memo[n][i] = res;
+      }
+  }
+  ```
+
 ### Q416. [Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)
 
 * ```java
