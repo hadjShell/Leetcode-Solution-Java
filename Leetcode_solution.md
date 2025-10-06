@@ -1,5 +1,40 @@
 # Array
 
+### Q88. [Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)
+
+* ```java
+  class Solution {
+      public void merge(int[] nums1, int m, int[] nums2, int n) {
+          if (n == 0)
+              return;
+          
+          if (m == 0) {
+              for (int i = 0; i < n; i++)
+                  nums1[i] = nums2[i];
+              return;
+          }
+  
+          // move all prefix 0 in nums1 to suffix 0
+          for (int j = m + n - 1; j >= n; j--) {
+              nums1[j] = nums1[j - n];
+          }
+          for (int j = 0; j < n; j++)
+              nums1[j] = 0;
+          
+          int a1 = n, a2 = 0, a = 0;
+          while (a1 < m + n && a2 < n) {
+              if (nums1[a1] <= nums2[a2])
+                  nums1[a++] = nums1[a1++];
+              else
+                  nums1[a++] = nums2[a2++];
+          }
+          while (a2 < n) {
+              nums1[a++] = nums2[a2++];
+          }
+  
+      }
+  }
+
 ### Q539. [Minimum Time Difference](https://leetcode.com/problems/minimum-time-difference/)
 
 * ```java
@@ -5069,6 +5104,12 @@
   }
   ```
 
+# Heap
+
+# Trie
+
+
+
 # Recursion
 
 ### :star:Q880. [Decoded String at Index](https://leetcode.com/problems/decoded-string-at-index/)
@@ -6826,48 +6867,6 @@ public int removeDuplicates(int[] nums) {
         cur++;
     }
     return ret;
-}
-```
-
-***
-
-## Question 27
-
-*Remove Element*
-
-### Description
-
-Given an integer array `nums` and an integer `val`, remove all occurrences of `val` in `nums` [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm). The relative order of the elements may be changed.
-
-Return `k` *after placing the final result in the first* `k` *slots of* `nums`.
-
-### Example
-
-```markdown
-Input: nums = [0,1,2,2,3,0,4,2], val = 2
-Output: 5, nums = [0,1,4,0,3,_,_,_]
-Explanation: Your function should return k = 5, with the first five elements of nums containing 0, 0, 1, 3, and 4.
-Note that the five elements can be returned in any order.
-It does not matter what you leave beyond the returned k (hence they are underscores).
-```
-
-### Solution
-
-* Two pointers
-
-```java
-public int removeElement(int[] nums, int val) {
-    int i = 0, j = nums.length - 1;
-    while(i <= j) {
-        if(nums[i] != val)
-            i++;
-        else {
-            nums[i] = nums[j];
-            nums[j] = val;
-            j--;
-        }
-    }
-    return j + 1;
 }
 ```
 
