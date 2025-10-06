@@ -1,5 +1,27 @@
 # Array
 
+### Q27. [Remove Element](https://leetcode.com/problems/remove-element/)
+
+* ```java
+  class Solution {
+      public int removeElement(int[] nums, int val) {
+          if (nums.length == 0)
+              return 0;
+          
+          int k = 0, size = nums.length, i = 0;
+          while (i < size - k) {
+              if (nums[i] == val) {
+                  nums[i] = nums[size - 1 - k];
+                  k++;
+              }
+              else
+                  i++;
+          }
+          return size - k;
+      }
+  }
+  ```
+
 ### Q88. [Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)
 
 * ```java
