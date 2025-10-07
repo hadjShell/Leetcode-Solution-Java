@@ -5,6 +5,7 @@
 * Partition - 同类项分组一起看，改变顺序可能便于处理
 * Forward and backward - 正看反看 + 分段看
 * In-place - 合理利用废空间（无用信息位或者已处理信息位）
+* Bucket - suitable when elements' values are within a range
 
 ### Q26. [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
 
@@ -191,6 +192,29 @@
               start++;
               end--;
           }
+      }
+  }
+  ```
+
+### :star:Q274. [H-Index](https://leetcode.com/problems/h-index/)
+
+* ```java
+  class Solution {
+      public int hIndex(int[] citations) {
+          int[] buckets = new int[1001];
+          for(int i: citations) {
+              buckets[i]++;
+          }
+  
+          int count = 0, i = 1000;
+          while(i > 0) {
+              count += buckets[i];
+              if(count >= i) return i;
+  
+              i--;
+          }
+  
+          return 0;
       }
   }
   ```
