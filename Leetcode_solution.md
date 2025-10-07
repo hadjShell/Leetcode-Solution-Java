@@ -1,5 +1,22 @@
 # Array
 
+### Q26. [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
+
+* ```java
+  class Solution {
+      public int removeDuplicates(int[] nums) {
+          int k = 1, prev = nums[0];
+          for (int i = 1; i < nums.length; i++) {
+              if (nums[i] != prev) {
+                  nums[k++] = nums[i];
+                  prev = nums[i];
+              } 
+          }
+          return k;
+      }
+  }
+  ```
+
 ### Q27. [Remove Element](https://leetcode.com/problems/remove-element/)
 
 * ```java
