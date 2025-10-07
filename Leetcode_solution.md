@@ -7,6 +7,10 @@
 * In-place - 合理利用废空间（无用信息位或者已处理信息位）
 * Bucket - suitable when elements' values are within a range
 
+***
+
+## :bulb:1D Array
+
 ### Q26. [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
 
 * ```java
@@ -2622,6 +2626,31 @@
 # HashTable
 
 * If the values of key are limited, array instead of hash table can be used to increase the performance
+
+### Q13. [Roman to Integer](https://leetcode.com/problems/roman-to-integer/)
+
+* ```java
+  class Solution {
+      public int romanToInt(String s) {
+          Map<Character, Integer> map = Map.of(
+              'I', 1, 'V', 5, 'X', 10,
+              'L', 50, 'C', 100, 'D', 500, 'M', 1000
+          );
+  
+          char[] cs = s.toCharArray();
+          int result = map.get(cs[0]);
+          for (int i = 1; i < cs.length; i++) {
+              int val = map.get(cs[i]), prev = map.get(cs[i - 1]);
+              if (val > prev)
+                  result = result - prev * 2 + val;
+              else 
+                  result += val;
+          }
+  
+          return result;
+      }
+  }
+  ```
 
 ### Q187. [Repeated DNA Sequences](https://leetcode.com/problems/repeated-dna-sequences/)
 
