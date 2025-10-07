@@ -98,6 +98,38 @@
       }
   }
 
+### :star:Q169. [Majority Element](https://leetcode.com/problems/majority-element/)
+
+* ```java
+  class Solution {
+      public int majorityElement(int[] nums) {
+          // brute-force: hashmap     time: O(n)  space: O(n)
+          // sort and count           time: O(nlogn)  space: O(1)
+          // aim: O(n), O(1)  				Boyer–Moore majority vote algorithm
+          // start with thinking of two elements A and B, add and subtract 1 in the loop
+          // then expand to majority A and others, add and subtract 1, same concept
+          int majority = nums[0], count = 1;
+          for (int i = 1; i < nums.length; i++) {
+              if (nums[i] == majority)
+                  count++;
+              else {
+                  if (count == 0) {
+                      majority = nums[i];
+                      count = 1;
+                  }
+                  else
+                      count--;
+              }
+          }
+          return majority;
+      }
+  }
+  ```
+
+* [Boyer–Moore majority vote algorithm](https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_majority_vote_algorithm)
+
+> If a second pass is not performed and there is no majority, the algorithm will not detect that no majority exists.
+
 ### Q539. [Minimum Time Difference](https://leetcode.com/problems/minimum-time-difference/)
 
 * ```java
