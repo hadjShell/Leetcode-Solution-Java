@@ -1,5 +1,11 @@
 # Array
 
+## Tricks
+
+* Partition - 同类项分组一起看，改变顺序可能便于处理
+* Forward and backward - 正看反看 + 分段看
+* In-place - 合理利用废空间（无用信息位或者已处理信息位）
+
 ### Q26. [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
 
 * ```java
@@ -129,6 +135,31 @@
 * [Boyer–Moore majority vote algorithm](https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_majority_vote_algorithm)
 
 > If a second pass is not performed and there is no majority, the algorithm will not detect that no majority exists.
+
+### Q189. [Rotate Array](https://leetcode.com/problems/rotate-array/)
+
+* ```java
+  class Solution {
+      public void rotate(int[] nums, int k) {
+          int size = nums.length;
+          k = k % size;
+          
+          reverse(nums, 0, size - 1);
+          reverse(nums, 0, k - 1);
+          reverse(nums, k, size - 1);
+      }
+  
+      private void reverse(int[] nums, int start, int end) {
+          while (start < end) {
+              int tmp = nums[start];
+              nums[start] = nums[end];
+              nums[end] = tmp;
+              start++;
+              end--;
+          }
+      }
+  }
+  ```
 
 ### Q539. [Minimum Time Difference](https://leetcode.com/problems/minimum-time-difference/)
 
