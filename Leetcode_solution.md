@@ -104,6 +104,24 @@
       }
   }
 
+### Q121. [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+
+* ```java
+  class Solution {
+      public int maxProfit(int[] prices) {
+          int profit = 0, min = prices[0];
+          for (int i = 0; i < prices.length; i++) {
+              int p = prices[i] - min;
+              if (p < 0)
+                  min = prices[i];
+              else 
+                  profit = Math.max(profit, p);
+          }
+          return profit;
+      }
+  }
+  ```
+
 ### :star:Q169. [Majority Element](https://leetcode.com/problems/majority-element/)
 
 * ```java
