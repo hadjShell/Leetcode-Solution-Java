@@ -122,6 +122,22 @@
   }
   ```
 
+### Q122. [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
+
+* ```java
+  class Solution {
+      public int maxProfit(int[] prices) {
+          int profit = 0;
+          for (int i = 1; i < prices.length; i++) {
+              int p = prices[i] - prices[i - 1];
+              if (p > 0)
+                  profit += p;
+          }
+          return profit;
+      }
+  }
+  ```
+
 ### :star:Q169. [Majority Element](https://leetcode.com/problems/majority-element/)
 
 * ```java
