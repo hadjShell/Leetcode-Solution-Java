@@ -223,6 +223,66 @@
   }
   ```
 
+### :star:Q380. [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/)
+
+* ```java
+  class RandomizedSet {
+      public static final int SIZE = 200_001;
+      
+      private Map<Integer, Integer> valToIndexMap;
+      private int[] vals;
+      private int size;
+  
+      public RandomizedSet() {
+          this.valToIndexMap = new HashMap<Integer,Integer>();
+          this.vals = new int[SIZE];
+          this.size = 0;
+      }
+      
+      public boolean insert(int val) {
+          if (valToIndexMap.containsKey(val))
+              return false;
+          else {
+              valToIndexMap.put(val, size);
+              vals[size++] = val;
+              return true;
+          }
+      }
+      
+      public boolean remove(int val) {
+          if (valToIndexMap.containsKey(val)) {
+              int index = valToIndexMap.get(val);
+              int lastElement = vals[size - 1];
+              vals[index] = lastElement;
+              valToIndexMap.put(lastElement, index);
+              valToIndexMap.remove(val);
+              size--;
+              return true;
+          }
+          else
+              return false;
+      }
+      
+      public int getRandom() {
+          int index = randomNumber(0, size);
+          return vals[index];
+      }
+  
+      private int randomNumber(int min, int max) {
+          int randomNum = min + (int)(Math.random() * (max - min));
+          return randomNum;
+      }
+  }
+  
+  /**
+   * Your RandomizedSet object will be instantiated and called as such:
+   * RandomizedSet obj = new RandomizedSet();
+   * boolean param_1 = obj.insert(val);
+   * boolean param_2 = obj.remove(val);
+   * int param_3 = obj.getRandom();
+   */
+  ```
+
 ### Q539. [Minimum Time Difference](https://leetcode.com/problems/minimum-time-difference/)
 
 * ```java
