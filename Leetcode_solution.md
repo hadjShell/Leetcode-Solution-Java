@@ -322,7 +322,7 @@
   }
   ```
 
-### :star:Q605. [Can Place Flowers](https://leetcode.com/problems/can-place-flowers/)
+### Q605. [Can Place Flowers](https://leetcode.com/problems/can-place-flowers/)
 
 * ```java
   class Solution {
@@ -975,6 +975,42 @@
               while (i < j && height[j] <= h)     j--;
           }
           return max;
+      }
+  }
+  ```
+
+### Q125. [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+
+* ```java
+  class Solution {
+      public boolean isPalindrome(String s) {
+          char[] str = s.toCharArray();
+          int start = 0, end = str.length - 1;
+          while (start < end) {
+              while (start < str.length && !isValidChar(str[start]))
+                  start++;
+              while (end >= 0 && !isValidChar(str[end]))
+                  end--;
+              if (start > end)
+                  return true;
+              if (toLowerCase(str[start]) == toLowerCase(str[end])) {
+                  start++;
+                  end--;
+              }
+              else
+                  return false;
+          }
+          return true;
+      }
+  
+      private boolean isValidChar(char c) {
+          return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9');
+      }
+  
+      private char toLowerCase(char c) {
+          if (c >= 'A' && c <= 'Z')
+              c += 32;
+          return c;
       }
   }
   ```
@@ -6875,6 +6911,8 @@
       }
   }
   ```
+
+* 曲线图思想，股票涨跌
 
 ### Q1717. [Maximum Score From Removing Substrings](https://leetcode.com/problems/maximum-score-from-removing-substrings/)
 
