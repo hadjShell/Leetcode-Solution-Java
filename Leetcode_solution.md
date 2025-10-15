@@ -1593,34 +1593,43 @@
 ### Q21. [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
 
 * ```java
+  /**
+   * Definition for singly-linked list.
+   * public class ListNode {
+   *     int val;
+   *     ListNode next;
+   *     ListNode() {}
+   *     ListNode(int val) { this.val = val; }
+   *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+   * }
+   */
   class Solution {
-      public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-          if (list1 == null)  return list2;
-          if (list2 == null)  return list1;
-  
-          ListNode head = new ListNode();
-          ListNode n = head;
-          while (list1 != null && list2 != null) {
-              if (list2.val <= list1.val) {
-                  n.next = list2;
-                  list2 = list2.next;
+      public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+          ListNode dummy = new ListNode(0);
+          ListNode head = dummy;
+          
+          while (l1 != null && l2 != null) {
+              if (l1.val > l2.val) {
+                  head.next = l2;
+                  l2 = l2.next;
               }
               else {
-                  n.next = list1;
-                  list1 = list1.next;
+                  head.next = l1;
+                  l1 = l1.next;
               }
-              n = n.next;
+              head = head.next;
           }
-          if (list1 == null)
-              n.next = list2;
-          else 
-              n.next = list1;
-          
-          return head.next;
+  
+          if (l1 == null)
+              head.next = l2;
+          if (l2 == null)
+              head.next = l1;
+  
+          return dummy.next;
       }
   }
   ```
-
+  
 * ```java
   public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
       if(l1 == null)
@@ -2882,6 +2891,61 @@
           }
   
           return result;
+      }
+  }
+  ```
+
+### Q138. [Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
+
+* ```java
+  /*
+  // Definition for a Node.
+  class Node {
+      int val;
+      Node next;
+      Node random;
+  
+      public Node(int val) {
+          this.val = val;
+          this.next = null;
+          this.random = null;
+      }
+  }
+  */
+  
+  class Solution {
+      public Node copyRandomList(Node head) {
+          if (head == null)
+              return null;
+          
+          Node dummy = new Node(0);
+          Node oldHead = head, newHead = dummy;
+          Map<Node, Node> oldNodeToNewNodeMap = new HashMap<>();
+  
+          while (oldHead != null) {
+              if (!oldNodeToNewNodeMap.containsKey(oldHead)) {
+                  Node n = new Node(oldHead.val);
+                  newHead.next = n;
+                  oldNodeToNewNodeMap.put(oldHead, n);
+              }
+              else
+                  newHead.next = oldNodeToNewNodeMap.get(oldHead);
+              newHead = newHead.next;
+  
+              if (oldHead.random != null) {
+                  if (!oldNodeToNewNodeMap.containsKey(oldHead.random)) {
+                      Node n = new Node(oldHead.random.val);
+                      newHead.random = n;
+                      oldNodeToNewNodeMap.put(oldHead.random, n);
+                  }
+                  else
+                      newHead.random = oldNodeToNewNodeMap.get(oldHead.random);
+              }
+              
+              oldHead = oldHead.next;
+          }
+  
+          return dummy.next;
       }
   }
   ```
