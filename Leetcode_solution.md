@@ -1719,6 +1719,48 @@
   }
   ```
 
+### :star:Q92. [Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)
+
+* ```java
+  /**
+   * Definition for singly-linked list.
+   * public class ListNode {
+   *     int val;
+   *     ListNode next;
+   *     ListNode() {}
+   *     ListNode(int val) { this.val = val; }
+   *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+   * }
+   */
+  class Solution {
+      public ListNode reverseBetween(ListNode head, int left, int right) {
+          if (left == right)
+              return head;
+          
+          ListNode dummy = new ListNode(0, head), start = dummy;
+          
+          // (]
+          int i = 1;
+          for (; i < left; i++)
+              start = start.next;
+  
+          ListNode a = start.next, b = a.next;
+          i = left;
+  
+          for (; i < right; i++) {
+              ListNode tmp = b.next;
+              b.next = a;
+              a = b;
+              b = tmp;
+          }
+          start.next.next = b;
+          start.next = a;
+  
+          return dummy.next;
+      }
+  }
+  ```
+
 ### :star:Q160. [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
 
 * ```java
@@ -7718,44 +7760,6 @@ private ListNode reverseList(ListNode head) {
     }
     head.next = null;
     return prev;
-}
-```
-
-***
-
-## Question 125
-
-*Valid Palindrome*
-
-### Description
-
-A phrase is a **palindrome** if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
-
-Given a string `s`, return `true` *if it is a **palindrome**, or* `false` *otherwise*.
-
-### Example
-
-```markdown
-Input: s = "A man, a plan, a canal: Panama"
-Output: true
-Explanation: "amanaplanacanalpanama" is a palindrome.
-```
-
-### Solution
-
-```java
-public boolean isPalindrome(String s) {
-    char[] letters = new char[s.length()];
-    int len = 0;
-    for(char c : s.toCharArray()) {
-        if(Character.isLetterOrDigit(c))
-            letters[len++] = Character.toLowerCase(c);
-    }
-    for(int i = 0; i < len / 2; i++) {
-        if(letters[i] != letters[len - 1 - i])
-            return false;
-    }
-    return true;
 }
 ```
 
