@@ -1508,7 +1508,7 @@
 
 ***
 
-## :bulb:O​thers
+## :bulb:Two lists or One list two pointers
 
 ### Q2. [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
 
@@ -1571,21 +1571,39 @@
 ### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
 
 * ```java
+  /**
+   * Definition for singly-linked list.
+   * public class ListNode {
+   *     int val;
+   *     ListNode next;
+   *     ListNode() {}
+   *     ListNode(int val) { this.val = val; }
+   *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+   * }
+   */
   class Solution {
       public ListNode removeNthFromEnd(ListNode head, int n) {
-          ListNode first = head, second = head;
-          for (int i = 0; i < n; i++) {
-              first = first.next;
-          }
-          if (first == null)
+          int length = calLength(head);
+  
+          if (n == length)
               return head.next;
           
-          while (first.next != null) {
-              first = first.next;
-              second = second.next;
+          ListNode h = head;
+          for (int i = 1; i < length - n; i++) {
+              h = h.next;
           }
-          second.next = second.next.next;
+          h.next = h.next.next;
+  
           return head;
+      }
+  
+      private int calLength(ListNode head) {
+          int length = 0;
+          while (head != null) {
+              length++;
+              head = head.next;
+          }
+          return length;
       }
   }
   ```
