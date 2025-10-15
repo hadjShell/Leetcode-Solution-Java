@@ -1688,6 +1688,72 @@
   }
   ```
 
+### :star:Q25. [Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)
+
+* Follow-up of [question 92](#Q92)
+
+* ```java
+  /**
+   * Definition for singly-linked list.
+   * public class ListNode {
+   *     int val;
+   *     ListNode next;
+   *     ListNode() {}
+   *     ListNode(int val) { this.val = val; }
+   *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+   * }
+   */
+  class Solution {
+      public ListNode reverseKGroup(ListNode head, int k) {
+          int length = calLength(head);
+          int left = 1, right = k;
+          while (right <= length) {
+              head = reverseBetween(head, left, right);
+              left += k;
+              right += k;
+          }
+  
+          return head;
+      }
+  
+      private ListNode reverseBetween(ListNode head, int left, int right) {
+          if (left == right)
+              return head;
+          
+          ListNode dummy = new ListNode(0, head), start = dummy;
+          
+          // (]
+          int i = 1;
+          for (; i < left; i++)
+              start = start.next;
+  
+          ListNode a = start.next, b = a.next;
+          i = left;
+  
+          for (; i < right; i++) {
+              ListNode tmp = b.next;
+              b.next = a;
+              a = b;
+              b = tmp;
+          }
+          start.next.next = b;
+          start.next = a;
+  
+          return dummy.next;
+      }
+  
+      private int calLength(ListNode head) {
+          int length = 0;
+          while (head != null) {
+              length++;
+              head = head.next;
+          }
+  
+          return length;
+      }
+  }
+  ```
+
 ### Q86. [Partition List](https://leetcode.com/problems/partition-list/)
 
 * ```java
@@ -7700,66 +7766,6 @@ public ListNode deleteDuplicates(ListNode head) {
     }
 
     return head;
-}
-```
-
-***
-
-## Question 92
-
-*Reverse Linked List II*
-
-### Description
-
-Given the `head` of a singly linked list and two integers `left` and `right` where `left <= right`, reverse the nodes of the list from position `left` to position `right`, and return *the reversed list*.
-
-### Example
-
-![img](https://assets.leetcode.com/uploads/2021/02/19/rev2ex2.jpg)
-
-```markdown
-Input: head = [1,2,3,4,5], left = 2, right = 4
-Output: [1,4,3,2,5]
-```
-
-### Solution
-
-```java
-public ListNode reverseBetween(ListNode head, int left, int right) {
-    if(head == null || head.next == null)
-        return head;
-
-    ListNode sentinel = new ListNode(0, head);
-    ListNode prev = sentinel, end = head;
-    while(right > 1) {
-        if(left > 1) {
-            prev = prev.next;
-            left--;
-        }
-        end = end.next;
-        right--;
-    }
-    ListNode reverse = prev.next;
-    ListNode next = end.next;
-    end.next = null;
-    prev.next = reverseList(reverse);
-    reverse.next = next;
-    return sentinel.next;
-}
-
-private ListNode reverseList(ListNode head) {
-    if(head == null || head.next == null) 
-        return head;
-
-    ListNode cur = head.next, prev = head, next = null;
-    while(cur != null) {
-        next = cur.next;
-        cur.next = prev;
-        prev = cur;
-        cur = next;
-    }
-    head.next = null;
-    return prev;
 }
 ```
 
