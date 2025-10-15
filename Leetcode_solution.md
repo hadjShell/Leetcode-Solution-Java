@@ -1510,6 +1510,64 @@
 
 ## :bulb:O​thers
 
+### Q2. [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
+
+* ```java
+  /**
+   * Definition for singly-linked list.
+   * public class ListNode {
+   *     int val;
+   *     ListNode next;
+   *     ListNode() {}
+   *     ListNode(int val) { this.val = val; }
+   *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+   * }
+   */
+  class Solution {
+      public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+          ListNode result = l1, prev = null;
+          int[] carry = new int[1];
+  
+          while (l1 != null && l2 != null) {
+              updateL1(l1, l2.val, carry);
+              
+              prev = l1;
+              l1 = l1.next;
+              l2 = l2.next;
+          }
+  
+          if (l1 == null) {
+              prev.next = l2;
+              l1 = l2;
+          }
+  
+          
+          while (l1 != null) {
+              if (carry[0] == 0)
+                  break;
+              updateL1(l1, 0, carry);
+              prev = l1;
+              l1 = l1.next;
+          }
+  
+          if (carry[0] == 1) 
+              prev.next = new ListNode(1);
+          
+          return result;
+      }
+  
+      private void updateL1(ListNode l, int val, int[] carry) {
+          l.val += val + carry[0];
+              if (l.val >= 10) {
+                  l.val -= 10;
+                  carry[0] = 1;
+              }
+              else
+                  carry[0] = 0;
+      }
+  }
+  ```
+
 ### Q19. [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
 
 * ```java
