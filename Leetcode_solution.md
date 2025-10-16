@@ -1508,7 +1508,7 @@
 
 ***
 
-## :bulb:Two lists or One list two pointers
+## :bulb:Two lists or `prev, curr, next`
 
 ### Q2. [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
 
@@ -1768,6 +1768,47 @@
           }
   
           return length;
+      }
+  }
+  ```
+
+### Q82. [Remove Duplicates from Sorted List II](https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/)
+
+* ```java
+  /**
+   * Definition for singly-linked list.
+   * public class ListNode {
+   *     int val;
+   *     ListNode next;
+   *     ListNode() {}
+   *     ListNode(int val) { this.val = val; }
+   *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+   * }
+   */
+  class Solution {
+      public ListNode deleteDuplicates(ListNode head) {
+          ListNode dummy = new ListNode(101, head);
+          int number = 101;
+          ListNode prev = dummy, curr = head;
+  
+          while (curr != null) {
+              number = curr.val;
+              int count = 1;
+              while (curr.next != null && curr.next.val == number) {
+                  curr = curr.next;
+                  count++;
+              }
+              if (count > 1) {
+                  curr = curr.next;
+                  prev.next = curr;
+              } 
+              else {
+                  prev = curr;
+                  curr = curr.next;
+              }  
+          }
+  
+          return dummy.next;
       }
   }
   ```
