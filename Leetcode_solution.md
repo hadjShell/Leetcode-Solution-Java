@@ -1874,30 +1874,38 @@
 ### Q86. [Partition List](https://leetcode.com/problems/partition-list/)
 
 * ```java
+  /**
+   * Definition for singly-linked list.
+   * public class ListNode {
+   *     int val;
+   *     ListNode next;
+   *     ListNode() {}
+   *     ListNode(int val) { this.val = val; }
+   *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+   * }
+   */
   class Solution {
       public ListNode partition(ListNode head, int x) {
-          if (head == null || head.next == null)
-              return head;
-          
-          ListNode less = new ListNode(0);
-          ListNode great = new ListNode(0);
-          ListNode l = less, g = great;
+          if (head == null)
+              return null;
   
+          ListNode smallNodes = new ListNode(0), bigNodes = new ListNode(0);
+          ListNode smallHead = smallNodes, bigHead = bigNodes;
           while (head != null) {
               if (head.val < x) {
-                  less.next = head;
-                  less = less.next;
+                  smallHead.next = head;
+                  smallHead = smallHead.next;
               }
               else {
-                  great.next = head;
-                  great = great.next;
+                  bigHead.next = head;
+                  bigHead = bigHead.next;
               }
               head = head.next;
           }
-        	// the last node may point to uncorrect node
-          great.next = null;
-          less.next = g.next;
-          return l.next;
+          bigHead.next = null;
+          smallHead.next = bigNodes.next;
+          
+          return smallNodes.next;
       }
   }
   ```
