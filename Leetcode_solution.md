@@ -1508,7 +1508,7 @@
 
 ***
 
-## :bulb:Two lists or `prev, curr, next`
+## :bulb:Two lists or One list two pointers
 
 ### Q2. [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
 
@@ -1758,6 +1758,64 @@
           start.next = a;
   
           return dummy.next;
+      }
+  
+      private int calLength(ListNode head) {
+          int length = 0;
+          while (head != null) {
+              length++;
+              head = head.next;
+          }
+  
+          return length;
+      }
+  }
+  ```
+
+### Q61. [Rotate List](https://leetcode.com/problems/rotate-list/)
+
+* ```java
+  /**
+   * Definition for singly-linked list.
+   * public class ListNode {
+   *     int val;
+   *     ListNode next;
+   *     ListNode() {}
+   *     ListNode(int val) { this.val = val; }
+   *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+   * }
+   */
+  class Solution {
+      public ListNode rotateRight(ListNode head, int k) {
+          if (head == null)
+              return null;
+          
+          int length = calLength(head);
+          k = k % length;
+          if (k == 0)
+              return head;
+  
+          ListNode newTail = getKthNode(head, length - k);
+          ListNode tail = getTail(head);
+          ListNode newHead = newTail.next;
+          newTail.next = null;
+          tail.next = head;
+          
+          return newHead;
+      }
+  
+      private ListNode getKthNode(ListNode head, int k) {
+          for (int i = 0; i < k - 1; i++)
+              head = head.next;
+          
+          return head;
+      }
+  
+      private ListNode getTail(ListNode head) {
+          while (head.next != null)
+              head = head.next;
+          
+          return head;
       }
   
       private int calLength(ListNode head) {
