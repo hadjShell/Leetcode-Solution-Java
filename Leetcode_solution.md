@@ -605,31 +605,6 @@
   * Two nodes
   * Operation on head node (and tail node for doubly linked list)
 
-### Q61. [Rotate List](https://leetcode.com/problems/rotate-list/)
-
-* ```java
-  class Solution {
-      public ListNode rotateRight(ListNode head, int k) {
-          if (head == null)
-              return null;
-          
-          ListNode tail = head;
-          int size = 1;
-          while (tail.next != null) {
-              tail = tail.next;
-              size++;
-          }
-          tail.next = head;
-          for (int i = 1; i < size - k % size; i++) {
-              head = head.next;
-          }
-          ListNode h = head.next;
-          head.next = null;
-          return h;
-      }
-  }
-  ```
-
 ### Q725. [Split Linked List in Parts](https://leetcode.com/problems/split-linked-list-in-parts/)
 
 * ```java
@@ -3181,6 +3156,124 @@
           return dummy.next;
       }
   }
+  ```
+
+### :star:Q146. [LRU Cache](https://leetcode.com/problems/lru-cache/)
+
+* **Double linked list** and **Hashmap**
+
+* ```java
+  class LRUCache {
+      
+      private class Node {
+          int key;
+          int val;
+          Node prev;
+          Node next;
+          Node() {}
+          Node(int key, int val) { this.key = key; this.val = val; }
+          Node(int key, int val, Node prev, Node next) { 
+              this.key = key;
+              this.val = val; 
+              this.prev = prev;
+              this.next = next;
+          }
+      }
+  
+      Map<Integer, Node> keyToNodeMap;
+      Node head;
+      Node tail;
+      int capacity;
+  
+      public LRUCache(int capacity) {
+          this.keyToNodeMap = new HashMap<>();
+          this.head = null;
+          this.tail = null;
+          this.capacity = capacity;
+      }
+      
+      public int get(int key) {
+          if (keyToNodeMap.containsKey(key)) {
+              prioritize(key);
+              return keyToNodeMap.get(key).val;
+          }
+          else
+              return -1;
+      }
+      
+      public void put(int key, int value) {
+          if (keyToNodeMap.containsKey(key)) {
+              updateNode(key, value);
+              prioritize(key);
+          }
+          else {
+              Node node = new Node(key, value);
+  
+              if (size() == capacity) 
+                  removeLastNode();
+  
+              addNode(node);
+          }
+      }
+  
+      private void prioritize(int key) {
+          Node node = keyToNodeMap.get(key);
+  
+          if (size() == 1 || node == head)
+              return; 
+          
+          if (node == tail) {
+              tail = node.prev;
+              tail.next = null;
+          }
+          else {
+              node.prev.next = node.next;
+              node.next.prev = node.prev;
+          }
+          node.next = head;
+          head.prev = node;
+          head = node;
+          head.prev = null;
+      }
+  
+      private void updateNode(int key, int value) {
+          keyToNodeMap.get(key).val = value;
+      } 
+      
+      private void removeLastNode() {
+          keyToNodeMap.remove(tail.key);
+          tail = tail.prev;
+          if (tail != null)   
+              tail.next = null;
+          else
+              head = null;
+      }
+  
+      private void addNode(Node node) {
+          keyToNodeMap.put(node.key, node);
+          if (size() == 1) {
+              head = node;
+              tail = node;
+          }
+          else {
+              head.prev = node;
+              node.next = head;
+              head = node;    
+          }
+      }
+  
+      private int size() {
+          return keyToNodeMap.size();
+      }
+      
+  }
+  
+  /**
+   * Your LRUCache object will be instantiated and called as such:
+   * LRUCache obj = new LRUCache(capacity);
+   * int param_1 = obj.get(key);
+   * obj.put(key,value);
+   */
   ```
 
 ### Q187. [Repeated DNA Sequences](https://leetcode.com/problems/repeated-dna-sequences/)
