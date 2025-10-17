@@ -7,8 +7,6 @@
 * In-place - 合理利用废空间（无用信息位或者已处理信息位）
 * Bucket - suitable when elements' values are within a range
 
-***
-
 ## :bulb:1D Array
 
 ### Q26. [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
@@ -593,58 +591,7 @@
   }
   ```
 
-# Linked List
-
-* Tricks
-  * Two pointers
-  * Dummy node
-
-* Corner case
-  * Empty list
-  * Single node
-  * Two nodes
-  * Operation on head node (and tail node for doubly linked list)
-
-### Q725. [Split Linked List in Parts](https://leetcode.com/problems/split-linked-list-in-parts/)
-
-* ```java
-  class Solution {
-      public ListNode[] splitListToParts(ListNode head, int k) {
-          int size = 0;
-          ListNode n = head;
-          while (n != null) {
-              n = n.next;
-              size++;
-          }
-          int base = size / k;
-          int remaining = size % k;
-          ListNode[] res = new ListNode[k];
-          int cnt = 0;
-          n = head;
-          for (int i = 0; i < remaining; i++) {
-              res[cnt++] = n;
-              for (int j = 0; j < base; j++) {
-                  n = n.next;
-              }
-              ListNode tmp = n.next;
-              n.next = null;
-              n = tmp;
-          }
-          for (int i = 0; i < k - remaining; i++) {
-              res[cnt++] = n;
-              if (n != null) {
-                  for (int j = 0; j < base - 1; j++) {
-                      n = n.next;
-                  }
-                  ListNode tmp = n.next;
-                  n.next = null;
-                  n = tmp;
-              }
-          }
-          return res;
-      }
-  }
-  ```
+***
 
 # String
 
@@ -788,17 +735,18 @@
 
 # Two Pointers
 
+## Tricks
+
+* Dummy nodes
 * Fast and slow pointers
-  * Find middle element
-  * Circular list
-
+  * Find **middle** element
+  * **Circular** list
 * Left and right pointers
-  * Reverse array
-
+  * **Reverse**
+  * **Water container problem**
 * Sliding window
   * Subarray, Substring problem
-
-* Etc
+* Composition with other data structures
 
 
 ## :bulb:Fast and slow
@@ -2021,34 +1969,6 @@
   }
   ```
 
-### :star:Q2181. [Merge Nodes in Between Zeros](https://leetcode.com/problems/merge-nodes-in-between-zeros/)
-
-* **Take advantage of the past irrelevant nodes memory** to avoid creation of new nodes
-
-* ```java
-  class Solution {
-      public ListNode mergeNodes(ListNode head) {
-          int sum = 0;
-          ListNode curr = head.next;
-          ListNode n = head;
-          while (curr != null) {
-              if (curr.val == 0) {
-                  n.val = sum;
-                  sum = 0;
-                  if (curr.next != null)
-                      n = n.next;
-                  else
-                      n.next = null;
-              }
-              else
-                  sum += curr.val;
-              curr = curr.next;
-          }
-          return head;
-      }
-  }
-  ```
-
 ### Q283. [Move Zeroes](https://leetcode.com/problems/move-zeroes/)
 
 * ```java
@@ -2126,6 +2046,47 @@
   }
   ```
 
+### Q725. [Split Linked List in Parts](https://leetcode.com/problems/split-linked-list-in-parts/)
+
+* ```java
+  class Solution {
+      public ListNode[] splitListToParts(ListNode head, int k) {
+          int size = 0;
+          ListNode n = head;
+          while (n != null) {
+              n = n.next;
+              size++;
+          }
+          int base = size / k;
+          int remaining = size % k;
+          ListNode[] res = new ListNode[k];
+          int cnt = 0;
+          n = head;
+          for (int i = 0; i < remaining; i++) {
+              res[cnt++] = n;
+              for (int j = 0; j < base; j++) {
+                  n = n.next;
+              }
+              ListNode tmp = n.next;
+              n.next = null;
+              n = tmp;
+          }
+          for (int i = 0; i < k - remaining; i++) {
+              res[cnt++] = n;
+              if (n != null) {
+                  for (int j = 0; j < base - 1; j++) {
+                      n = n.next;
+                  }
+                  ListNode tmp = n.next;
+                  n.next = null;
+                  n = tmp;
+              }
+          }
+          return res;
+      }
+  }
+  ```
+
 ### Q1047. [Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
 
 * ```java
@@ -2172,6 +2133,34 @@
               return a;
           else
               return gcd(b, a % b);
+      }
+  }
+  ```
+
+### :star:Q2181. [Merge Nodes in Between Zeros](https://leetcode.com/problems/merge-nodes-in-between-zeros/)
+
+* **Take advantage of the past irrelevant nodes memory** to avoid creation of new nodes
+
+* ```java
+  class Solution {
+      public ListNode mergeNodes(ListNode head) {
+          int sum = 0;
+          ListNode curr = head.next;
+          ListNode n = head;
+          while (curr != null) {
+              if (curr.val == 0) {
+                  n.val = sum;
+                  sum = 0;
+                  if (curr.next != null)
+                      n = n.next;
+                  else
+                      n.next = null;
+              }
+              else
+                  sum += curr.val;
+              curr = curr.next;
+          }
+          return head;
       }
   }
   ```
