@@ -2103,30 +2103,27 @@
   }
   ```
 
-### :star:Q2181. [Merge Nodes in Between Zeros](https://leetcode.com/problems/merge-nodes-in-between-zeros/)
-
-* **Take advantage of the past irrelevant nodes memory** to avoid creation of new nodes
+### ​Q2181. [Merge Nodes in Between Zeros](https://leetcode.com/problems/merge-nodes-in-between-zeros/)
 
 * ```java
   class Solution {
       public ListNode mergeNodes(ListNode head) {
-          int sum = 0;
-          ListNode curr = head.next;
-          ListNode n = head;
-          while (curr != null) {
-              if (curr.val == 0) {
-                  n.val = sum;
-                  sum = 0;
-                  if (curr.next != null)
-                      n = n.next;
-                  else
-                      n.next = null;
+          ListNode dummy = new ListNode(0), h = head, dh = dummy;
+  
+          while (h != null) {
+              if (h.val == 0 && h.next != null) {
+                  dh.next = h;
+                  dh = dh.next;
               }
-              else
-                  sum += curr.val;
-              curr = curr.next;
+              else {
+                  dh.val += h.val;
+              }
+              h = h.next;
           }
-          return head;
+  
+          dh.next = null;
+  
+          return dummy.next;
       }
   }
   ```
