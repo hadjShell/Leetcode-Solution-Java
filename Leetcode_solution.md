@@ -1877,63 +1877,29 @@
 
 ### :star:Q160. [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
 
+* Concat two lists: a + b = b + a 
+
+* No intersection means two lists intersect at a null node
+
 * ```java
   public class Solution {
       public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
           ListNode a = headA, b = headB;
-          int lenA = 1, lenB = 1;
-          while (a.next != null) {
-              a = a.next;
-              lenA++;
-          }
-          while (b.next != null) {
-              b = b.next;
-              lenB++;
-          }
   
-          if (a != b)     return null;
-  
-          a = headA;
-          b = headB;
-          if (lenA >= lenB) {
-              for (int i = 0; i < lenA - lenB; i++)
+          while (a != b) {
+              if (a == null)
+                  a = headB;
+              else
                   a = a.next;
-          } 
-          else {
-              for (int i = 0; i < lenB - lenA; i++)
+  
+              if (b == null)
+                  b = headA;
+              else
                   b = b.next;
           }
-          while (a != b) {
-              a = a.next;
-              b = b.next;
-          }
+  
           return a;
-          
       }
-  }
-  ```
-
-* Concat two lists: a + b = b + a 
-
-  * No intersection means c1 is a null node
-
-* ```java
-  public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-      ListNode a = headA;
-      ListNode b = headB;
-  
-      while(a != b) {
-          if(a.next == null)
-              a = headB;
-          else
-              a = a.next;
-  
-          if(b.next == null)
-              b = headA;
-          else
-              b = b.next;
-      }
-      return b;
   }
   ```
 
