@@ -1803,9 +1803,10 @@
   * When to **increase the window**
   * When to **shrink the window**
   * How to update the result (what is the operation **when window size changes**)
-  * Find the qualified subarray
 
-* Choose result data structure wisely
+* Choose **data structure of `window` and `result` object** wisely
+
+* Close-open range `[)`
 
 * Framework
 
@@ -1834,19 +1835,28 @@
 * ```java
   class Solution {
       public int lengthOfLongestSubstring(String s) {
-          int l = 0, r = l, maxLen = 0;
-          Map<Character, Integer> cs = new HashMap<>();
-          while (r < s.length()) {
-              char c = s.charAt(r);
-              if (cs.containsKey(c)) {
-                  int p = cs.get(c);
-                  l = p < l ? l : p + 1;
+          int left = 0, right = 0, maxLength = 0;
+          Map<Character, Integer> letters = new HashMap<>();
+          char[] str = s.toCharArray();
+  
+          while (right < s.length()) {
+              if (!letters.containsKey(str[right])) {
+                  letters.put(str[right], right);
+                  right++;
+                  maxLength = Math.max(length(left, right), maxLength);
               }
-              cs.put(c, r);
-              maxLen = Math.max(maxLen, r - l + 1);
-              r++;
+              else {
+                  int index = letters.get(str[right]);
+                  left = index < left ? left : index + 1;
+                  letters.remove(str[right]);
+              }
           }
-          return maxLen;
+  
+          return maxLength;
+      }
+  
+      private int length(int left, int right) {
+          return right - left;
       }
   }
   ```
