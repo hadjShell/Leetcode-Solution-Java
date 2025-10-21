@@ -6,6 +6,8 @@
 * Forward and backward - 正看反看 + 分段看
 * In-place - 合理利用废空间（无用信息位或者已处理信息位）
 * Bucket - suitable when elements' values are within a range
+* Simulation for 2D arrays
+* 2D array 对角线翻转，x轴翻转，y轴翻转的组合
 
 ## :bulb:1D Array
 
@@ -579,6 +581,40 @@
                   matrix[i][r1] = n++;
               spiral(matrix, n, r1 + 1, r2 - 1);
           }
+      }
+  }
+  ```
+
+### Q73. [Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes/)
+
+* ```java
+  class Solution {
+      public void setZeroes(int[][] matrix) {
+          Set<Integer> rows = new HashSet<>();
+          Set<Integer> cols = new HashSet<>();
+  
+          for (int i = 0; i < matrix.length; i++)
+              for (int j = 0;j < matrix[0].length; j++) {
+                  if (matrix[i][j] == 0) {
+                      rows.add(i);
+                      cols.add(j);
+                  }
+              }
+  
+          for (Integer r : rows) 
+              zeroRow(matrix, r);
+          for (Integer c : cols)
+              zeroCol(matrix, c);
+      }
+  
+      private void zeroRow(int[][] matrix, int a) {
+          for (int j = 0; j < matrix[0].length; j++)
+              matrix[a][j] = 0;
+      }
+  
+      private void zeroCol(int[][] matrix, int b) {
+          for (int i = 0; i < matrix.length; i++)
+              matrix[i][b] = 0;
       }
   }
   ```
