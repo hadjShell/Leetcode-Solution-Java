@@ -508,35 +508,47 @@
 * ```java
   class Solution {
       public List<Integer> spiralOrder(int[][] matrix) {
-          int r = matrix.length, c = matrix[0].length;
-          return spiral(matrix, 0, 0, r - 1, c - 1);
+          List<Integer> result = new ArrayList<>();
+          int a1 = 0, b1 = 0, a2 = matrix.length - 1, b2 = matrix[0].length - 1;
+          while (a1 <= a2 && b1 <= b2) {
+              addCircle(matrix, a1, b1, a2, b2, result);
+              a1++;
+              b1++;
+              a2--;
+              b2--;
+          }
   
+          return result;
       }
   
-      private List<Integer> spiral(int[][] matrix, int r1, int c1, int r2, int c2) {
-          List<Integer> l = new ArrayList<>();
-          if (r1 > r2 || c1 > c2)
-              ;
-          else if (r1 == r2) {
-              for (; c1 <= c2; c1++)
-                  l.add(matrix[r1][c1]);
+      private void addCircle(int[][] matrix, int a1, int b1, int a2, int b2,
+                              List<Integer> result) {
+          int i = a1, j = b1;
+  
+          // a horizontal line
+          if (a1 == a2) {
+              while (j <= b2)
+                  result.add(matrix[i][j++]);
+              return;
           }
-          else if (c1 == c2) {
-              for (; r1 <= r2; r1++)
-                  l.add(matrix[r1][c1]);
+              
+          // a vertical line
+          if (b1 == b2) {
+              while (i <= a2)
+                  result.add(matrix[i++][j]);
+              return;
           }
-          else {
-              for (int i = c1; i <= c2; i++)
-                  l.add(matrix[r1][i]);
-              for (int i = r1 + 1; i < r2; i++)
-                  l.add(matrix[i][c2]);
-              for (int i = c2; i >= c1; i--)
-                  l.add(matrix[r2][i]);
-              for (int i = r2 - 1; i > r1; i--)
-                  l.add(matrix[i][c1]);
-              l.addAll(spiral(matrix, r1 + 1, c1 + 1, r2 - 1, c2 - 1));
-          }
-          return l;
+              
+          // a circle
+          while (j < b2)
+              result.add(matrix[i][j++]);
+          while (i < a2)
+              result.add(matrix[i++][j]);
+          while (j > b1)
+              result.add(matrix[i][j--]);
+          while (i > a1)
+              result.add(matrix[i--][j]);
+          return;
       }
   }
   ```
