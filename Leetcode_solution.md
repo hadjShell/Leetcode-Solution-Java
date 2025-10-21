@@ -3350,6 +3350,30 @@
   }
   ```
 
+### Q219. [Contains Duplicate II](https://leetcode.com/problems/contains-duplicate-ii/)
+
+* ```java
+  class Solution {
+      public boolean containsNearbyDuplicate(int[] nums, int k) {
+          Map<Integer, Integer> lastSeen = new HashMap<>();
+  
+          for (int j = 0; j < nums.length; j++) {
+              int n = nums[j];
+  
+              if (lastSeen.containsKey(n)) {
+                  int i = lastSeen.get(n);
+                  if (j - i <= k)
+                      return true;
+              }
+              
+              lastSeen.put(n, j);
+          }
+  
+          return false;
+      }
+  }
+  ```
+
 ### Q242. [Valid Anagram](https://leetcode.com/problems/valid-anagram/)
 
 * ```java
