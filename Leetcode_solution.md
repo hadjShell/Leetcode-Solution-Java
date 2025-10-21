@@ -3069,6 +3069,28 @@
   }
   ```
 
+### Q49. [Group Anagrams](https://leetcode.com/problems/group-anagrams/)
+
+* ```java
+  class Solution {
+      public List<List<String>> groupAnagrams(String[] strs) {
+          Map<String, List<String>> anagram = new HashMap<>();
+  
+          for (String s : strs) {
+              char[] str = s.toCharArray();
+              Arrays.sort(str);
+              String key = new String(str);
+              if(!anagram.containsKey(key)){
+                  anagram.put(key, new ArrayList<>());
+              }
+              anagram.get(key).add(s);
+          }
+          
+          return new ArrayList<>(anagram.values());
+      }
+  }
+  ```
+
 ### Q138. [Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
 
 * ```java
