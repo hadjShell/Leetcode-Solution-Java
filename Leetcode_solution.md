@@ -3039,7 +3039,10 @@
 
 # HashTable
 
+### Tricks
+
 * If the values of keys are limited, **bucket array** instead of hash table can be used to increase the performance
+* **Combine hash map with other data structures** to improve time performance
 
 ### Q13. [Roman to Integer](https://leetcode.com/problems/roman-to-integer/)
 
@@ -3260,6 +3263,61 @@
           }
           res.addAll(dnaSeq);
           return res;
+      }
+  }
+  ```
+
+### Q205. [Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/)
+
+* ```java
+  class Solution {
+      public boolean isIsomorphic(String s, String t) {
+          Character[] s2t = new Character[128];
+          Character[] t2s = new Character[128];
+  
+          for (int i = 0; i < s.length(); i++) {
+              char sc = s.charAt(i), tc = t.charAt(i);
+  
+              if (s2t[sc] == null)
+                  s2t[sc] = tc;
+              if (t2s[tc] == null)
+                  t2s[tc] = sc;
+              
+              if (s2t[sc] != tc || t2s[tc] != sc)
+                  return false;
+          }
+  
+          return true;
+      }
+  }
+  ```
+
+### Q290. [Word Pattern](https://leetcode.com/problems/word-pattern/)
+
+* ```java
+  class Solution {
+      public boolean wordPattern(String pattern, String s) {
+          String[] words = s.split(" ");
+          String[] p2w = new String[26];
+          Map<String, Character> w2p = new HashMap<>();
+  
+          if (pattern.length() != words.length)
+              return false;
+  
+          for (int i = 0; i < pattern.length(); i++) {
+              char c = pattern.charAt(i);
+              String word = words[i];
+  
+              if (p2w[c - 'a'] == null)
+                  p2w[c - 'a'] = word;
+              if (!w2p.containsKey(word))
+                  w2p.put(word, c);
+              
+              if (!p2w[c - 'a'].equals(word) || w2p.get(word) != c)
+                  return false;
+          }
+  
+          return true;
       }
   }
   ```
