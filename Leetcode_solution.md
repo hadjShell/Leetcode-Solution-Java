@@ -3091,6 +3091,81 @@
   }
   ```
 
+### :star:Q128. [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+
+* ```java
+  // O(n)
+  class Solution {
+      public int longestConsecutive(int[] nums) {
+          // for fast check whether have next +1 number
+          Set<Integer> numbers = new HashSet<>();
+          for (int n : nums)
+              numbers.add(n);
+  
+          // stores the number mapping to 
+          // the length of the longest consecutive sequence starting from it
+          Map<Integer, Integer> seen = new HashMap<>();
+          int longest = 0;
+          
+          for (int i = 0; i < nums.length; i++) {
+              int num = nums[i];
+  
+              // skips those seen elements 
+              // cuz the consecutive sequence starting from them couldn't be longer
+              if (!seen.containsKey(num)) {
+                  int len = 0, n = num;
+                  // find longest consecutive sequence
+                  while (numbers.contains(n)) {
+                      if (seen.containsKey(n)) {
+                          len += seen.get(n);
+                          break;
+                      }
+                      else {
+                          // add elements in the sequence into seen map
+                          seen.put(n, 0);
+                          len++;
+                          n++;
+                      }
+                  }
+                  seen.put(num, len);
+                  longest = Math.max(longest, len);
+              }
+          }
+  
+          return longest;
+      }
+  }
+  ```
+
+* ```java
+  // O(n)
+  class Solution {
+      public int longestConsecutive(int[] nums) {
+          Set<Integer> numSet = new HashSet<>();
+          for (int num : nums) {
+              numSet.add(num);
+          }
+  
+          int longest = 0;
+  
+          for (int num : numSet) {
+            // find the start number of a consecutive sequence
+              if (!numSet.contains(num - 1)) {
+                  int length = 1;
+  
+                  while (numSet.contains(num + length)) {
+                      length++;
+                  }
+  
+                  longest = Math.max(longest, length);
+              }
+          }
+  
+          return longest;        
+      }
+  }
+  ```
+
 ### Q138. [Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
 
 * ```java
