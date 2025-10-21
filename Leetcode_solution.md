@@ -3289,6 +3289,42 @@
   }
   ```
 
+### Q202. [Happy Number](https://leetcode.com/problems/happy-number/)
+
+* ```java
+  class Solution {
+      public boolean isHappy(int n) {
+          Set<Integer> numbers = new HashSet<>();
+          boolean isCycle = false;
+  
+          while (!isCycle) {
+              if (n == 1)
+                  break;
+  
+              if (numbers.contains(n)) 
+                  isCycle = true;
+              else {
+                  numbers.add(n);
+                  n = squares(n);
+              }
+          }
+  
+          return !isCycle;
+      }
+  
+      private int squares(int n) {
+          int result = 0;
+          while (n != 0) {
+              int digit = n % 10;
+              result += digit * digit;
+              n /= 10;
+          }
+  
+          return result;
+      }
+  }
+  ```
+
 ### Q205. [Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/)
 
 * ```java
