@@ -409,6 +409,76 @@
 
 ## :bulb:2D Array
 
+### Q36. [Valid Sudoku](https://leetcode.com/problems/valid-sudoku/)
+
+* ```java
+  class Solution {
+      public boolean isValidSudoku(char[][] board) {
+          return isValidRows(board) && isValidColumns(board) && isValidCells(board);
+      }
+  
+      private boolean isValidRows(char[][] board) {
+          for (int i = 0; i < board.length; i++) {
+              int[] seen = new int[9];
+              for (int j = 0; j < board.length; j++) {
+                  char c = board[i][j];
+                  if (c == '.')
+                      continue;
+                  if (seen[c - '1'] == 0)
+                      seen[c - '1'] = 1;
+                  else
+                      return false;
+              }
+          }
+  
+          return true;
+      }
+  
+      private boolean isValidColumns(char[][] board) {
+          for (int j = 0; j < board.length; j++) {
+              int[] seen = new int[9];
+              for (int i = 0; i < board.length; i++) {
+                  char c = board[i][j];
+                  if (c == '.')
+                      continue;
+                  if (seen[c - '1'] == 0)
+                      seen[c - '1'] = 1;
+                  else
+                      return false;
+              }
+          }
+  
+          return true;
+      }
+  
+      private boolean isValidCells(char[][] board) {
+          for (int i = 0; i < board.length; i += 3)
+              for (int j = 0; j < board.length; j+= 3) {
+                  if (!isValidCell(board, i, j))
+                      return false;
+              }
+          
+          return true;
+      }
+  
+      private boolean isValidCell(char[][] board, int a, int b) {
+          int[] seen = new int[9];
+          for (int i = a; i < a + 3; i++)
+              for (int j = b; j < b + 3; j++) {
+                  char c = board[i][j];
+                  if (c == '.')
+                      continue;
+                  if (seen[c - '1'] == 0)
+                      seen[c - '1'] = 1;
+                  else
+                      return false;
+              }
+              
+          return true;
+      }
+  }
+  ```
+
 ### Q48. [Rotate Image](https://leetcode.com/problems/rotate-image/)
 
 * ```java
