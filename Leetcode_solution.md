@@ -3039,7 +3039,7 @@
 
 # HashTable
 
-* If the values of key are limited, array instead of hash table can be used to increase the performance
+* If the values of keys are limited, **bucket array** instead of hash table can be used to increase the performance
 
 ### Q13. [Roman to Integer](https://leetcode.com/problems/roman-to-integer/)
 
@@ -3260,6 +3260,36 @@
           }
           res.addAll(dnaSeq);
           return res;
+      }
+  }
+  ```
+
+### Q383. [Ransom Note](https://leetcode.com/problems/ransom-note/)
+
+* ```java
+  class Solution {
+      public boolean canConstruct(String ransomNote, String magazine) {
+          if (ransomNote.length() > magazine.length())
+              return false;
+          
+          int[] letterFrequency = new int[26];
+  
+          for (int i = 0; i < magazine.length(); i++) {
+              char letter = magazine.charAt(i);
+              letterFrequency[letter - 'a']++;
+          }
+  
+          for (int i = 0; i < ransomNote.length(); i++) {
+              char letter = ransomNote.charAt(i);
+              int remain = letterFrequency[letter - 'a'];
+              if (remain > 0)
+                  letterFrequency[letter - 'a']--;
+              else
+                  return false;
+          }
+  
+          return true;
+              
       }
   }
   ```
