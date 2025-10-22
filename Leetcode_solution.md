@@ -619,6 +619,84 @@
   }
   ```
 
+### Q289. [Game of Life](https://leetcode.com/problems/game-of-life/)
+
+* ```java
+  class Solution {
+      public void gameOfLife(int[][] board) {
+          for (int i = 0; i < board.length; i++)
+              for (int j = 0; j < board[0].length; j++)
+                  updateCell(board, i, j);
+          
+          updateBoard(board);
+      }
+  
+      private void updateBoard(int[][] board) {
+          for (int i = 0; i < board.length; i++)
+              for (int j = 0; j < board[0].length; j++) {
+                  int state = board[i][j];
+                  if (state == 1 || state == 2)
+                      board[i][j] = 1;
+                  else    
+                      board[i][j] = 0;
+              }
+      }
+  
+      private void updateCell(int[][] board, int r, int c) {
+          int live = 0, die = 0, state = board[r][c];
+  
+          int i = r - 1, j = c - 1;
+          for (; j <= c; j++) {
+              if (!isOutOfBound(board, i, j)) {
+                  int s = board[i][j];
+                  if (s == 1 || s == -2)
+                      live++;
+                  else
+                      die++;
+              }
+          }
+          for (; i <= r; i++) {
+              if (!isOutOfBound(board, i, j)) {
+                  int s = board[i][j];
+                  if (s == 1 || s == -2)
+                      live++;
+                  else
+                      die++;
+              }
+          }
+          for (; j >= c; j--) {
+              if (!isOutOfBound(board, i, j)) {
+                  int s = board[i][j];
+                  if (s == 1 || s == -2)
+                      live++;
+                  else
+                      die++;
+              }
+          }
+          for (; i >= r; i--) {
+              if (!isOutOfBound(board, i, j)) {
+                  int s = board[i][j];
+                  if (s == 1 || s == -2)
+                      live++;
+                  else
+                      die++;
+              }
+          }
+  
+          // -2 means 1 to 0, 2 means 0 to 1
+          if (state == 1 && (live < 2 || live > 3)) 
+              board[r][c] = -2;
+  
+          if (state == 0 && live == 3)
+              board[r][c] = 2;
+      }
+  
+      private boolean isOutOfBound(int[][] board, int i, int j) {
+          return i < 0 || i >= board.length || j < 0 || j >= board[0].length;
+      }
+  }
+  ```
+
 ### Q885. [Spiral Matrix III](https://leetcode.com/problems/spiral-matrix-iii/)
 
 * ```java
