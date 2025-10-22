@@ -4255,6 +4255,51 @@
   }
   ```
 
+# Intervals
+
+* Intervals represent **a range of values** or **a duration of time** with a defined **start** and **end**
+* Common problem domain
+  * Time management (**a time sequence**, find available slot, merge intervals)
+  * Project management (tasks may have **dependencies**, i.e. one task must be finished before another task)
+* Possible states for two intervals
+  * There is a **gap** between A and B
+  * A **overlaps** B
+  * A **overshadows** B
+
+### Q56. [Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+
+* ```java
+  class Solution {
+      public int[][] merge(int[][] intervals) {
+          List<int[]> result = new ArrayList<>();
+          
+          Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+  
+          int start = intervals[0][0], end = intervals[0][1];
+          for (int i = 1; i < intervals.length; i++) {
+              int s = intervals[i][0], e = intervals[i][1];
+  
+              if (s > end) {
+                  int[] mergedInterval = {start, end};
+                  result.add(mergedInterval);
+                  start = s;
+                  end = e;
+              }
+              else if (e > end) {
+                  end = e;
+              }
+          }
+          result.add(new int[] {start, end});
+  
+          return result.toArray(new int[0][]);
+      }
+  }
+  ```
+
+
+
+***
+
 # Binary Search
 
 * **Locate the section on which you want to search based on the situation**
