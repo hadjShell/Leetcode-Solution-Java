@@ -4296,6 +4296,41 @@
   }
   ```
 
+### :star:Q57. [Insert Interval](https://leetcode.com/problems/insert-interval/)
+
+* ```java
+  class Solution {
+      public int[][] insert(int[][] intervals, int[] newInterval) {
+          List<int[]> result = new ArrayList<>();
+          int i = 0;
+  
+          for (; i < intervals.length; i++) {
+              int istart = intervals[i][0], iend = intervals[i][1];
+              int start = newInterval[0], end = newInterval[1];
+  
+              if (end < istart) 
+                  break;
+              else if (start > iend) 
+                  result.add(new int[] {istart, iend});
+              else {
+                  // merge intervals
+                  newInterval[0] = Math.min(start, istart);
+                  newInterval[1] = Math.max(end, iend);
+              }
+          }
+  
+          result.add(newInterval);
+  
+          for (; i < intervals.length; i++) {
+              int istart = intervals[i][0], iend = intervals[i][1];
+              result.add(new int[] {istart, iend});
+          }
+  
+          return result.toArray(new int[0][]);
+      }
+  }
+  ```
+
 
 
 ***
