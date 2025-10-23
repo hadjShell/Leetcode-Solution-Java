@@ -4369,7 +4369,28 @@
   }
   ```
 
+### Q452. [Minimum Number of Arrows to Burst Balloons](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/)
 
+* ```java
+  class Solution {
+      public int findMinArrowShots(int[][] points) {
+          Arrays.sort(points, (a, b) -> Integer.compare(a[1],b[1]));
+  
+          int arrow = 1, end = points[0][1];
+  
+          for (int i = 1; i < points.length; i++) {
+              int istart = points[i][0], iend = points[i][1];
+  
+              if (istart > end) {
+                  end = iend;
+                  arrow++;
+              }
+          }
+  
+          return arrow;
+      }
+  }
+  ```
 
 ***
 
