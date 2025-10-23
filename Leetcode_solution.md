@@ -4331,6 +4331,44 @@
   }
   ```
 
+### Q228. [Summary Ranges](https://leetcode.com/problems/summary-ranges/)
+
+* ```java
+  class Solution {
+      public List<String> summaryRanges(int[] nums) {
+          List<String> result = new ArrayList<>();
+          
+          if (nums.length == 0)
+              return result;
+  
+          StringBuilder sb = new StringBuilder();
+          int start = 0;
+  
+          sb.append(nums[start]);
+          for (int i = 1; i < nums.length; i++) {
+              int prev = nums[i - 1];
+              if (nums[i] != prev + 1) {
+                  if (start != i - 1)
+                      result.add(sb.append("->").append(prev).toString());
+                  else
+                      result.add(sb.toString());
+                  start = i;
+                  sb = new StringBuilder();
+                  sb.append(nums[start]);
+              }
+          }
+          
+          int lastVal = nums[nums.length - 1];
+          if (start == nums.length - 1)
+              result.add(sb.toString());
+          else
+              result.add(sb.append("->").append(lastVal).toString());
+  
+          return result;
+      }
+  }
+  ```
+
 
 
 ***
