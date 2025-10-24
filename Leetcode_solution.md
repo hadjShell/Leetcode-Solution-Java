@@ -1061,24 +1061,7 @@
 
 ### :star:Q11. [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
 
-* Better: Eliminate the possiblities
-
-* ```java
-  class Solution {
-      public int maxArea(int[] height) {
-          int i = 0, j = height.length - 1, max = 0;
-          while (i < j) {
-              int v = (j - i) * Math.min(height[i], height[j]);
-              if (max < v)    max = v;
-              if (height[i] <= height[j]) i++;
-              else                        j--;
-          }
-          return max;
-      }
-  }
-  ```
-
-* Best: The problem is to find a greater height for smaller width during we scan the array
+* The problem is to find a greater height for smaller width during we scan the array
 
 * ```java
   class Solution {
@@ -2006,21 +1989,22 @@
 
 * Framework
 
+  * **右滑找到一个解的终点， 左滑找到下一解的起点**
+
   * ```java
     int left = 0, right = 0;
-    // Use appropriate data structures based on the problem
     Window window;
     Result result;
     
     while (right < nums.size()) {
         window.addLast(nums[right]);
         right++;
-      	update(result);
+      	update(result);					// 找最大
         
         while (left < right && window needs shrink) {
             window.removeFirst(nums[left]);
             left++;
-          	update(result);
+          	update(result);			// 找最小
         }
     }
     ```
@@ -2031,28 +2015,19 @@
 * ```java
   class Solution {
       public int lengthOfLongestSubstring(String s) {
-          int left = 0, right = 0, maxLength = 0;
+          int left = 0, right = 0, maxLen = 0;
           Map<Character, Integer> letters = new HashMap<>();
-          char[] str = s.toCharArray();
-  
           while (right < s.length()) {
-              if (!letters.containsKey(str[right])) {
-                  letters.put(str[right], right);
-                  right++;
-                  maxLength = Math.max(length(left, right), maxLength);
+              char c = s.charAt(right);
+              if (letters.containsKey(c)) {
+                  int pos = letters.get(c);
+                  left = pos < left ? left : pos + 1;
               }
-              else {
-                  int index = letters.get(str[right]);
-                  left = index < left ? left : index + 1;
-                  letters.remove(str[right]);
-              }
+              letters.put(c, right);
+              right++;
+              maxLen = Math.max(maxLen, right - left);
           }
-  
-          return maxLength;
-      }
-  
-      private int length(int left, int right) {
-          return right - left;
+          return maxLen;
       }
   }
   ```
@@ -2062,35 +2037,45 @@
 * ```java
   class Solution {
       public String minWindow(String s, String t) {
-          int[] freq = new int[128];
-          for (char c : t.toCharArray()) {
-              freq[c]++;
-          }
+          if (t.length() > s.length())
+              return "";
   
-          char[] source = s.toCharArray();
-  		    int len = source.length;	
-          int requiredChars = t.length();
-          int left = 0, right = 0, start = -1, end = len;
+          int left = 0, right = 0;
+          // window
+          int len = 0;
+          int[] required = new int[128];
+          for (char c : t.toCharArray())
+              required[c]++;
+          // result
+          int l = 0, r = Integer.MAX_VALUE;
   
-          for (; right < len; right++) {
-              if (--freq[source[right]] >= 0) {
-                  requiredChars--;
+          while (right < s.length()) {
+              while (right < s.length() && !isValidSubstring(len, t)) {
+                  char rc = s.charAt(right);
+                  right++;
+                  if (required[rc] > 0)
+                      len++;
+                  required[rc]--;
               }
-  
-              while (requiredChars == 0) {
-                  //calculate minimum window
-                  if (++freq[source[left]] > 0) {
-                      if (right - left < end - start) {
-                          start = left;
-                          end = right;
-                      }
-                      requiredChars++;
+              while (isValidSubstring(len, t)) {
+                  if (right - left < r - l) {
+                      l = left;
+                      r = right;
                   }
+  
+                  char lc = s.charAt(left);
                   left++;
+                  if (required[lc] == 0)
+                      len--;
+                  required[lc]++;
               }
           }
   
-          return start == -1 ? "" : s.substring(start, end + 1);
+          return r == Integer.MAX_VALUE ? "" : s.substring(l, r);
+      }
+  
+      private boolean isValidSubstring(int len, String t) {
+          return len == t.length();
       }
   }
   ```
@@ -4265,6 +4250,7 @@
   * There is a **gap** between A and B
   * A **overlaps** B
   * A **overshadows** B
+  * Reverse of B to A
 
 ### Q56. [Merge Intervals](https://leetcode.com/problems/merge-intervals/)
 
