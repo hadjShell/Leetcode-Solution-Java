@@ -3943,6 +3943,8 @@
 
 * **Sum of previous elements and itself** for each slot
 
+  * Extended to **result of previous states and current state**
+
 * **Subarray/Range sum** problems
 
   * Compute the sum of elements between two indices **frequently**
@@ -3952,6 +3954,7 @@
 * Tricks
 
   * Dummy 0
+  * Help of **hash table**
 
 
 ### Q303. [Range Sum Query - Immutable](https://leetcode.com/problems/range-sum-query-immutable/)
@@ -4220,32 +4223,40 @@
 * ```java
   class Solution {
       public int findTheLongestSubstring(String s) {
-          // represent at current location is there vowels in odd count
-          // with last five bit representing five different vowels
-          int isOdd = 0;
-          Map<Integer, Integer> m = new HashMap<>();
-          m.put(0, -1);
-          int maxLen = 0;
+          int isOdd = 0, maxLen = 0;
+          Map<Integer, Integer> stateToIndexMap = new HashMap<>();
+  
+          stateToIndexMap.put(isOdd, -1);
           for (int i = 0; i < s.length(); i++) {
               char c = s.charAt(i);
-              switch (c) {
-                  case 'a' -> isOdd ^= 1;
-                  case 'e' -> isOdd ^= 2;
-                  case 'i' -> isOdd ^= 4;
-                  case 'o' -> isOdd ^= 8;
-                  case 'u' -> isOdd ^= 16;
+  
+              isOdd ^= switch (c) {
+                  case 'a'    -> 1;
+                  case 'e'    -> 2;
+                  case 'i'    -> 4;
+                  case 'o'    -> 8;
+                  case 'u'    -> 16;
+                  default     -> 0;
+              };
+  
+              if (stateToIndexMap.containsKey(isOdd)) {
+                  int len = i - stateToIndexMap.get(isOdd);
+                  maxLen = Math.max(maxLen, len);
               }
-              if (m.containsKey(isOdd)) {
-                  maxLen = Math.max(maxLen, i - m.get(isOdd));
-              }
-              else {
-                  m.put(isOdd, i);
-              }
+              else
+                  stateToIndexMap.put(isOdd, i);
           }
+  
           return maxLen;
       }
   }
   ```
+
+***
+
+# Diff
+
+
 
 # Intervals
 
