@@ -3943,19 +3943,20 @@
 
 * **Sum of previous elements and itself** for each slot
 
-  * Extended to **result of previous states and current state**
+  * Extended to **state of previous elements plus the current element**
 
 * **Subarray/Range sum** problems
 
   * Compute the sum of elements between two indices **frequently**
 
-  * Find or count the number of subarrays that add upto a specific value
+  * Find or **count** the number of subarrays that add upto a specific value
 
 * Tricks
 
   * Dummy 0
   * Help of **hash table**
 
+* **区间查询**
 
 ### Q303. [Range Sum Query - Immutable](https://leetcode.com/problems/range-sum-query-immutable/)
 
@@ -4254,7 +4255,76 @@
 
 ***
 
-# Diff
+# Difference Array
+
+* **Difference of current element of previous element** for each slot
+
+* **Add or subtract value to a range** of elements **frequently**
+
+* **区间增减**
+
+* ```java
+  class Difference {
+      private int[] diff;
+      
+      public Difference(int[] nums) {
+          diff = new int[nums.length];
+  
+          diff[0] = nums[0];
+          for (int i = 1; i < nums.length; i++) {
+              diff[i] = nums[i] - nums[i - 1];
+          }
+      }
+  
+      // 给闭区间 [i, j] 增加 val（可以是负数）
+      public void increment(int i, int j, int val) {
+          diff[i] += val;
+          if (j + 1 < diff.length) {
+              diff[j + 1] -= val;
+          }
+      }
+  
+      public int[] result() {
+          int[] res = new int[diff.length];
+  
+          res[0] = diff[0];
+          for (int i = 1; i < diff.length; i++) {
+              res[i] = res[i - 1] + diff[i];
+          }
+        
+          return res;
+      }
+  }
+  ```
+
+### Q1094. [Car Pooling](https://leetcode.com/problems/car-pooling/)
+
+* ```java
+  class Solution {
+      public boolean carPooling(int[][] trips, int capacity) {
+          int[] diff = new int[1001];
+  
+          for (int[] trip : trips) {
+              int passengers = trip[0], from = trip[1], to = trip[2];
+  
+              diff[from] += passengers;  
+              diff[to] -= passengers;
+          }
+  
+          int count = 0;
+          for (int i = 0; i < diff.length; i++) {
+              count += diff[i];
+  
+              if (count > capacity)
+                  return false;
+          }
+  
+          return true;
+      }
+  }
+  ```
+
+
 
 
 
