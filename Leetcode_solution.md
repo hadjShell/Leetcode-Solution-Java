@@ -1975,7 +1975,7 @@
 
 # Sliding Window
 
-* **Subarray, Substring** problem
+* **Subarray, Substring min/max** problem
 
 * Dynamically **resizable** window
 
@@ -3941,27 +3941,35 @@
 
 # Prefix Sum
 
-* Used for rapidly, frequently getting the sum of a subarray
-* Add a empty slot to normalise the loop
+* **Sum of previous elements and itself** for each slot
+
+* **Subarray/Range sum** problems
+
+  * Compute the sum of elements between two indices **frequently**
+
+  * Find or count the number of subarrays that add upto a specific value
+
+* Tricks
+
+  * Dummy 0
+
 
 ### Q303. [Range Sum Query - Immutable](https://leetcode.com/problems/range-sum-query-immutable/)
 
 * ```java
   class NumArray {
-      int[] preSum;
+      private int[] prefixSum;
   
       public NumArray(int[] nums) {
-          preSum = new int[nums.length + 1];
-          int i = 1;
-          preSum[0] = 0;
-          for (int n : nums) {
-              preSum[i] = preSum[i - 1] + n;
-              i++;
+          prefixSum = new int[nums.length + 1];
+          prefixSum[0] = 0;
+          for (int i = 0; i < nums.length; i++) {
+              prefixSum[i + 1] += nums[i] + prefixSum[i];
           }
       }
       
       public int sumRange(int left, int right) {
-          return preSum[right + 1] - preSum[left];
+          return prefixSum[right + 1] - prefixSum[left];
       }
   }
   ```
@@ -4082,8 +4090,6 @@
   }
   ```
 
-***
-
 ## :bulb:With Hashtable
 
 ### :star:Q525. [Contiguous Array](https://leetcode.com/problems/contiguous-array/)
@@ -4140,21 +4146,22 @@
 * ```java
   class Solution {
       public int subarraySum(int[] nums, int k) {
-          Map<Integer, Integer> preSum = new HashMap<>();
-          int sum = 0, cnt = 0;
-          preSum.put(0, 1);
-          for (int i = 1; i <= nums.length; i++) {
-              sum += nums[i - 1];
-              if (preSum.containsKey(sum - k))
-                  cnt += preSum.get(sum - k);
-              preSum.put(sum, preSum.getOrDefault(sum, 0) + 1);
+          Map<Integer, Integer> prefixSumCount = new HashMap<>();
+          int sum = 0, count = 0;
+          
+          prefixSumCount.put(0, 1);
+          for (int n : nums) {
+              sum += n;
+  
+              if (prefixSumCount.containsKey(sum - k))
+                  count += prefixSumCount.get(sum - k);
+              
+              prefixSumCount.put(sum, prefixSumCount.getOrDefault(sum, 0) + 1);
           }
-          return cnt;
+  
+          return count;
       }
   }
-  
-  // preSum[b] - preSum[a] = k
-  // preSum[b] - k = preSum[a]
   ```
 
 ### Q974. [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/)
