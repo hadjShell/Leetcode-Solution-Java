@@ -2714,8 +2714,6 @@
   }
   ```
 
-***
-
 ## :bulb:Valid parentheses
 
 ### Q20. [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
@@ -2802,8 +2800,6 @@
   }
   ```
 
-***
-
 ## :bulb:Encoding & Decoding
 
 ### Q71. [Simplify Path](https://leetcode.com/problems/simplify-path/)
@@ -2872,6 +2868,66 @@
   }
   ```
 
+### :star:Q224. [Basic Calculator](https://leetcode.com/problems/basic-calculator/)
+
+* ```java
+  class Solution {
+      public int calculate(String s) {
+          Deque<Integer> operand = new ArrayDeque<>();
+          Deque<Character> operator = new ArrayDeque<>();
+          int num = 0;
+          boolean isUnary = true;
+  
+          for (int i = 0; i < s.length(); i++) {
+              char c = s.charAt(i);
+  
+              if (c == '+') {
+                  operator.push('+');
+              }
+              else if (c == '-') {
+                  if (isUnary)    operand.push(0);
+                  operator.push('-');
+              }
+              else if (c == '(') {
+                  operator.push('(');
+                  isUnary = true;
+              }
+              else if (c == ')') {
+                  calExp(operand, operator);
+              }
+              else if (c >= '0' && c <= '9'){
+                  num = num * 10 + (c - '0');
+                  if (i == s.length() - 1 || 
+                      s.charAt(i + 1) < '0' || 
+                      s.charAt(i + 1) > '9') {
+                          operand.push(num);
+                          isUnary = false;
+                          num = 0;
+                      }
+              }
+          }
+          
+          calExp(operand, operator);
+  
+          return operand.peek();
+      }
+  
+      private void calExp(Deque<Integer> operand, Deque<Character> operator) {
+          int result = 0;
+  
+          while (!operator.isEmpty() && operator.peek() != '(') {
+              char op = operator.pop();
+              int o = operand.pop();
+              result = op == '+' ? result + o : result - o;
+          }
+          result += operand.pop();
+  
+          operand.push(result);
+          if (!operator.isEmpty())    operator.pop();
+      }
+  }
+  ```
+
 ### :star:Q394.  [Decode String](https://leetcode.com/problems/decode-string/)
 
 * ```java
@@ -2933,8 +2989,6 @@
       }
   }
   ```
-
-***
 
 ## :bulb: Monotonic Stack
 
@@ -3134,6 +3188,8 @@
       }
   }
   ```
+
+***
 
 # Queue
 
