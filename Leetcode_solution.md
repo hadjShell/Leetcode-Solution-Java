@@ -2460,28 +2460,26 @@
   class Solution {
       public String simplifyPath(String path) {
           String[] paths = path.split("/");
-          Deque<String> sp = new ArrayDeque<>();
-          for (String s : paths) {
-              switch (s) {
-                  case "":
-                  case ".":
-                      break;
-                  case "..":
-                      if (!sp.isEmpty()) {
-                          sp.pop();
-                      }
-                      break;
-                  default:
-                      sp.push(s);
+          Deque<String> directories = new ArrayDeque<>();
+  
+          for (String p : paths) {
+              switch(p) {
+                  case ".."   -> {
+                      if (!directories.isEmpty())
+                          directories.removeFirst();
+                  }
+                  case ".", ""-> {}
+                  default     -> 
+                      directories.addFirst(p);
               }
           }
-          StringBuilder simplePath = new StringBuilder();
-          while (!sp.isEmpty()) {
-              simplePath.append("/").append(sp.removeLast());
+  
+          StringBuilder sb = new StringBuilder();
+          while (!directories.isEmpty()) {
+              sb.append("/").append(directories.removeLast());
           }
-          if (simplePath.length() == 0)   
-              simplePath.append("/");
-          return simplePath.toString();
+  
+          return sb.length() == 0 ? "/" : sb.toString();
       }
   }
   ```
