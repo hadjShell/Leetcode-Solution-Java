@@ -2454,7 +2454,7 @@
 
 ## :bulb:Basic push and pop
 
-### :star:Q71. [Simplify Path](https://leetcode.com/problems/simplify-path/)
+### Q71. [Simplify Path](https://leetcode.com/problems/simplify-path/)
 
 * ```java
   class Solution {
@@ -2520,43 +2520,51 @@
   }
   ```
 
-### Q155. [Min Stack](https://leetcode.com/problems/min-stack/)
+### :star:Q155. [Min Stack](https://leetcode.com/problems/min-stack/)
 
-* Store the minimum value in each node
+* Consider **each node in the stack having a minimum value**
 
 * ```java
   class MinStack {
-  	private Node head;
-          
-      public void push(int x) {
-          if (head == null) 
-              head = new Node(x, x, null);
-          else 
-              head = new Node(x, Math.min(x, head.min), head);
-      }
-      
-      public void pop() {
-          head = head.next;
-      }
-      
-      public int top() {
-          return head.val;
-      }
-      
-      public int getMin() {
-          return head.min;
-      }
-          
       private class Node {
           int val;
           int min;
-          Node next;
-              
-          private Node(int val, int min, Node next) {
+  
+          public Node() {}
+  
+          public Node(int val, int min) {
               this.val = val;
               this.min = min;
-              this.next = next;
           }
+      }
+  
+      private Deque<Node> stack;
+      private int min;
+  
+      public MinStack() {
+          this.stack = new ArrayDeque<>();
+          this.min = 0;
+      }
+      
+      public void push(int val) {
+          if (stack.isEmpty()) 
+              min = val;  
+          else 
+              min = Math.min(min, val);
+          stack.addFirst(new Node(val, min));
+      }
+      
+      public void pop() {
+          stack.removeFirst();
+          if (!stack.isEmpty())   min = stack.getFirst().min;
+      }
+      
+      public int top() {
+          return stack.getFirst().val;
+      }
+      
+      public int getMin() {
+          return min;
       }
   }
   ```
