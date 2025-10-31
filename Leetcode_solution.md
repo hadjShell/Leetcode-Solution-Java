@@ -2452,73 +2452,7 @@
 
 # Stack
 
-## :bulb:Basic push and pop
-
-### Q71. [Simplify Path](https://leetcode.com/problems/simplify-path/)
-
-* ```java
-  class Solution {
-      public String simplifyPath(String path) {
-          String[] paths = path.split("/");
-          Deque<String> directories = new ArrayDeque<>();
-  
-          for (String p : paths) {
-              switch(p) {
-                  case ".."   -> {
-                      if (!directories.isEmpty())
-                          directories.removeFirst();
-                  }
-                  case ".", ""-> {}
-                  default     -> 
-                      directories.addFirst(p);
-              }
-          }
-  
-          StringBuilder sb = new StringBuilder();
-          while (!directories.isEmpty()) {
-              sb.append("/").append(directories.removeLast());
-          }
-  
-          return sb.length() == 0 ? "/" : sb.toString();
-      }
-  }
-  ```
-
-### Q150. [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)
-
-* ```java
-  class Solution {
-      public int evalRPN(String[] tokens) {
-          Deque<Integer> result = new ArrayDeque<>();
-          int tmp1 = 0, tmp2 = 0;
-          for (String t : tokens) {
-              try {
-                  int num = Integer.parseInt(t);
-                  result.push(num);
-              } catch (NumberFormatException e) {
-                  tmp1 = result.pop();
-                  tmp2 = result.pop();
-                  switch (t) {
-                      case "+":
-                          result.push(tmp2 + tmp1);
-                          break;
-                      case "-":
-                          result.push(tmp2 - tmp1);
-                          break;
-                      case "*":
-                          result.push(tmp2 * tmp1);
-                          break;
-                      case "/":
-                          result.push(tmp2 / tmp1);
-                          break;
-                      default :
-                  }
-              }
-          }
-          return result.pop();
-      }
-  }
-  ```
+## :bulb:LIFO
 
 ### :star:Q155. [Min Stack](https://leetcode.com/problems/min-stack/)
 
@@ -2911,6 +2845,72 @@
 ***
 
 ## :bulb:Encoding & Decoding
+
+### Q71. [Simplify Path](https://leetcode.com/problems/simplify-path/)
+
+* ```java
+  class Solution {
+      public String simplifyPath(String path) {
+          String[] paths = path.split("/");
+          Deque<String> directories = new ArrayDeque<>();
+  
+          for (String p : paths) {
+              switch(p) {
+                  case ".."   -> {
+                      if (!directories.isEmpty())
+                          directories.removeFirst();
+                  }
+                  case ".", ""-> {}
+                  default     -> 
+                      directories.addFirst(p);
+              }
+          }
+  
+          StringBuilder sb = new StringBuilder();
+          while (!directories.isEmpty()) {
+              sb.append("/").append(directories.removeLast());
+          }
+  
+          return sb.length() == 0 ? "/" : sb.toString();
+      }
+  }
+  ```
+
+### Q150. [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)
+
+* ```java
+  class Solution {
+      public int evalRPN(String[] tokens) {
+          Deque<Integer> operands = new ArrayDeque<>();
+  
+          for (String t : tokens) {
+              switch (t) {
+                  case "+", "-", "*", "/" -> {
+                      int o2 = operands.removeFirst();
+                      int o1 = operands.removeFirst();
+                      int result = cal(o1, o2, t);
+                      operands.addFirst(result);
+                  }
+                  default -> {
+                      operands.addFirst(Integer.parseInt(t));
+                  }
+              }
+          }
+  
+          return operands.removeFirst();
+      }
+  
+      private int cal(int o1, int o2, String op) {
+          return switch (op) {
+              case "+" -> o1 + o2;
+              case "-" -> o1 - o2;
+              case "*" -> o1 * o2;
+              case "/" -> (int) o1 / o2;
+              default  -> -1;
+          };
+      }
+  }
+  ```
 
 ### :star:Q394.  [Decode String](https://leetcode.com/problems/decode-string/)
 
