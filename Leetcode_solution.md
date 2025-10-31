@@ -2651,46 +2651,6 @@
 
 ### :star:Q946. [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences/)
 
-* ```java
-  class Solution {
-      public boolean validateStackSequences(int[] pushed, int[] popped) {
-          ArrayList<Integer> stack = new ArrayList<>();
-          int up = 0;      // pointer to the first unpushed element
-          for (int pop : popped) {
-              // if stack is empty, all elements remaining on the push stack are pushed
-              if (stack.isEmpty()) {
-                  while (pushed[up] != pop) {
-                      stack.add(pushed[up++]);
-                  }
-                  up++;
-              }
-              // an element is ready to be popped
-              else {
-                  // check the push stack
-                  int i = stack.size() - 1;
-                  while (i >= 0 && stack.get(i) != pop) {
-                      i--;
-                  }
-                  // if not found, generate the push stack
-                  if (i == -1) {
-                      while (pushed[up] != pop) {
-                          stack.add(pushed[up++]);
-                      }
-                      up++;
-                  }
-                  // if found, it should be last element (first to be popped) on the push stack
-                  else if (i == stack.size() - 1)
-                      stack.removeLast();
-                  
-                  else
-                      return false;
-              }
-          }
-          return true;
-      }
-  }
-  ```
-
 * Rebuild the process
 
 * ```java
@@ -2914,35 +2874,36 @@
 
 ### :star:Q394.  [Decode String](https://leetcode.com/problems/decode-string/)
 
-* st1 maintains a result stack that for each k[encoded_string] pair (or the beginning of the input string) there is a different StringBuilder including the partial or complete result previous to it. Whenever the loop encounter a '[', we push that sb into st1 to store that information
-
 * ```java
   class Solution {
       public String decodeString(String s) {
-          Deque<Integer> nums = new ArrayDeque<>();
-          Deque<StringBuilder> results = new ArrayDeque<>();
-          StringBuilder n = new StringBuilder();
-          StringBuilder cur_r = new StringBuilder();
+          Deque<Integer> times = new ArrayDeque<>();
+          Deque<StringBuilder> words = new ArrayDeque<>();
+          int time = 0;
+  
+          words.push(new StringBuilder());
   
           for (char c : s.toCharArray()) {
-              if (c >= '0' && c <= '9') {
-                  n.append(c);
-              }
-              else if (c == '[') {              
-                  nums.push(Integer.parseInt(n.toString()));
-                  n.setLength(0);
-                  encodeds.push(cur_r);
-                  cur_r = new StringBuilder();
+              if (c == '[') {
+                  words.push(new StringBuilder());
+                  times.push(time);
+                  time = 0;
               }
               else if (c == ']') {
-                  cur_r.repeat(cur_r, nums.pop() - 1);
-                  cur_r = encodeds.pop().append(cur_r);
+                  int t = times.pop();
+                  StringBuilder word = words.pop();
+                  word.repeat(word, t - 1);
+                  words.peek().append(word);
               }
-              else
-                  cur_r.append(c);
+              else if (c >= 'a' && c <= 'z') {
+                  words.peek().append(c);
+              }
+              else if (c >= '0' && c <= '9') {
+                  time = time * 10 + (c - '0');
+              }
           }
   
-          return cur_r.toString();
+          return words.pop().toString();
       }
   }
   ```
