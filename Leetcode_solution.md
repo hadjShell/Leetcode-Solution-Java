@@ -2995,7 +2995,7 @@
 * Leverage stack to maintain a monotonically **increasing or decreasing list**
 * **Next greater value** or **Last smaller value** problem
 * Trick
-  * Store indices in stack for convenience
+  * **Store indices in stack** for convenience
 
 
 ### Q496. [Next Greater Element I](https://leetcode.com/problems/next-greater-element-i/)
@@ -3049,17 +3049,20 @@
 * ```java
   class Solution {
       public int[] nextGreaterElements(int[] nums) {
-          Deque<Integer> stack = new ArrayDeque<>();
-          int len = nums.length;
-          int[] result = new int[len];
-          for (int i = 2 * len - 1; i >= 0; i--) {
-              int num = nums[i % len];
-              while (!stack.isEmpty() && stack.peek() <= num)
-                  stack.pop();
-              int nextGreater = stack.isEmpty() ? -1 : stack.peek();
-              stack.push(num);
-              result[i % len] = nextGreater;
-          }
+          Deque<Integer> monoStack = new ArrayDeque<>();
+          int[] result = new int[nums.length];
+  
+          Arrays.fill(result, -1);
+  
+          for (int j = 0; j < 2; j++)
+              for (int i = 0; i < nums.length; i++) {
+                  while (!monoStack.isEmpty() && nums[i] > nums[monoStack.peek()]) {
+                      int index = monoStack.pop();
+                      result[index] = nums[i];
+                  }
+                  monoStack.push(i);
+              }
+  
           return result;
       }
   }
