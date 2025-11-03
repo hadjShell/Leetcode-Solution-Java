@@ -2992,26 +2992,53 @@
 
 ## :bulb: Monotonic Stack
 
-* Leverage stack to maintain a monotonically increasing or decreasing list
-* Next greater value or Last smaller value problem
+* Leverage stack to maintain a monotonically **increasing or decreasing list**
+* **Next greater value** or **Last smaller value** problem
+* Trick
+  * Store indices in stack for convenience
+
 
 ### Q496. [Next Greater Element I](https://leetcode.com/problems/next-greater-element-i/)
 
 * ```java
   class Solution {
       public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-          Deque<Integer> stack = new ArrayDeque<>();
-          Map<Integer, Integer> m = new HashMap<>();
-          for (int i = nums2.length - 1; i >= 0; i--) {
-              while (!stack.isEmpty() && stack.peek() <= nums2[i])
-                  stack.pop();
-              int firstGreater = stack.isEmpty() ? -1 : stack.peek();
-              m.put(nums2[i], firstGreater);
-              stack.push(nums2[i]);
-          }
+          Map<Integer, Integer> ele2IndMap = getEle2IndMap(nums2);
+          int[] nextGreater = nextGreater(nums2);
           int[] result = new int[nums1.length];
-          for (int i = 0; i < nums1.length; i++) 
-              result[i] = m.get(nums1[i]);
+  
+          for (int i = 0; i < nums1.length; i++) {
+              int index = ele2IndMap.get(nums1[i]);
+              result[i] = nextGreater[index];
+          }
+  
+          return result;
+      }
+  
+      private Map<Integer, Integer> getEle2IndMap(int[] nums2) {
+          Map<Integer, Integer> ele2IndMap = new HashMap<>();
+  
+          for (int i = 0; i < nums2.length; i++) {
+              ele2IndMap.put(nums2[i], i);
+          }
+  
+          return ele2IndMap;
+      }
+  
+      private int[] nextGreater(int[] nums2) {
+          Deque<Integer> monoStack = new ArrayDeque<>();
+          int[] result = new int[nums2.length];
+  
+          Arrays.fill(result, -1);
+  
+          for (int i = 0; i < nums2.length; i++) {
+              while (!monoStack.isEmpty() && nums2[i] > nums2[monoStack.peek()]) {
+                  int index = monoStack.pop();
+                  result[index] = nums2[i];
+              }
+              monoStack.push(i);
+          }
+  
           return result;
       }
   }
