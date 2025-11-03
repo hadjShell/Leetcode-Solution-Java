@@ -2992,8 +2992,11 @@
 
 ## :bulb: Monotonic Stack
 
-* Leverage stack to maintain a monotonically **increasing or decreasing list**
 * **Next greater value** or **Last smaller value** problem
+* Leverage stack to maintain a monotonically **increasing or decreasing list** 
+  * Pop smaller values, then push new big value
+  * Pop biggers values, then push new small value
+
 * Trick
   * **Store indices in stack** for convenience
 
@@ -3071,19 +3074,23 @@
 ### Q739. [Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
 
 * ```java
-  // save index instead of the value
   class Solution {
-      public int[] dailyTemperatures(int[] temp) {
-          Deque<Integer> stack = new ArrayDeque<>();
-          int[] result = new int[temp.length];
-          for (int i = temp.length - 1; i >= 0; i--) {
-              while (!stack.isEmpty() && temp[stack.peek()] <= temp[i]) {
-                  stack.pop();
+      public int[] dailyTemperatures(int[] temperatures) {
+          Deque<Integer> monoStack = new ArrayDeque<>();
+          int[] answer = new int[temperatures.length];
+  
+          Arrays.fill(answer, 0);
+  
+          for (int i = 0; i < temperatures.length; i++) {
+              while (!monoStack.isEmpty() && 
+                      temperatures[i] > temperatures[monoStack.peek()]) {
+                  int index = monoStack.pop();
+                  answer[index] = i - index;
               }
-              result[i] = stack.isEmpty() ? 0 : stack.peek() - i;
-              stack.push(i);
+              monoStack.push(i);
           }
-          return result;
+  
+          return answer;
       }
   }
   ```
