@@ -5135,7 +5135,7 @@
 
 ### :bulb:Postorder
 
-### :heart:Q104. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+#### :heart:Q104. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
 * ```java
   class Solution {
@@ -5170,7 +5170,30 @@
   }
   ```
 
-### Q543. [Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
+#### Q145. [Binary Tree Postorder Traversal](https://leetcode.com/problems/binary-tree-postorder-traversal/)
+
+* ```java
+  class Solution {
+      public List<Integer> postorderTraversal(TreeNode root) {
+          List<Integer> result = new ArrayList<>();
+  
+          traverse(root, result);
+  
+          return result;
+      }
+  
+      private void traverse(TreeNode root, List<Integer> result) {
+          if (root == null)
+              return;
+  
+          traverse(root.left, result);
+          traverse(root.right, result);
+          result.add(root.val);
+      }
+  }
+  ```
+
+#### Q543. [Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
 
 * ```java
   class Solution {
@@ -5191,7 +5214,7 @@
   }
   ```
 
-### Q226. [Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
+#### Q226. [Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
 
 * ```java
   class Solution {
@@ -5206,7 +5229,7 @@
   }
   ```
 
-### Q114. [Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/)
+#### Q114. [Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/)
 
 * ```java
   class Solution {
@@ -5249,7 +5272,7 @@
   }
   ```
 
-### Q652. [Find Duplicate Subtrees](https://leetcode.com/problems/find-duplicate-subtrees/)
+#### Q652. [Find Duplicate Subtrees](https://leetcode.com/problems/find-duplicate-subtrees/)
 
 * ```java
   class Solution {
