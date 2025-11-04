@@ -3304,6 +3304,7 @@
 
 * Problem
   * **给你一个数组 `window`，已知其最值为 `A`，如果给 `window` 中添加一个数 `B`，那么比较一下 `A` 和 `B` 就可以立即算出新的最值；但如果要从 `window` 数组中减少一个数，就不能直接得到最值了，因为如果减少的这个数恰好是 `A`，就需要遍历 `window` 中的所有元素重新寻找新的最值**。
+  * **First or last element removal**
 
 ### :star:Q239. [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
 
@@ -5000,7 +5001,7 @@
 
 ### :bulb:Preorder
 
-### Q116. [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
+#### Q116. [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
 
 * ```java
   class Solution {
@@ -5024,7 +5025,30 @@
   }
   ```
 
-### Q872. [Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/)
+#### Q144. [Binary Tree Preorder Traversal](https://leetcode.com/problems/binary-tree-preorder-traversal/)
+
+* ```java
+  class Solution {
+      public List<Integer> preorderTraversal(TreeNode root) {
+          List<Integer> result = new ArrayList<>();
+  
+          traverse(root, result);
+  
+          return result;
+      }
+  
+      private void traverse(TreeNode root, List<Integer> result) {
+          if (root == null)
+              return;
+  
+          result.add(root.val);
+          traverse(root.left, result);
+          traverse(root.right, result);
+      }
+  }
+  ```
+
+#### Q872. [Leaf-Similar Trees](https://leetcode.com/problems/leaf-similar-trees/)
 
 * ```java
   class Solution {
@@ -5054,7 +5078,7 @@
   }
   ```
 
-### Q1448. [Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
+#### Q1448. [Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
 
 * ```java
   class Solution {
@@ -5078,7 +5102,7 @@
   }
   ```
 
-### :star:Q222. [Count Complete Tree Nodes](https://leetcode.com/problems/count-complete-tree-nodes/)
+#​###​ :star:Q222. [Count Complete Tree Nodes](https://leetcode.com/problems/count-complete-tree-nodes/)
 
 * A complete tree consist of a full subtree and another complete subtree
 * `O(LogN * logN)`
