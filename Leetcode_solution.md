@@ -4999,7 +4999,7 @@
 * Binary tree is all about making decision on what logic needs to be executed when to execute that logic (preorder, inorder, postorder)
 * If the problem relates to the subtree, then the logic is probably located in the postorder location and the method signature probably has a return value and some other parameters except for the `TreeNode root`
 
-### :bulb:Preorder
+### :bulb:Pre-order
 
 #### Q116. [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
 
@@ -5133,7 +5133,7 @@
   }
   ```
 
-### :bulb:Postorder
+### :bulb:Post-order
 
 #### :heart:Q104. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
@@ -5306,7 +5306,7 @@
   }
   ```
 
-### :bulb: In-order
+### :bulb:In-order
 
 #### Q94. [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)
 
@@ -5333,7 +5333,7 @@
 
 ### :bulb:Combination of Different Orders
 
-### :star:Q437. [Path Sum III](https://leetcode.com/problems/path-sum-iii/)
+#### :star:Q437. [Path Sum III](https://leetcode.com/problems/path-sum-iii/)
 
 * DFS + Prefix sum
 
@@ -5366,7 +5366,7 @@
   }
   ```
 
-### :star:Q1372. [Longest ZigZag Path in a Binary Tree](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
+#### :star:Q1372. [Longest ZigZag Path in a Binary Tree](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
 
 * ```java
   class Solution {
@@ -5394,7 +5394,7 @@
   }
   ```
 
-### :heart:Q236. [Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+#### :heart:Q236. [Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
 
 * The basic idea is to find a node in a binary tree
 
@@ -5415,7 +5415,7 @@
   }
   ```
 
-### Q1644. [Lowest Common Ancestor of a Binary Tree ii](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/)
+#### Q1644. [Lowest Common Ancestor of a Binary Tree ii](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/)
 
 * ```java
   class Solution {
@@ -5443,7 +5443,7 @@
   }
   ```
 
-### Q1650. [Lowest Common Ancestor of a Binary Tree iii](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/)
+#### Q1650. [Lowest Common Ancestor of a Binary Tree iii](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/)
 
 * Same question as Q160. Intersection of two linked list
 
@@ -5460,7 +5460,7 @@
   }
   ```
 
-### Q1676. [Lowest Common Ancestor of a Binary Tree iv](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iv/)
+#### Q1676. [Lowest Common Ancestor of a Binary Tree iv](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iv/)
 
 * ```java
   class Solution {
@@ -5484,7 +5484,7 @@
   }
   ```
 
-### :star:Q1373. [Maximum Sum BST in Binary Tree](https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/)
+#### :star:Q1373. [Maximum Sum BST in Binary Tree](https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/)
 
 * ```java
   class Solution {
@@ -5557,7 +5557,7 @@
   }
   ```
 
-### :star: Q1367. [Linked List in Binary Tree](https://leetcode.com/problems/linked-list-in-binary-tree/)
+ #### :star:Q1367. [Linked List in Binary Tree](https://leetcode.com/problems/linked-list-in-binary-tree/)
 
 * ```java
   class Solution {
@@ -5584,7 +5584,7 @@
 
 ### :bulb:Construction
 
-### Q654. [Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)
+#### Q654. [Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)
 
 * ```java
   class Solution {
@@ -5615,7 +5615,7 @@
   }
   ```
 
-### :star:Q105. [Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+#### :star:Q105. [Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 
 * ```java 
   class Solution {
@@ -5642,7 +5642,7 @@
   }
   ```
 
-### Q106. [Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+#### Q106. [Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
 
 * ```java
   class Solution {
@@ -5669,7 +5669,7 @@
   }
   ```
 
-### Q889. [Construct Binary Tree from Preorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+#### Q889. [Construct Binary Tree from Preorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
 
 * Cannot ensure there is only one answer
 
@@ -5713,7 +5713,7 @@
   * 如果你给出的是前序或者后序，那么你可以还原出唯一的一棵二叉树。
   * 如果你给出的是中序，那么你无法还原出唯一的一棵二叉树。
 
-### :star:Q297. [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
+#### :star:Q297. [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
 
 * ```java
   public class Codec {
@@ -5766,22 +5766,61 @@
             return;
       
         Deque<TreeNode> q = new ArrayDeque<>();
+      	int depth = 1;
+      
         q.add(root);
-        int depth = 1;
+    
         while (!q.isEmpty()) {
-            int sz = q.size();
-            for (int i = 0; i < sz; i++) {
-                TreeNode cur = q.remove();
+            int size = q.size();
+          
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = q.poll();
                 System.out.println("depth = " + depth + ", val = " + cur.val);
                 if (cur.left != null) 
                     q.add(cur.left);
                 if (cur.right != null)
                     q.add(cur.right);
             }
+          
             depth++;
         }
     }
     ```
+
+### Q102. [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)
+
+* ```java
+  class Solution {
+      public List<List<Integer>> levelOrder(TreeNode root) {
+          List<List<Integer>> result = new ArrayList<>();
+  
+          if (root == null)
+              return result;
+          
+          Deque<TreeNode> queue = new ArrayDeque<>();
+          // int depth = 1;
+  
+          queue.offer(root);
+          while (!queue.isEmpty()) {
+              List<Integer> l = new ArrayList<>();
+              int size = queue.size();
+  
+              for (int i = 0; i < size; i++) {
+                  TreeNode n = queue.poll();
+                  l.add(n.val);
+                  if (n.left != null)     queue.offer(n.left);
+                  if (n.right != null)    queue.offer(n.right);
+              }
+  
+              result.add(l);
+  
+              // depth++;
+          }
+  
+          return result;
+      }
+  }
+  ```
 
 ### Q111. [Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
 
