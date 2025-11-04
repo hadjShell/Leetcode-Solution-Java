@@ -5306,6 +5306,31 @@
   }
   ```
 
+### :bulb: In-order
+
+#### Q94. [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)
+
+* ```java
+  class Solution {
+      public List<Integer> inorderTraversal(TreeNode root) {
+          List<Integer> result = new ArrayList<>();
+  
+          traverse(root, result);
+  
+          return result;
+      }
+  
+      private void traverse(TreeNode root, List<Integer> result) {
+          if (root == null)
+              return;
+  
+          traverse(root.left, result);
+          result.add(root.val);
+          traverse(root.right, result);
+      }
+  }
+  ```
+
 ### :bulb:Combination of Different Orders
 
 ### :star:Q437. [Path Sum III](https://leetcode.com/problems/path-sum-iii/)
