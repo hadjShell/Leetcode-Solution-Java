@@ -3300,6 +3300,61 @@
   }
   ```
 
+## :bulb:Monotonic Queue
+
+* Problem
+  * **给你一个数组 `window`，已知其最值为 `A`，如果给 `window` 中添加一个数 `B`，那么比较一下 `A` 和 `B` 就可以立即算出新的最值；但如果要从 `window` 数组中减少一个数，就不能直接得到最值了，因为如果减少的这个数恰好是 `A`，就需要遍历 `window` 中的所有元素重新寻找新的最值**。
+
+### :star:Q239. [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
+
+* ```java
+  class Solution {
+      public int[] maxSlidingWindow(int[] nums, int k) {
+          int n = nums.length;
+          MonotonicQueue q = new MonotonicQueue();
+          int[] res = new int[n-k+1];
+          for(int i = 0; i < n; i++){
+              // 每次加入新元素
+              q.add(nums[i]);
+              
+              // 当窗口长度超过 k 时，移除最左边的元素
+              if (i >= k) {
+                  q.remove(nums[i - k]);
+              }
+              
+              // 从第 k-1 个元素开始记录结果
+              if (i >= k - 1) {
+                  res[i - k + 1] = q.getMax();
+              }
+          }
+          return res;
+      }
+  
+      class MonotonicQueue{
+          Deque<Integer> q = new ArrayDeque<>();
+        
+          public void add(int x) {
+              while (!q.isEmpty() && q.getLast() < x) {
+                  q.removeLast();
+              }
+              q.offer(x);
+          }
+        
+          public void remove(int x) {
+              if (q.peek() == x) {
+                  q.poll();
+              }
+          }
+        
+          public int getMax() {
+              return q.peek();
+          }
+      }
+  }
+  ```
+
+***
+
 # HashTable
 
 ### Tricks
