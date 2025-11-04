@@ -2868,7 +2868,7 @@
   }
   ```
 
-### :star:Q224. [Basic Calculator](https://leetcode.com/problems/basic-calculator/)
+### :heart:Q224. [Basic Calculator](https://leetcode.com/problems/basic-calculator/)
 
 * ```java
   class Solution {
@@ -2992,7 +2992,7 @@
 
 ## :bulb: Monotonic Stack
 
-* **Next greater value** or **Last smaller value** problem
+* **Next greater/smaller value** or **Last greater/smaller value** problem
 * Leverage stack to maintain a monotonically **increasing or decreasing list** 
   * Pop smaller values, then push new big value
   * Pop biggers values, then push new small value
@@ -3167,7 +3167,7 @@
   }
   ```
 
-### :star:Q456. [132 Pattern](https://leetcode.com/problems/132-pattern/)
+### :heart:Q456. [132 Pattern](https://leetcode.com/problems/132-pattern/)
 
 * https://leetcode.com/problems/132-pattern/solutions/5605502/detailed-explanation-using-monotonic-stack-approach-java-defeat-91
 
@@ -3178,8 +3178,8 @@
               return false;
   
           int max2 = Integer.MIN_VALUE;
-          // increasing stack from top to bottom
           Deque<Integer> stack = new ArrayDeque<>();
+        
           for (int i = nums.length - 1; i >= 0; i--) {
               if (nums[i] < max2)
                   return true;
@@ -3187,6 +3187,7 @@
                   max2 = stack.pop();
               stack.push(nums[i]);
           }
+  
           return false;
       }   
   }
@@ -3235,25 +3236,46 @@
 * ```java
   class Solution {
       public String predictPartyVictory(String senate) {
-          Deque<Integer> radiantIndices = new ArrayDeque<>(), direIndices = new ArrayDeque<>();
-          int n = senate.length();
-          for (int i = 0; i < n; i++) {
-              if (senate.charAt(i) == 'R') {
-                  radiantIndices.offer(i);
-              } else if (senate.charAt(i) == 'D') {
-                  direIndices.offer(i);
+          int[] count = count(senate);    // 0: R, 1: D
+          int vote = 0;                   // >0: R, <0: D
+          Deque<Character> senators = new ArrayDeque<Character>();
+  
+          for (char c : senate.toCharArray())
+              senators.offer(c);
+  
+          while (count[0] != 0 && count[1] != 0) {
+              char s = senators.poll();
+  
+              if (s == 'R') {
+                  if (vote >= 0) 
+                      senators.offer(s);
+                  else 
+                      count[0]--;
+                  vote++;
+              }
+              else {
+                  if (vote <= 0)
+                      senators.offer(s);
+                  else 
+                      count[1]--;
+                  vote--;
               }
           }
   
-          while (!radiantIndices.isEmpty() && !direIndices.isEmpty()) {
-              if (radiantIndices.poll() < direIndices.poll()) {
-                  radiantIndices.offer(n++);
-              } else {
-                  direIndices.offer(n++);
-              }
+          return count[0] == 0 ? "Dire" : "Radiant";
+      }
+  
+      private int[] count(String senate) {
+          int[] count = new int[2];
+  
+          for (char c : senate.toCharArray()) {
+              if (c == 'R') 
+                  count[0]++;
+              else
+                  count[1]++;
           }
   
-          return radiantIndices.isEmpty() ? "Dire" : "Radiant";
+          return count;
       }
   }
   ```
