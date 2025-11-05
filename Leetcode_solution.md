@@ -1,6 +1,6 @@
 # Array
 
-## Tricks
+## 🛠️ Tricks
 
 * Partition - 同类项分组一起看，改变顺序可能便于处理
 * Forward and backward - 正看反看 + 分段看
@@ -8,6 +8,9 @@
 * Bucket - suitable when elements' values are within a range
 * Simulation for 2D arrays
 * 2D array 对角线翻转，x轴翻转，y轴翻转的组合
+* [Boyer–Moore majority vote algorithm](https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_majority_vote_algorithm)
+
+> If a second pass is not performed and there is no majority, the algorithm will not detect that no majority exists.
 
 ## :bulb:1D Array
 
@@ -791,14 +794,6 @@
 
 # String
 
-### Q224. [Basic Calculator](https://leetcode.com/problems/basic-calculator/)
-
-* ```java
-  
-  ```
-
-* ==Need to be done again==
-
 
 ### Q884. [Uncommon Words from Two Sentences](https://leetcode.com/problems/uncommon-words-from-two-sentences/)
 
@@ -931,7 +926,7 @@
 
 # Two Pointers
 
-## Tricks
+## 🛠️ Tricks
 
 * Dummy nodes
 * Fast and slow pointers
@@ -1975,6 +1970,8 @@
 
 # Sliding Window
 
+## 🧠 Mindset
+
 * **Subarray, Substring min/max** problem
 
 * Dynamically **resizable** window
@@ -2009,6 +2006,7 @@
     }
     ```
 
+## :bulb:Questions
 
 ### :star:Q3. [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
 
@@ -3358,10 +3356,12 @@
 
 # HashTable
 
-### Tricks
+## 🛠️ Tricks
 
 * If the values of keys are limited, **bucket array** instead of hash table can be used to increase the performance
 * **Combine hash map with other data structures** to improve time performance
+
+## :bulb:Questions
 
 ### Q13. [Roman to Integer](https://leetcode.com/problems/roman-to-integer/)
 
@@ -4079,6 +4079,8 @@
 
 # Prefix Sum
 
+## 🧠 Mindset
+
 * **Sum of previous elements and itself** for each slot
 
   * Extended to **state of previous elements plus the current element**
@@ -4089,12 +4091,14 @@
 
   * Find or **count** the number of subarrays that add upto a specific value
 
-* Tricks
-
-  * Dummy 0
-  * Help of **hash table**
-
 * **区间查询**
+
+## 🛠️ Tricks
+
+* Dummy 0
+* Help of **hash table**
+
+## :bulb:Questions
 
 ### Q303. [Range Sum Query - Immutable](https://leetcode.com/problems/range-sum-query-immutable/)
 
@@ -4395,6 +4399,8 @@
 
 # Difference Array
 
+## 🧠 Mindset
+
 * **Difference of current element of previous element** for each slot
 
 * **Add or subtract value to a range** of elements **frequently**
@@ -4434,6 +4440,8 @@
       }
   }
   ```
+
+## :bulb:Questions
 
 ### Q1094. [Car Pooling](https://leetcode.com/problems/car-pooling/)
 
@@ -4492,6 +4500,8 @@
 
 # Intervals
 
+## 🧠 Mindset
+
 * Intervals represent **a range of values** or **a duration of time** with a defined **start** and **end**
 * Common problem domain
   * Time management (**a time sequence**, find available slot, merge intervals)
@@ -4501,6 +4511,8 @@
   * A **overlaps** B
   * A **overshadows** B
   * Reverse of B to A
+
+## :bulb:Questions
 
 ### Q56. [Merge Intervals](https://leetcode.com/problems/merge-intervals/)
 
@@ -4994,11 +5006,17 @@
 
 # Binary Tree
 
+## 🧠​ Mindset
+
 * **遍历**
   * 递归：DFS
   * 层序：BFS
 * **分解子问题（子树）**
   * 递归DFS
+
+## 🛠️ Tricks
+
+* **Morris traversal**
 
 ## :bulb:DFS
 
