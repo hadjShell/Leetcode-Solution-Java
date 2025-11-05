@@ -5187,49 +5187,6 @@
   }
   ```
 
-#### Q114. [Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/)
-
-* ```java
-  class Solution {
-      public void flatten(TreeNode root) {
-          _flatten(root);
-      }
-  
-      public Sequence _flatten(TreeNode root) {
-          if (root == null)
-              return null;
-          Sequence left = _flatten(root.left);
-          Sequence right = _flatten(root.right);
-          if (left == null && right == null)
-              return new Sequence(root, root);
-          else if (left == null)
-              return new Sequence(root, right.end);
-          else if (right == null) {
-              root.left = null;
-              root.right = left.start;
-              return new Sequence(root, left.end);
-          }
-          else {
-              root.right = left.start;
-              left.end.right = right.start;
-              root.left = null;
-              return new Sequence(root, right.end);
-          }
-      } 
-  
-      private class Sequence {
-          TreeNode start;
-          TreeNode end;
-  
-          public Sequence() {}
-          public Sequence(TreeNode start, TreeNode end) {
-              this.start = start;
-              this.end = end;
-          }
-      }
-  }
-  ```
-
 #### Q652. [Find Duplicate Subtrees](https://leetcode.com/problems/find-duplicate-subtrees/)
 
 * ```java
@@ -5790,6 +5747,41 @@
           }
           else
               return false;
+      }
+  }
+  ```
+
+### Q114. [Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/)
+
+* ```java
+  class Solution {
+      public void flatten(TreeNode root) {
+          _flatten(root);
+      }
+  
+      private TreeNode _flatten(TreeNode root) {
+          if (root == null)
+              return null;
+          
+          TreeNode left = root.left, right = root.right;
+          TreeNode leftTail = _flatten(left), rightTail = _flatten(right);
+          
+          if (leftTail == null && rightTail == null)
+              return root;
+          else if (leftTail == null) {
+              return rightTail;
+          }
+          else if (rightTail == null) {
+              root.left = null;
+              root.right = left;
+              return leftTail;
+          }
+          else {
+              root.left = null;
+              root.right = left;
+              leftTail.right = right;
+              return rightTail;
+          }
       }
   }
   ```
