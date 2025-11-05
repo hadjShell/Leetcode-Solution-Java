@@ -5007,7 +5007,7 @@
 
 ### :bulb:Pre-order
 
-#### :star:Q116. [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
+#### Q116. [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
 
 * ```java
   class Solution {
@@ -5066,6 +5066,55 @@
           traverse(node2.left, node2.right);
           // 连接跨越父节点的两个子节点
           traverse(node1.right, node2.left);
+      }
+  }
+  ```
+
+#### :star:Q117. [Populating Next Right Pointers in Each Node II](https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/)
+
+* **Solve right subtree first**
+
+* ```java
+  class Solution {
+      public Node connect(Node root) {
+          traverse(root, null, false);
+  
+          return root;
+      }
+  
+      public void traverse(Node root, Node father, boolean isLeft) {
+          if (root == null)
+              return;
+          
+          if (father == null)
+              root.next = null;
+          else {
+              if (isLeft && father.right != null) {
+                  root.next = father.right;
+              }
+              else {
+                  Node next = father.next;
+                  while (next != null) {
+                      if (next.left == null && next.right == null)
+                          next = next.next;
+                      else
+                          break;
+                  }
+  
+                  if (next != null) {
+                      if (next.left != null)
+                          root.next = next.left;
+                      else
+                          root.next = next.right;
+                  }
+                  else
+                      root.next = null;
+              }
+          }
+  
+        	// solve right subtree first
+          traverse(root.right, root, false);
+          traverse(root.left, root, true);
       }
   }
   ```
