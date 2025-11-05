@@ -4996,11 +4996,11 @@
 
 * **遍历**
   * 递归：DFS
-    * `void traverse()`
+    * `void traverse()` + `class variable`
   * 层序：BFS
 * **分解子问题（子树）**
   * 递归DFS
-    * `T solution()`
+    * `T subTree()`
 
 ## :bulb:DFS
 
@@ -5292,6 +5292,8 @@
 ### :bulb:Combination of Different Orders
 
 #### :heart:Q104. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+
+* 经典例题
 
 * **遍历思想**
 
@@ -5768,6 +5770,30 @@
   }
   ```
 
+### :star:Q101. [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)
+
+* ```java
+  class Solution {
+      public boolean isSymmetric(TreeNode root) {
+          return isSym(root.left, root.right);
+      }
+  
+      public boolean isSym(TreeNode left, TreeNode right) {
+          if (left == null && right == null)
+              return true;
+          else if (left != null && right != null) {
+              if (left.val != right.val)
+                  return false;
+              else
+                  return isSym(left.left, right.right) && 
+                          isSym(right.left, left.right);
+          }
+          else
+              return false;
+      }
+  }
+  ```
+
 ### Q226. [Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
 
 * ```java
@@ -5799,7 +5825,7 @@
         Deque<TreeNode> q = new ArrayDeque<>();
       	int depth = 1;
       
-        q.add(root);
+        q.offer(root);
     
         while (!q.isEmpty()) {
             int size = q.size();
@@ -5808,15 +5834,53 @@
                 TreeNode cur = q.poll();
                 System.out.println("depth = " + depth + ", val = " + cur.val);
                 if (cur.left != null) 
-                    q.add(cur.left);
+                    q.offer(cur.left);
                 if (cur.right != null)
-                    q.add(cur.right);
+                    q.offer(cur.right);
             }
           
             depth++;
         }
     }
     ```
+
+### Q101. [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)
+
+* **`ArrayDeque` doesn't accpet null element**
+
+* ```java
+  class Solution {
+      public boolean isSymmetric(TreeNode root) {
+          Deque<TreeNode> queue = new LinkedList<>();
+          // int depth = 1;
+  
+          queue.offer(root);
+          while (!queue.isEmpty()) {
+              int size = queue.size();
+              int[] level = new int[size];
+              
+              for (int i = 0; i < size; i++) {
+                  TreeNode n = queue.poll();
+  
+                  if (n == null)
+                      level[i] = Integer.MAX_VALUE;
+                  else {
+                      level[i] = n.val;
+                      queue.offer(n.left);
+                      queue.offer(n.right);
+                  }
+              }
+  
+              for (int i = 0; i < size / 2; i++) {
+                  if (level[i] != level[size - 1 - i])
+                      return false;
+              }
+          }
+  
+          return true;
+      }
+  }
+  ```
 
 ### Q102. [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)
 
