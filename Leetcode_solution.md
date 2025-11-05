@@ -4994,9 +4994,17 @@
 
 # Binary Tree
 
+* **遍历**
+  * 递归：DFS
+    * `void traverse()`
+  * 层序：BFS
+* **分解子问题（子树）**
+  * 递归DFS
+    * `T solution()`
+
 ## :bulb:DFS
 
-* Binary tree is all about making decision on what logic needs to be executed when to execute that logic (preorder, inorder, postorder)
+* Binary tree is all about making decision on **what logic needs to be executed when to execute that logic** (preorder, inorder, postorder)
 * If the problem relates to the subtree, then the logic is probably located in the postorder location and the method signature probably has a return value and some other parameters except for the `TreeNode root`
 
 ### :bulb:Pre-order
@@ -5134,41 +5142,6 @@
   ```
 
 ### :bulb:Post-order
-
-#### :heart:Q104. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
-
-* ```java
-  class Solution {
-      private int md = 0;
-  
-      public int maxDepth(TreeNode root) {
-          _maxDepth(root, 0);
-          return md;
-  
-      }
-  
-      private void _maxDepth(TreeNode root, int depth) {
-          if (root == null)
-              return;
-          
-          depth++;
-          md = Math.max(depth, md);
-          _maxDepth(root.left, depth);
-          _maxDepth(root.right, depth);
-          depth--;
-      }
-  }
-  ```
-
-* ```java
-  class Solution {
-      public int maxDepth(TreeNode root) {
-          if (root == null)
-              return 0;
-          return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
-      }
-  }
-  ```
 
 #### Q145. [Binary Tree Postorder Traversal](https://leetcode.com/problems/binary-tree-postorder-traversal/)
 
@@ -5332,6 +5305,44 @@
   ```
 
 ### :bulb:Combination of Different Orders
+
+#### :heart:Q104. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+
+* **遍历思想**
+
+  ```java
+  class Solution {
+      int depth = 0;
+      int max = 0;
+  
+      public int maxDepth(TreeNode root) {
+          traverse(root);
+          return max;
+      }
+  
+      private void traverse(TreeNode root) {
+          if (root == null)
+              return;
+          
+          depth++;
+          max = Math.max(depth, max);
+          traverse(root.left);
+          traverse(root.right);
+          depth--;
+      }
+  }
+  ```
+
+* **分解思想**
+
+  ```java
+  class Solution {
+      public int maxDepth(TreeNode root) {
+          return root == null ? 0 : 
+              1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+      }
+  }
+  ```
 
 #### :star:Q437. [Path Sum III](https://leetcode.com/problems/path-sum-iii/)
 
