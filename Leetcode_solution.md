@@ -5187,21 +5187,6 @@
   }
   ```
 
-#### Q226. [Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
-
-* ```java
-  class Solution {
-      public TreeNode invertTree(TreeNode root) {
-          if (root == null)
-              return null;
-          TreeNode left = root.left, right = root.right;
-          root.left = invertTree(right);
-          root.right = invertTree(left);
-          return root;
-      }
-  }
-  ```
-
 #### Q114. [Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/)
 
 * ```java
@@ -5765,7 +5750,7 @@
   }
   ```
 
-## :bulb: ​​Divide & Conquer
+## :bulb:Divide & Conquer
 
 ### Q100. [Same Tree](https://leetcode.com/problems/same-tree/)
 
@@ -5782,6 +5767,25 @@
       }
   }
   ```
+
+### Q226. [Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)
+
+* ```java
+  class Solution {
+      public TreeNode invertTree(TreeNode root) {
+          if (root == null)
+              return root;
+  
+          TreeNode left = root.left,right = root.right;
+          root.left = invertTree(right);
+          root.right = invertTree(left);
+  
+          return root;
+      }
+  }
+  ```
+
+
 
 ## :bulb:BFS
 
