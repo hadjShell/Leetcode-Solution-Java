@@ -5007,6 +5007,36 @@
 
 ### :bulb:Pre-order
 
+#### Q112. [Path Sum](https://leetcode.com/problems/path-sum/)
+
+* ```java
+  class Solution {
+      private int count = 0;
+  
+      public boolean hasPathSum(TreeNode root, int targetSum) {
+          traverse(root, 0, targetSum);
+  
+          return count > 0;
+      }
+  
+      private void traverse(TreeNode root, int sum, int targetSum) {
+          if (root == null)
+              return;
+  
+          sum += root.val;
+          if (sum == targetSum && isLeaf(root))
+              count++;
+          
+          traverse(root.left, sum, targetSum);
+          traverse(root.right, sum, targetSum);
+      }
+  
+      private boolean isLeaf(TreeNode root) {
+          return root.left == null && root.right == null;
+      }
+  }
+  ```
+
 #### Q116. [Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
 
 * ```java
