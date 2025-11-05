@@ -4996,11 +4996,9 @@
 
 * **遍历**
   * 递归：DFS
-    * `void traverse()` + `class variable`
   * 层序：BFS
 * **分解子问题（子树）**
   * 递归DFS
-    * `T subTree()`
 
 ## :bulb:DFS
 
@@ -5014,21 +5012,30 @@
 * ```java
   class Solution {
       public Node connect(Node root) {
-          _connect(root, null);
+          traverse(root, null, false);
+  
           return root;
       }
   
-      private void _connect(Node root, Node prev) {
+      public void traverse(Node root, Node father, boolean isLeft) {
           if (root == null)
               return;
-          if (prev == null) {
-              _connect(root.left, null);
-          }
+          
+          if (father == null)
+              root.next = null;
           else {
-              prev.next = root;
-              _connect(root.left, prev.right);
+              if (isLeft)
+                  root.next = father.right;
+              else {
+                  if (father.next != null)
+                      root.next = father.next.left;
+                  else
+                      root.next = null;
+              }
           }
-          _connect(root.right, root.left);
+  
+          traverse(root.left, root, true);
+          traverse(root.right, root, false);
       }
   }
   ```
