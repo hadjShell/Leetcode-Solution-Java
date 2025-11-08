@@ -5302,7 +5302,31 @@
 
 ### :bulb:Post-order
 
+#### Q124. [Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
 
+* ```java
+  class Solution {
+      private int max = Integer.MIN_VALUE;
+  
+      public int maxPathSum(TreeNode root) {
+          traverse(root);
+  
+          return max;
+      }
+  
+      private int traverse(TreeNode root) {
+          if (root == null)
+              return -1;
+          
+          int left = Math.max(traverse(root.left), 0);
+          int right = Math.max(traverse(root.right), 0);
+  
+          max = Math.max(root.val + left + right, max);
+  
+          return Math.max(root.val + left, root.val + right);
+      }
+  }
+  ```
 
 #### Q145. [Binary Tree Postorder Traversal](https://leetcode.com/problems/binary-tree-postorder-traversal/)
 
