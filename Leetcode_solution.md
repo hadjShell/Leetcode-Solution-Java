@@ -5325,32 +5325,36 @@
 
 * ```java
   class Solution {
+      List<TreeNode> result = new ArrayList<>();
+      Map<String, Integer> subTree = new HashMap<>();
+  
       public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-          List<TreeNode> res = new ArrayList<>();
-          Map<String, Integer> m = new HashMap<>();
-          traverse(root, res, m);
-          return res;
+          traverse(root);
+          return result;
       }
   
-      private StringBuilder traverse(TreeNode root, List<TreeNode> res, Map<String, Integer> m) {
-          StringBuilder cur = new StringBuilder();
+      private StringBuilder traverse(TreeNode root) {
+          StringBuilder sb = new StringBuilder();
+          
           if (root == null) {
-              cur.append(" ,");
+              sb.append("n");
           }
           else {
-              StringBuilder left = traverse(root.left, res, m);
-              StringBuilder right = traverse(root.right, res, m);
-              cur.append(root.val);
-              cur.append(",");
-              cur.append(left);
-              cur.append(right);
-              String mid = cur.toString();
-              int freq = m.getOrDefault(mid, 0);
+              StringBuilder left = traverse(root.left);
+              StringBuilder right = traverse(root.right);
+  
+              sb.append(left).append("-")
+              .append(right).append("-")
+              .append(root.val);
+  
+              String s = sb.toString();
+              int freq = subTree.getOrDefault(s, 0);
               if (freq == 1)
-                  res.add(root);
-              m.put(mid, freq + 1);
+                  result.add(root);
+              subTree.put(s, freq + 1);
           }
-          return cur;
+  
+          return sb;
       }
   }
   ```
