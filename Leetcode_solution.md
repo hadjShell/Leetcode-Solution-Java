@@ -5275,7 +5275,34 @@
   }
   ```
 
+### :bulb:In-order
+
+#### Q94. [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)
+
+* ```java
+  class Solution {
+      public List<Integer> inorderTraversal(TreeNode root) {
+          List<Integer> result = new ArrayList<>();
+  
+          traverse(root, result);
+  
+          return result;
+      }
+  
+      private void traverse(TreeNode root, List<Integer> result) {
+          if (root == null)
+              return;
+  
+          traverse(root.left, result);
+          result.add(root.val);
+          traverse(root.right, result);
+      }
+  }
+  ```
+
 ### :bulb:Post-order
+
+
 
 #### Q145. [Binary Tree Postorder Traversal](https://leetcode.com/problems/binary-tree-postorder-traversal/)
 
@@ -5299,6 +5326,60 @@
       }
   }
   ```
+
+#### :star:Q236. [Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+* **遍历**
+
+  ```java
+  class Solution {
+      private TreeNode lca;
+  
+      public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+          traverse(root, p, q);
+          
+          return lca;
+      }
+  
+      private boolean[] traverse(TreeNode root, TreeNode p, TreeNode q) {
+          boolean[] hasPQ = new boolean[2];
+  
+          if (root == null)
+              return hasPQ;
+  
+          boolean[] left = traverse(root.left, p, q);
+          boolean[] right = traverse(root.right, p, q);
+  
+          hasPQ[0] = left[0] || right[0] || root == p;
+          hasPQ[1] = left[1] || right[1] || root == q;
+          if (hasPQ[0] && hasPQ[1] && lca == null)
+              lca = root;
+  
+          return hasPQ;
+      }
+  }
+  ```
+
+* **分解**
+
+```java
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null)
+            return null;
+
+        if (root == p || root == q)
+            return root;
+      
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        if (left != null && right != null)
+            return root;
+      
+        return left == null ? right : left;
+    }
+}
+```
 
 #### Q543. [Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
 
@@ -5359,32 +5440,7 @@
   }
   ```
 
-### :bulb:In-order
-
-#### Q94. [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/)
-
-* ```java
-  class Solution {
-      public List<Integer> inorderTraversal(TreeNode root) {
-          List<Integer> result = new ArrayList<>();
-  
-          traverse(root, result);
-  
-          return result;
-      }
-  
-      private void traverse(TreeNode root, List<Integer> result) {
-          if (root == null)
-              return;
-  
-          traverse(root.left, result);
-          result.add(root.val);
-          traverse(root.right, result);
-      }
-  }
-  ```
-
-### :bulb:Combination of Different Orders
+### :bulb:Mix of Orders
 
 #### :heart:Q104. [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
 
@@ -5483,27 +5539,6 @@
               _longestZigZag(root.right, true, steps + 1);
               _longestZigZag(root.right, false, 0);
           }
-      }
-  }
-  ```
-
-#### :heart:Q236. [Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
-
-* The basic idea is to find a node in a binary tree
-
-* ```java
-  class Solution {
-      public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-          if (root == null)
-              return null;
-  
-          if (root == p || root == q)
-              return root;
-          TreeNode left = lowestCommonAncestor(root.left, p, q);
-          TreeNode right = lowestCommonAncestor(root.right, p, q);
-          if (left != null && right != null)
-              return root;
-          return left == null ? right : left;
       }
   }
   ```
