@@ -3069,6 +3069,33 @@
   }
   ```
 
+### :star:Q654. [Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree/)
+
+* ```java
+  class Solution {
+      public TreeNode constructMaximumBinaryTree(int[] nums) {
+          Deque<TreeNode> monoStack = new ArrayDeque<>();
+  
+          for (int val : nums) {
+              TreeNode n = new TreeNode(val);
+              TreeNode smaller = null;
+  
+              while (!monoStack.isEmpty() && val > monoStack.peek().val) {
+                  smaller = monoStack.pop();
+              }
+              n.left = smaller;
+  
+              if (!monoStack.isEmpty())
+                  monoStack.peek().right = n;
+              
+              monoStack.push(n);
+          }
+  
+          return monoStack.getLast();
+      }
+  }
+  ```
+
 ### Q739. [Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
 
 * ```java
