@@ -5808,24 +5808,37 @@ class Solution {
 * ```java
   class Solution {
       public TreeNode buildTree(int[] inorder, int[] postorder) {
-          Map<Integer, Integer> inOrder = new HashMap<>();
-          int size = inorder.length;
-          for (int i = 0; i < size; i++)
-              inOrder.put(inorder[i], i);
-          
-          return _buildTree(postorder, 0, size - 1, inOrder, 0, size - 1);
+          Map<Integer, Integer> inorderVal2Ind = getInorderVal2IndMap(inorder);
+          int length = inorder.length;
+  
+          return build(postorder, 0, length - 1, 
+                      inorderVal2Ind, 0, length - 1);
       }
   
-      private TreeNode _buildTree(int[] postorder, int left, int right, Map<Integer, Integer> inOrder, int inLeft, int inRight) {
-          if (left > right)
+      private TreeNode build(int[] postorder, int postL, int postR,
+                              Map<Integer, Integer> inorder, int inL, int inR) {
+          if (postR < postL)
               return null;
+  
+          int inRoot = inorder.get(postorder[postR]);
+          int leftSize = inRoot - inL;
+  
+          TreeNode left = build(postorder, postL, postL + leftSize - 1,
+                                  inorder, inL, inRoot - 1);
+          TreeNode right = build(postorder, postL + leftSize, postR - 1,
+                                  inorder, inRoot + 1, inR);
           
-          int in = inOrder.get(postorder[right]);
-          TreeNode leftNode = _buildTree(postorder, left, left + in - inLeft - 1,      
-                                          inOrder, inLeft, in - 1);
-          TreeNode rightNode = _buildTree(postorder, left + in - inLeft, right - 1, 
-                                          inOrder, in + 1, inRight);
-          return new TreeNode(postorder[right], leftNode, rightNode);
+          return new TreeNode(postorder[postR], left, right);
+      }
+  
+      private Map<Integer, Integer> getInorderVal2IndMap(int[] inorder) {
+          Map<Integer, Integer> val2Ind = new HashMap<>();
+  
+          for (int i = 0; i < inorder.length; i++) {
+              val2Ind.put(inorder[i], i);
+          }
+  
+          return val2Ind;
       }
   }
   ```
