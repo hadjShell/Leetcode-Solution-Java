@@ -6268,28 +6268,32 @@ class Solution {
 * ```java
   class Solution {
       public List<Integer> rightSideView(TreeNode root) {
-          List<Integer> l = new ArrayList<>();
+          List<Integer> result = new ArrayList<>();
+          Deque<TreeNode> queue = new ArrayDeque<>();
+  
           if (root == null)
-              return l;
-          Deque<TreeNode> q = new ArrayDeque<>();
-          q.offer(root);
-          while (!q.isEmpty()) {
-              int size = q.size();
-              TreeNode n = null;
+              return result;
+  
+          queue.offer(root);
+          while(!queue.isEmpty()) {
+              int size = queue.size();
+              TreeNode rightMost = null;
+  
               for (int i = 0; i < size; i++) {
-                  n = q.poll();
-                  if (n.left != null)
-                      q.offer(n.left);
-                  if (n.right != null)
-                      q.offer(n.right);
+                  rightMost = queue.poll();
+  
+                  if (rightMost.left != null)     queue.offer(rightMost.left);
+                  if (rightMost.right != null)    queue.offer(rightMost.right);
               }
-              l.add(n.val);
+  
+              result.add(rightMost.val);
           }
-          return l;
+  
+          return result;
       }
   }
   ```
-
+  
 * Or DFS preorder approach
 
 * ```java
