@@ -5535,33 +5535,39 @@ class Solution {
 
 #### :star:Q437. [Path Sum III](https://leetcode.com/problems/path-sum-iii/)
 
-* DFS + Prefix sum
+* **DFS + Prefix sum**
 
 * ```java
   class Solution {
       private int count = 0;
   
       public int pathSum(TreeNode root, int targetSum) {
-          if (root == null)
-              return 0;
-          Map<Long, Integer> preSum = new HashMap<>();
-          preSum.put(0l, 1);
-          _pathSum(root, 0l, targetSum, preSum);
+          Map<Long, Integer> prefixSum = new HashMap<>();
+          prefixSum.put(0l, 1);
+  
+          traverse(root, prefixSum, 0l, targetSum);
+  
           return count;
       }
   
-      private void _pathSum(TreeNode root, long sum, int targetSum, Map<Long, Integer> preSum) {
+      private void traverse(TreeNode root, Map<Long, Integer> prefixSum,
+                              long sum, int targetSum) {
           if (root == null)
               return;
-          long newPathSum = sum + root.val;
-          if (preSum.containsKey(newPathSum - targetSum))
-                  count += preSum.get(newPathSum - targetSum);
-          preSum.put(newPathSum, preSum.getOrDefault(newPathSum, 0) + 1);
-        
-          _pathSum(root.left, newPathSum, targetSum, preSum);
-          _pathSum(root.right, newPathSum, targetSum, preSum);
-        
-          preSum.put(newPathSum, preSum.get(newPathSum) - 1);
+          
+          sum = sum + root.val;
+          count += countValidPath(prefixSum, sum, targetSum);
+          prefixSum.put(sum, prefixSum.getOrDefault(sum, 0) + 1);
+  
+          traverse(root.left, prefixSum, sum, targetSum);
+          traverse(root.right, prefixSum, sum, targetSum);
+  
+          prefixSum.put(sum, prefixSum.get(sum) - 1);
+      }
+  
+      private int countValidPath(Map<Long, Integer> prefixSum, 
+                                  long sum, int targetSum) {
+          return prefixSum.getOrDefault(sum - targetSum, 0);
       }
   }
   ```
@@ -6420,7 +6426,7 @@ class Solution {
 
 ***
 
-## :bulb:Binary Search Tree
+# Binary Search Tree
 
 ### Q700. [Search in a Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree/)
 
