@@ -5040,15 +5040,15 @@
   * 层序：BFS
 * **分解子问题（子树）**
   * 递归DFS
+* **只需要思考一个节点上需要做什么，其他交给递归**
 
 ## 🛠️ Tricks
 
-* **Morris traversal**
+* **Morris traversal** for inorder
 
 ## :bulb:DFS
 
-* Binary tree is all about making decision on **what logic needs to be executed when to execute that logic** (preorder, inorder, postorder)
-* If the problem relates to the subtree, then the logic is probably located in the postorder location and the method signature probably has a return value and some other parameters except for the `TreeNode root`
+* Binary tree is all about making decision on **what logic needs to be executed and when to execute that logic** (preorder, inorder, postorder)
 
 ### :bulb:Pre-order
 
@@ -5916,13 +5916,12 @@ class Solution {
 
 ### :bulb:Serialisation
 
-* If a binary tree has nodes of distinct value,
 * 如果你的序列化结果中**不包含空指针的信息**，且你只给出**一种**遍历顺序，那么你无法还原出唯一的一棵二叉树。
 * 如果你的序列化结果中**不包含空指针的信息**，且你会给出**两种**遍历顺序，分两种情况：
-  * 如果你给出的是前序和中序，或者后序和中序，那么你可以还原出唯一的一棵二叉树。
+  * 如果你给出的是**前序和中序**，或者**后序和中序**，那么你可以还原出唯一的一棵二叉树。
   * 如果你给出前序和后序，那么你无法还原出唯一的一棵二叉树。
 * 如果你的序列化结果中**包含空指针的信息**，且你只给出**一种**遍历顺序，也要分两种情况：
-  * 如果你给出的是前序或者后序，那么你可以还原出唯一的一棵二叉树。
+  * 如果你给出的是**前序**或者**后序**，那么你可以还原出唯一的一棵二叉树。
   * 如果你给出的是中序，那么你无法还原出唯一的一棵二叉树。
 
 #### :star:Q297. [Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)
@@ -5984,7 +5983,7 @@ class Solution {
   }
   ```
 
-### :star:Q101. [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)
+### :heart:Q101. [Symmetric Tree](https://leetcode.com/problems/symmetric-tree/)
 
 * ```java
   class Solution {
@@ -7359,6 +7358,87 @@ class Solution {
 
 
 # Recursion
+
+* **遍历** or **分解子问题**
+
+### Q427. [Construct Quad Tree](https://leetcode.com/problems/construct-quad-tree/)
+
+* Follow-up: Assuming you have got a constructed quad tree, now you are required to implement a `public Node set(int[][] grid, int x, int y, int val)` to reconstruct the quad tree.
+
+  * Calculate which one at which level is the changed node, bfs get it and reconstruct it, and then insert the new subtree back
+
+  ```java
+  /*
+  // Definition for a QuadTree node.
+  class Node {
+      public boolean val;
+      public boolean isLeaf;
+      public Node topLeft;
+      public Node topRight;
+      public Node bottomLeft;
+      public Node bottomRight;
+  
+      
+      public Node() {
+          this.val = false;
+          this.isLeaf = false;
+          this.topLeft = null;
+          this.topRight = null;
+          this.bottomLeft = null;
+          this.bottomRight = null;
+      }
+      
+      public Node(boolean val, boolean isLeaf) {
+          this.val = val;
+          this.isLeaf = isLeaf;
+          this.topLeft = null;
+          this.topRight = null;
+          this.bottomLeft = null;
+          this.bottomRight = null;
+      }
+      
+      public Node(boolean val, boolean isLeaf, Node topLeft, Node topRight, Node bottomLeft, Node bottomRight) {
+          this.val = val;
+          this.isLeaf = isLeaf;
+          this.topLeft = topLeft;
+          this.topRight = topRight;
+          this.bottomLeft = bottomLeft;
+          this.bottomRight = bottomRight;
+      }
+  }
+  */
+  
+  class Solution {
+      public Node construct(int[][] grid) {
+          return _construct(grid, 0, 0, grid.length - 1, grid.length - 1);
+      }
+  
+      private Node _construct(int[][] grid, int r1, int c1, int r2, int c2) {
+          if (isLeaf(grid, r1, c1, r2, c2))
+              return new Node(grid[r1][c1] == 1, true);
+          
+          int length = (r2 - r1 + 1) / 2;
+          Node tl = _construct(grid, r1, c1, r1 + length - 1, c1 + length - 1);
+          Node tr = _construct(grid, r1, c1 + length, r1 + length - 1, c2);
+          Node bl = _construct(grid, r1 + length, c1, r2, c1 + length - 1);
+          Node br = _construct(grid, r1 + length, c1 + length, r2, c2);
+  
+          return new Node(true, false, tl, tr, bl, br);
+      }
+  
+      private boolean isLeaf(int[][] grid, int r1, int c1, int r2, int c2) {
+          int val = grid[r1][c1];
+  
+          for (int i = r1; i <= r2; i++)
+              for (int j = c1; j <= c2; j++) {
+                  if (grid[i][j] != val)
+                      return false;
+              }
+  
+          return true;
+      }
+  }
+  ```
 
 ### :star:Q880. [Decoded String at Index](https://leetcode.com/problems/decoded-string-at-index/)
 
