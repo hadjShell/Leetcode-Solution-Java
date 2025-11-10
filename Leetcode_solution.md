@@ -9088,7 +9088,75 @@ class Solution {
   // 10. a ^ a = 0
   ```
 
+### Q67. [Add Binary](https://leetcode.com/problems/add-binary/)
 
+* ```java
+  class Solution {
+      public String addBinary(String a, String b) {
+          char[] n1 = a.toCharArray(), n2 = b.toCharArray();
+          int i = n1.length - 1, j = n2.length - 1, carry = 0;
+          StringBuilder sb = new StringBuilder();
+  
+          while (i >= 0 && j >= 0) {
+              int b1 = n1[i] - '0', b2 = n2[j] - '0';
+              int sum = b1 + b2 + carry;
+              switch (sum) {
+                  case 0 -> {
+                      sb.append(0);
+                      carry = 0;
+                  }
+                  case 1 -> {
+                      sb.append(1);
+                      carry = 0;
+                  }
+                  case 2 -> {
+                      sb.append(0);
+                      carry = 1;
+                  }
+                  case 3 -> {
+                      sb.append(1);
+                      carry = 1;
+                  }
+              }
+              
+              i--;
+              j--;
+          }
+  
+          while (i >= 0) {
+              int bit = n1[i] - '0';
+              if (bit == 1 && carry == 1) {
+                  sb.append(0);
+                  carry = 1;
+              }
+              else {
+                  sb.append(bit + carry);
+                  carry = 0;
+              }
+              i--;
+          }
+          while (j >= 0) {
+              int bit = n2[j] - '0';
+              if (bit == 1 && carry == 1) {
+                  sb.append(0);
+                  carry = 1;
+              }
+              else {
+                  sb.append(bit + carry);
+                  carry = 0;
+              }
+              j--;
+          }
+  
+          if (carry == 1)
+              sb.append(1);
+  
+          sb.reverse();
+  
+          return sb.toString();
+      }
+  }
+  ```
 
 ### Q1310. [XOR Queries of a Subarray](https://leetcode.com/problems/xor-queries-of-a-subarray/)
 
