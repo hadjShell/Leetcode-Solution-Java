@@ -9035,6 +9035,61 @@ class Solution {
 
 # Bit Manipulation
 
+## 🛠️ Tricks
+
+* ```java
+  // 1. 利用或操作 `|` 和空格将英文字符转换为小写
+  ('a' | ' ') = 'a'
+  ('A' | ' ') = 'a'
+  
+  // 2. 利用与操作 `&` 和下划线将英文字符转换为大写
+  ('b' & '_') = 'B'
+  ('B' & '_') = 'B'
+  
+  // 3. 利用异或操作 `^` 和空格进行英文字符大小写互换
+  ('d' ^ ' ') = 'D'
+  ('D' ^ ' ') = 'd'
+  
+    
+  // 4. 不用临时变量交换两个数
+  int a = 1, b = 2;
+  a ^= b;
+  b ^= a;
+  a ^= b;
+  // 现在 a = 2, b = 1
+  
+  
+  // 5. 加一
+  int n = 1;
+  n = -~n;
+  // 现在 n = 2
+  
+  
+  // 6. 减一
+  int n = 2;
+  n = ~-n;
+  // 现在 n = 1
+  
+  
+  // 7. 判断两个数是否异号
+  int x = -1, y = 2;
+  boolean f = ((x ^ y) < 0); // true
+  
+  int x = 3, y = 2;
+  boolean f = ((x ^ y) < 0); // false
+  
+  
+  // 8. 当模数 m 是 2 的幂时，x % m 等价于 x & (m - 1)
+  
+  
+  // 9. n & (n-1): 作用是消除数字 n 的二进制表示中的最后一个 1
+  
+  
+  // 10. a ^ a = 0
+  ```
+
+
+
 ### Q1310. [XOR Queries of a Subarray](https://leetcode.com/problems/xor-queries-of-a-subarray/)
 
 * ```java
