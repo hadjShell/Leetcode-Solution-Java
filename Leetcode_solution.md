@@ -5247,6 +5247,35 @@
   }
   ```
 
+#### :star:Q1372. [Longest ZigZag Path in a Binary Tree](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
+
+* ```java
+  class Solution {
+      private int longest = 0;
+  
+      public int longestZigZag(TreeNode root) {
+          traverse(root, true, -1);
+  
+          return longest;
+      }
+  
+      private void traverse(TreeNode root, boolean fromLeft, int length) {
+          if (root == null)
+              return;
+  
+          longest = Math.max(length + 1, longest);
+          if (fromLeft) {
+              traverse(root.left, true, 0);
+              traverse(root.right, false, length + 1);
+          }
+          else {
+              traverse(root.left, true, length + 1);
+              traverse(root.right, false, 0);
+          }
+      }
+  }
+  ```
+
 #### Q1448. [Count Good Nodes in Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
 
 * ```java
@@ -5568,34 +5597,6 @@ class Solution {
       private int countValidPath(Map<Long, Integer> prefixSum, 
                                   long sum, int targetSum) {
           return prefixSum.getOrDefault(sum - targetSum, 0);
-      }
-  }
-  ```
-
-#### :star:Q1372. [Longest ZigZag Path in a Binary Tree](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
-
-* ```java
-  class Solution {
-      private int longestPath = 0;
-  
-      public int longestZigZag(TreeNode root) {
-          _longestZigZag(root, true, 0);
-          _longestZigZag(root, false, 0);
-          return longestPath;
-      }
-  
-      public void _longestZigZag(TreeNode root, boolean isLeft, int steps) {
-          if (root == null)
-              return;
-          longestPath = Math.max(longestPath, steps);
-          if (isLeft) {
-              _longestZigZag(root.left, false, steps + 1);
-              _longestZigZag(root.left, true, 0);
-          }    
-          else {
-              _longestZigZag(root.right, true, steps + 1);
-              _longestZigZag(root.right, false, 0);
-          }
       }
   }
   ```
