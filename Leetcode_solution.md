@@ -6315,6 +6315,37 @@ class Solution {
   }
   ```
 
+### Q637. [Average of Levels in Binary Tree](https://leetcode.com/problems/average-of-levels-in-binary-tree/)
+
+* ```java
+  import java.math.BigDecimal;
+  
+  class Solution {
+      public List<Double> averageOfLevels(TreeNode root) {
+          Deque<TreeNode> queue = new ArrayDeque<>();
+          List<Double> result = new ArrayList<>();
+  
+          queue.offer(root);
+          while (!queue.isEmpty()) {
+              int size = queue.size();
+              BigDecimal sum = new BigDecimal("0");
+  
+              for (int i = 0; i < size; i++) {
+                  TreeNode node = queue.poll();
+                  sum = sum.add(BigDecimal.valueOf(node.val));
+  
+                  if (node.left != null)  queue.offer(node.left);
+                  if (node.right != null) queue.offer(node.right);
+              }
+  
+              result.add(sum.divide(BigDecimal.valueOf(size), 5, BigDecimal.ROUND_FLOOR).doubleValue());
+          }
+  
+          return result;
+      }
+  }
+  ```
+
 ### Q1161. [Maximum Level Sum of a Binary Tree](https://leetcode.com/problems/maximum-level-sum-of-a-binary-tree/)
 
 * ```java
