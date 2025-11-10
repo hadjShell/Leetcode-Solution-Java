@@ -6235,6 +6235,44 @@ class Solution {
   }
   ```
 
+### Q103. [Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/)
+
+* ```java
+  class Solution {
+      public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+          List<List<Integer>> result = new ArrayList<>();
+          Deque<TreeNode> queue = new ArrayDeque<>();
+          boolean toRight = false;
+  
+          if (root == null)
+              return result;
+          
+          queue.offer(root);
+          while (!queue.isEmpty()) {
+              int size = queue.size();
+              List<Integer> level = new ArrayList<>();
+  
+              for (int i = 0; i < size; i++) {
+                  TreeNode n = queue.poll();
+  
+                  if (n.left != null)     queue.offer(n.left); 
+                  if (n.right != null)    queue.offer(n.right);
+  
+                  level.add(n.val);
+              }
+  
+              if (toRight)
+                  Collections.reverse(level);
+  
+              toRight = !toRight;
+              result.add(level);
+          }
+  
+          return result;
+      }
+  }
+  ```
+
 ### Q111. [Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
 
 * ```java
