@@ -9085,7 +9085,7 @@ class Solution {
   // 9. n & (n-1): 作用是消除数字 n 的二进制表示中的最后一个 1
   
   
-  // 10. a ^ a = 0
+  // 10. a ^ a = 0, xor满足交换律和结合律
   ```
 
 ## :bulb:Questions​
@@ -9189,6 +9189,21 @@ class Solution {
           }
   
           return count;
+      }
+  }
+  ```
+
+### Q136. [Single Number](https://leetcode.com/problems/single-number/)
+
+* ```java
+  class Solution {
+      public int singleNumber(int[] nums) {
+          int single = 0;
+  
+          for (int n : nums)
+              single ^= n;
+  
+          return single;
       }
   }
   ```
