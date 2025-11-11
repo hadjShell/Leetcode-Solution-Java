@@ -9208,6 +9208,29 @@ class Solution {
   }
   ```
 
+### :star:Q137. [Single Number II](https://leetcode.com/problems/single-number-ii/)
+
+* **模拟三进制**（`00, 01, 10, 00`）
+
+* 如果拓展成五个数，就模拟五进制，观察真值表如何更新
+
+* https://leetcode.com/problems/single-number-ii/solutions/7341072/ternary-number-system-mimic-bit-manipula-difx
+
+* ```java
+  class Solution {
+      public int singleNumber(int[] nums) {
+          int one = 0, two = 0;
+  
+          for (int n : nums) {
+              one = (one ^ n) & (~two);
+              two = (two ^ n) & (~one);
+          }
+  
+          return one;
+      }
+  }
+  ```
+
 ### Q1310. [XOR Queries of a Subarray](https://leetcode.com/problems/xor-queries-of-a-subarray/)
 
 * ```java
