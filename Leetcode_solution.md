@@ -6436,6 +6436,8 @@ class Solution {
 
 * **Inorder traversal returns an ascending list**
 
+* Optimisation usually aims for O(logN) by leveraging BST properties
+
 
 ## :bulb:Questions
 
@@ -6524,22 +6526,24 @@ class Solution {
 
 * ```java
   class Solution {
+      private int count;
+      private int result;
+  
       public int kthSmallest(TreeNode root, int k) {
-          int[] res = new int[2];
-          res[0] = k;
-          dfs(root, res);
-          return res[1];
+          count = k;
+          traverse(root);
+  
+          return result;
       }
   
-      private void dfs(TreeNode root, int[] res) {
-          if (root == null)
+      private void traverse(TreeNode root) {
+          if (root == null || count == 0)
               return;
-          dfs(root.left, res);
-          if (res[0] == 0)
-              return;
-          res[0]--;
-          res[1] = root.val;
-          dfs(root.right, res);
+          
+          traverse(root.left);
+          if (count == 1)     result = root.val;
+          count--;
+          traverse(root.right);
       }
   }
   ```
