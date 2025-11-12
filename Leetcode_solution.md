@@ -6586,73 +6586,46 @@ class Solution {
 
   * Every `TreeNode` maintain another information `size` which store the size of current subtree whose root node is current node
 
-### Q450. [Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst/)
+### :star:Q450. [Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst/)
 
 * ```java
   class Solution {
       public TreeNode deleteNode(TreeNode root, int key) {
-          TreeNode deleted = searchBST(root, key);
-          if (deleted == null)
-              ;
-          else if (deleted == root) {
-              if (deleted.left != null && deleted.right != null)
-                  deleteNodeFromRight(deleted);
-              else 
-                  root = leaf(deleted);
-          }
+          if (root == null)
+              return null;
+          
+          if (root.val > key)
+              root.left = deleteNode(root.left, key);
+          else if (root.val < key)
+              root.right = deleteNode(root.right, key);
           else {
-              if (deleted.left != null && deleted.right != null)
-                  deleteNodeFromRight(deleted); 
+              if (isLeaf(root))
+                  root = null;
+              else if (root.left == null)
+                  root = root.right;
+              else if (root.right == null)
+                  root = root.left;
               else {
-                  TreeNode n = root;
-                  while (n.left != deleted && n.right != deleted) {
-                      if (key > n.val)
-                          n = n.right;
-                      else 
-                          n = n.left;
-                  }
-                  if (n.left == deleted)
-                      n.left = leaf(deleted);
-                  else
-                      n.right = leaf(deleted);
+                  TreeNode leftMax = getMax(root.left);
+                  leftMax.left = deleteNode(root.left, leftMax.val);
+                  leftMax.right = root.right;
+  
+                  root = leftMax;
               }
           }
+  
           return root;
       }
   
-      private TreeNode searchBST(TreeNode root, int val) {
-          if (root == null)
-              return null;
-          if (root.val == val)
-              return root;
-          else if (root.val < val)
-              return searchBST(root.right, val);
-          else
-              return searchBST(root.left, val);
+      private TreeNode getMax(TreeNode root) {
+          while (root.right != null)
+              root = root.right;
+          
+          return root;
       }
   
-      private TreeNode leaf(TreeNode n) {
-          if (n.left == null && n.right == null)
-              return null;
-          else if (n.left != null)
-              return n.left;
-          else
-              return n.right;
-      }
-  
-      private void deleteNodeFromRight(TreeNode n) {
-          TreeNode less = n;
-          less = less.right;
-          if (less.left == null) {
-              n.val = less.val;
-              n.right = less.right;
-          }
-          else {
-              while (less.left.left != null)
-                  less = less.left;
-              n.val = less.left.val;
-              less.left = less.left.right;
-          }
+      private boolean isLeaf(TreeNode root) {
+          return root.left == null && root.right == null;
       }
   }
   ```
