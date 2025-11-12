@@ -9231,6 +9231,24 @@ class Solution {
   }
   ```
 
+### Q201. [Bitwise AND of Numbers Range](https://leetcode.com/problems/bitwise-and-of-numbers-range/)
+
+* ```java
+  class Solution {
+      public int rangeBitwiseAnd(int left, int right) {
+          int count = 0;
+  
+          while (left != right) {
+              left >>>= 1;
+              right >>>= 1;
+              count++;
+          }
+  
+          return left << count;
+      }
+  }
+  ```
+
 ### Q1310. [XOR Queries of a Subarray](https://leetcode.com/problems/xor-queries-of-a-subarray/)
 
 * ```java
