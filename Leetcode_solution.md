@@ -12,6 +12,8 @@
 
 > If a second pass is not performed and there is no majority, the algorithm will not detect that no majority exists.
 
+* 环形数组
+
 ## :bulb:1D Array
 
 ### Q26. [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
@@ -936,6 +938,7 @@
   * **Reverse**
   * **Water container problem**
 * Composition with other data structures
+* **Skip list**
 
 
 ## :bulb:Fast and slow
@@ -1817,7 +1820,7 @@
   }
   ```
 
-### ​Q2181. [Merge Nodes in Between Zeros](https://leetcode.com/problems/merge-nodes-in-between-zeros/)
+### Q2181. [Merge Nodes in Between Zeros](https://leetcode.com/problems/merge-nodes-in-between-zeros/)
 
 * ```java
   class Solution {
@@ -5743,7 +5746,7 @@ class Solution {
   }
   ```
 
- #### :star:Q1367. [Linked List in Binary Tree](https://leetcode.com/problems/linked-list-in-binary-tree/)
+#### :star:Q1367. [Linked List in Binary Tree](https://leetcode.com/problems/linked-list-in-binary-tree/)
 
 * ```java
   class Solution {
@@ -9048,6 +9051,41 @@ class Solution {
   ```
 
 # Math
+
+### Q66. [Plus One](https://leetcode.com/problems/plus-one/)
+
+* ```java
+  class Solution {
+      public int[] plusOne(int[] digits) {
+          int carry = 1;
+  
+          for (int i = digits.length - 1; i >= 0; i--) {
+              if (carry == 0)
+                  break;
+              
+              digits[i] += carry;
+              if (digits[i] == 10) {
+                  digits[i] = 0;
+                  carry = 1;
+              }
+              else
+                  carry = 0;
+          }
+  
+          if (carry == 1) {
+              int[] d = new int[digits.length + 1];
+              
+              d[0] = 1;
+              for (int i = 0; i < digits.length; i++)
+                  d[i + 1] = digits[i];
+              
+              return d;
+          }
+          else
+              return digits;
+      }
+  }
+  ```
 
 ### Q2028. [Find Missing Observations](https://leetcode.com/problems/find-missing-observations/)
 
