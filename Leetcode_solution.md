@@ -6479,27 +6479,24 @@ class Solution {
 
 ### :star: Q96. [Unique Binary Search Trees](https://leetcode.com/problems/unique-binary-search-trees/)
 
-* To avoid exceeding the time limits, cache the partial results
-
 * ```java
   class Solution {
-      public int numTrees(int n) {
-          Map<Integer, Integer> m = new HashMap<>();
-          m.put(0, 1);
-          return _numTrees(n, m);
-      }
+      private Map<Integer, Integer> result = new HashMap<>();
   
-      private int _numTrees(int n, Map<Integer, Integer> m) {
-          if (n == 0)
-              return m.get(0);
-          int num = 0;
+      public int numTrees(int n) {
+          if (result.containsKey(n))
+              return result.get(n);
+  
+          if (n == 0 || n == 1)
+              return 1;
+          
+          int sum = 0;
           for (int i = 1; i <= n; i++) {
-              int left = m.containsKey(i - 1) ? m.get(i - 1) : _numTrees(i - 1, m);
-              int right = m.containsKey(n - i) ? m.get(n - i) : _numTrees(n - i, m);
-              num += left * right;
+              sum += numTrees(i - 1) * numTrees(n - i);
           }
-          m.put(n, num);
-          return num;
+  
+          result.put(n, sum);
+          return sum;
       }
   }
   ```
