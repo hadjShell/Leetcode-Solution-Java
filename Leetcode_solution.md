@@ -6727,21 +6727,14 @@ class Solution {
 * ```java
   class Solution {
       public TreeNode insertIntoBST(TreeNode root, int val) {
-          TreeNode in = new TreeNode(val);
           if (root == null)
-              return in;
-          TreeNode n = root, p = root;
-          while (n != null) {
-              p = n;
-              if (val < n.val)
-                  n = n.left;
-              else
-                  n = n.right;
-          }
-          if (val < p.val)
-              p.left = in;
+              return new TreeNode(val);
+          
+          if (val > root.val)
+              root.right = insertIntoBST(root.right, val);
           else
-              p.right = in;
+              root.left = insertIntoBST(root.left, val);
+  
           return root;
       }
   }
