@@ -9052,6 +9052,27 @@ class Solution {
 
 # Math
 
+### Q9. [Palindrome Number](https://leetcode.com/problems/palindrome-number/)
+
+* ```java
+  class Solution {
+      public boolean isPalindrome(int x) {
+          if (x < 0)
+              return false;
+          
+          long reverse = 0, original = x;
+          
+          while (x != 0) {
+              int digit = x % 10;
+              reverse = reverse * 10 + digit;
+              x /= 10;
+          }
+  
+          return reverse == original;
+      }
+  }
+  ```
+
 ### Q66. [Plus One](https://leetcode.com/problems/plus-one/)
 
 * ```java
