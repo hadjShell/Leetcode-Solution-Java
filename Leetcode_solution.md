@@ -6428,47 +6428,125 @@ class Solution {
 
 # Binary Search Tree
 
-### Q700. [Search in a Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree/)
+## 🧠 Mindset
+
+* A binary tree that **`left.val < root.val < right.val`**
+
+* For each node in a BST, **its left subtree and right subtree are BST**
+
+* **Inorder traversal returns an ascending list**
+
+
+## :bulb:Questions
+
+### Q95. [Unique Binary Search Trees II](https://leetcode.com/problems/unique-binary-search-trees-ii/)
 
 * ```java
   class Solution {
-      public TreeNode searchBST(TreeNode root, int val) {
-          if (root == null)
-              return null;
-          if (root.val == val)
-              return root;
-          else if (root.val < val)
-              return searchBST(root.right, val);
-          else
-              return searchBST(root.left, val);
+      public List<TreeNode> generateTrees(int n) {
+          return get(1, n);
       }
-  }
-  ```
-
-### Q701. [Insert into a Binary Search Tree](https://leetcode.com/problems/insert-into-a-binary-search-tree/)
-
-* ```java
-  class Solution {
-      public TreeNode insertIntoBST(TreeNode root, int val) {
-          TreeNode in = new TreeNode(val);
-          if (root == null)
-              return in;
-          TreeNode n = root, p = root;
-          while (n != null) {
-              p = n;
-              if (val < n.val)
-                  n = n.left;
-              else
-                  n = n.right;
+  
+      private List<TreeNode> get(int left, int right) {
+          List<TreeNode> l = new ArrayList<>();
+          if (left > right) {
+              l.add(null);
+              return l;
           }
-          if (val < p.val)
-              p.left = in;
-          else
-              p.right = in;
-          return root;
+          for (int i = left; i <= right; i++) {
+              List<TreeNode> leftList = get(left, i - 1);
+              List<TreeNode> rightList = get(i + 1, right);
+              for (TreeNode leftNode : leftList) {
+                  for (TreeNode rightNode : rightList) {
+                      TreeNode root = new TreeNode(i);
+                      root.left = leftNode;
+                      root.right = rightNode;
+                      l.add(root);
+                  }
+              }
+          }
+          return l;
       }
   }
   ```
+
+### :star: Q96. [Unique Binary Search Trees](https://leetcode.com/problems/unique-binary-search-trees/)
+
+* To avoid exceeding the time limits, cache the partial results
+
+* ```java
+  class Solution {
+      public int numTrees(int n) {
+          Map<Integer, Integer> m = new HashMap<>();
+          m.put(0, 1);
+          return _numTrees(n, m);
+      }
+  
+      private int _numTrees(int n, Map<Integer, Integer> m) {
+          if (n == 0)
+              return m.get(0);
+          int num = 0;
+          for (int i = 1; i <= n; i++) {
+              int left = m.containsKey(i - 1) ? m.get(i - 1) : _numTrees(i - 1, m);
+              int right = m.containsKey(n - i) ? m.get(n - i) : _numTrees(n - i, m);
+              num += left * right;
+          }
+          m.put(n, num);
+          return num;
+      }
+  }
+  ```
+
+### :star:Q98. [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)
+
+* ```java
+  class Solution {
+      public boolean isValidBST(TreeNode root) {
+          return _isValidBST(root, null, null);
+      }
+  
+      private boolean _isValidBST(TreeNode root, TreeNode min, TreeNode max) {
+          // min, max is the left and right border nearest to the current node
+          if (root == null)
+              return true;
+          if (min != null && root.val <= min.val)
+              return false;
+          if (max != null && root.val >= max.val)
+              return false;
+          
+          return _isValidBST(root.left, min, root) && 
+                  _isValidBST(root.right, root, max);
+      }
+  }
+  ```
+
+### Q230. [Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
+
+* ```java
+  class Solution {
+      public int kthSmallest(TreeNode root, int k) {
+          int[] res = new int[2];
+          res[0] = k;
+          dfs(root, res);
+          return res[1];
+      }
+  
+      private void dfs(TreeNode root, int[] res) {
+          if (root == null)
+              return;
+          dfs(root.left, res);
+          if (res[0] == 0)
+              return;
+          res[0]--;
+          res[1] = root.val;
+          dfs(root.right, res);
+      }
+  }
+  ```
+
+* Follow up solution
+
+  * Every `TreeNode` maintain another information `size` which store the size of current subtree whose root node is current node
 
 ### Q450. [Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst/)
 
@@ -6541,56 +6619,29 @@ class Solution {
   }
   ```
 
-### :star:Q98. [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)
+### Q530. [Minimum Absolute Difference in BST](https://leetcode.com/problems/minimum-absolute-difference-in-bst/)
 
 * ```java
   class Solution {
-      public boolean isValidBST(TreeNode root) {
-          return _isValidBST(root, null, null);
+      private int prev = -100000;
+      private int minDiff = Integer.MAX_VALUE;
+      public int getMinimumDifference(TreeNode root) {
+          traverse(root);
+  
+          return minDiff;
       }
   
-      private boolean _isValidBST(TreeNode root, TreeNode min, TreeNode max) {
-          // min, max is the left and right border nearest to the current node
+      private void traverse(TreeNode root) {
           if (root == null)
-              return true;
-          if (min != null && root.val <= min.val)
-              return false;
-          if (max != null && root.val >= max.val)
-              return false;
+              return;
           
-          return _isValidBST(root.left, min, root) && 
-                  _isValidBST(root.right, root, max);
+          traverse(root.left);
+          minDiff = Math.min(minDiff, root.val - prev);
+          prev = root.val;
+          traverse(root.right);
       }
   }
   ```
-
-### Q230. [Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
-
-* ```java
-  class Solution {
-      public int kthSmallest(TreeNode root, int k) {
-          int[] res = new int[2];
-          res[0] = k;
-          dfs(root, res);
-          return res[1];
-      }
-  
-      private void dfs(TreeNode root, int[] res) {
-          if (root == null)
-              return;
-          dfs(root.left, res);
-          if (res[0] == 0)
-              return;
-          res[0]--;
-          res[1] = root.val;
-          dfs(root.right, res);
-      }
-  }
-  ```
-
-* Follow up solution
-
-  * Every `TreeNode` maintain another information `size` which store the size of current subtree whose root node is current node
 
 ### Q538. [Convert BST to Greater Tree](https://leetcode.com/problems/convert-bst-to-greater-tree/)
 
@@ -6613,63 +6664,49 @@ class Solution {
   }
   ```
 
-### :star: Q96. [Unique Binary Search Trees](https://leetcode.com/problems/unique-binary-search-trees/)
-
-* To avoid exceeding the time limits, cache the partial results
+### Q700. [Search in a Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree/)
 
 * ```java
   class Solution {
-      public int numTrees(int n) {
-          Map<Integer, Integer> m = new HashMap<>();
-          m.put(0, 1);
-          return _numTrees(n, m);
-      }
-  
-      private int _numTrees(int n, Map<Integer, Integer> m) {
-          if (n == 0)
-              return m.get(0);
-          int num = 0;
-          for (int i = 1; i <= n; i++) {
-              int left = m.containsKey(i - 1) ? m.get(i - 1) : _numTrees(i - 1, m);
-              int right = m.containsKey(n - i) ? m.get(n - i) : _numTrees(n - i, m);
-              num += left * right;
-          }
-          m.put(n, num);
-          return num;
+      public TreeNode searchBST(TreeNode root, int val) {
+          if (root == null)
+              return null;
+          if (root.val == val)
+              return root;
+          else if (root.val < val)
+              return searchBST(root.right, val);
+          else
+              return searchBST(root.left, val);
       }
   }
   ```
 
-### Q95. [Unique Binary Search Trees II](https://leetcode.com/problems/unique-binary-search-trees-ii/)
+### Q701. [Insert into a Binary Search Tree](https://leetcode.com/problems/insert-into-a-binary-search-tree/)
 
 * ```java
   class Solution {
-      public List<TreeNode> generateTrees(int n) {
-          return get(1, n);
-      }
-  
-      private List<TreeNode> get(int left, int right) {
-          List<TreeNode> l = new ArrayList<>();
-          if (left > right) {
-              l.add(null);
-              return l;
+      public TreeNode insertIntoBST(TreeNode root, int val) {
+          TreeNode in = new TreeNode(val);
+          if (root == null)
+              return in;
+          TreeNode n = root, p = root;
+          while (n != null) {
+              p = n;
+              if (val < n.val)
+                  n = n.left;
+              else
+                  n = n.right;
           }
-          for (int i = left; i <= right; i++) {
-              List<TreeNode> leftList = get(left, i - 1);
-              List<TreeNode> rightList = get(i + 1, right);
-              for (TreeNode leftNode : leftList) {
-                  for (TreeNode rightNode : rightList) {
-                      TreeNode root = new TreeNode(i);
-                      root.left = leftNode;
-                      root.right = rightNode;
-                      l.add(root);
-                  }
-              }
-          }
-          return l;
+          if (val < p.val)
+              p.left = in;
+          else
+              p.right = in;
+          return root;
       }
   }
   ```
+
+***
 
 # Graph
 
