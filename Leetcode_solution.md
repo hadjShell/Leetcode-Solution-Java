@@ -6430,13 +6430,18 @@ class Solution {
 
 ## 🧠 Mindset
 
-* A binary tree that **`left.val < root.val < right.val`**
+* First of all, **BST is a binary tree**
+
+* **`left.val < root.val < right.val`**
 
 * For each node in a BST, **its left subtree and right subtree are BST**
 
+
+## 🛠️ Tricks
+
 * **Inorder traversal returns an ascending list**
 
-* Optimisation usually aims for O(logN) by leveraging BST properties
+* 利用 BST **左小右大**的特性提升算法效率 -> $O(logN)$
 
 
 ## :bulb:Questions
@@ -6501,7 +6506,36 @@ class Solution {
 
 ### :star:Q98. [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree/)
 
-* ```java
+* 遍历
+
+  ```java
+  class Solution {
+      private boolean isBST = true;
+      private Integer prev = null;
+  
+      public boolean isValidBST(TreeNode root) {
+          traverse(root);
+  
+          return isBST;
+      }
+  
+      private void traverse(TreeNode root) {
+          if (root == null || !isBST)
+              return;
+           
+          traverse(root.left);
+          if (prev == null || root.val > prev)   
+              prev = root.val;
+          else
+              isBST = false;
+          traverse(root.right);
+      }
+  }
+  ```
+
+* 分解
+
+  ```java
   class Solution {
       public boolean isValidBST(TreeNode root) {
           return _isValidBST(root, null, null);
@@ -6651,19 +6685,22 @@ class Solution {
 
 * ```java
   class Solution {
+      private int sum = 0;
+  
       public TreeNode convertBST(TreeNode root) {
-          int[] sum = new int[1];
-          dfs(root, sum);
+          traverse(root);
+  
           return root;
       }
   
-      private void dfs(TreeNode root, int[] sum) {
+      public void traverse(TreeNode root) {
           if (root == null)
               return;
-          dfs(root.right, sum);
-          sum[0] += root.val;
-          root.val = sum[0];
-          dfs(root.left, sum);
+  
+          traverse(root.right);
+          sum += root.val;
+          root.val = sum;
+          traverse(root.left);
       }
   }
   ```
