@@ -5044,6 +5044,8 @@
 * **分解子问题（子树）**
   * 递归DFS
 * **只需要思考一个节点上需要做什么，其他交给递归**
+* **递归算法的时间复杂度 = 递归树的节点个数 x 每个节点的时间复杂度**
+* **递归算法的空间复杂度 = 递归树的高度 + 算法申请的存储空间**
 
 ## 🛠️ Tricks
 
@@ -7404,6 +7406,100 @@ class Solution {
 # Recursion
 
 * **遍历** or **分解子问题**
+* **多叉树**
+
+### Q341. [Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/)
+
+* 实际上是**遍历一个多叉树**
+
+  ```java
+  /**
+   * // This is the interface that allows for creating nested lists.
+   * // You should not implement it, or speculate about its implementation
+   * public interface NestedInteger {
+   *
+   *     // @return true if this NestedInteger holds a single integer, rather than a nested list.
+   *     public boolean isInteger();
+   *
+   *     // @return the single integer that this NestedInteger holds, if it holds a single integer
+   *     // Return null if this NestedInteger holds a nested list
+   *     public Integer getInteger();
+   *
+   *     // @return the nested list that this NestedInteger holds, if it holds a nested list
+   *     // Return empty list if this NestedInteger holds a single integer
+   *     public List<NestedInteger> getList();
+   * }
+   */
+  public class NestedIterator implements Iterator<Integer> {
+      private List<Integer> flattenList;
+      private Iterator<Integer> listIterator;
+  
+      public NestedIterator(List<NestedInteger> nestedList) {
+          flattenList = new ArrayList<>();
+  
+          flatten(nestedList);
+  
+          listIterator = flattenList.listIterator();
+      }
+  
+      private void flatten(List<NestedInteger> nestedList) {
+          for (NestedInteger ni : nestedList) {
+              if (ni.isInteger()) 
+                  flattenList.add(ni.getInteger());
+              else
+                  flatten(ni.getList());
+          }
+      }
+  
+      @Override
+      public Integer next() {
+          return listIterator.next();
+      }
+  
+      @Override
+      public boolean hasNext() {
+          return listIterator.hasNext();
+      }
+  }
+  
+  /**
+   * Your NestedIterator object will be instantiated and called as such:
+   * NestedIterator i = new NestedIterator(nestedList);
+   * while (i.hasNext()) v[f()] = i.next();
+   */
+  ```
+
+* **出栈压栈flatten第一个list，实现惰性flatten**
+
+  * ```java
+    public class NestedIterator implements Iterator<Integer> {
+        private LinkedList<NestedInteger> list;
+    
+        public NestedIterator(List<NestedInteger> nestedList) {
+            // 不直接用 nestedList 的引用，是因为不能确定它的底层实现
+            // 必须保证是 LinkedList，否则下面的 addFirst 会很低效
+            list = new LinkedList<>(nestedList);
+        }
+    
+        public Integer next() {
+            // hasNext 方法保证了第一个元素一定是整数类型
+            return list.remove(0).getInteger();
+        }
+    
+        public boolean hasNext() {
+            // 循环拆分列表元素，直到列表第一个元素是整数类型
+            while (!list.isEmpty() && !list.get(0).isInteger()) {
+                // 当列表开头第一个元素是列表类型时，进入循环
+                List<NestedInteger> first = list.remove(0).getList();
+                // 将第一个列表打平并按顺序添加到开头
+                for (int i = first.size() - 1; i >= 0; i--) {
+                    list.addFirst(first.get(i));
+                }
+            }
+            return !list.isEmpty();
+        }
+    }
+    ```
 
 ### Q427. [Construct Quad Tree](https://leetcode.com/problems/construct-quad-tree/)
 
