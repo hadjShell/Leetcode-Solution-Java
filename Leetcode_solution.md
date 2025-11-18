@@ -3887,7 +3887,43 @@
   }
   ```
 
-### :star: Q874. [Walking Robot Simulation](https://leetcode.com/problems/walking-robot-simulation/)
+### :star:Q710. [Random Pick with Blacklist](https://leetcode.com/problems/random-pick-with-blacklist/)
+
+* ```java
+  class Solution {
+      Map<Integer, Integer> blackToWhite;
+      Random rand;
+      int size;
+  
+      // n > blacklist.length
+      public Solution(int n, int[] blacklist) {
+          blackToWhite = new HashMap<>();
+          rand = new Random();
+          size = n - blacklist.length;
+  
+          for (int num : blacklist)
+              blackToWhite.put(num, -1);
+  
+          n--;
+          for (int blackNum : blacklist) {
+              if (blackNum < size) {
+                  while (blackToWhite.containsKey(n))
+                      n--;
+                  blackToWhite.put(blackNum, n);
+                  n--;
+              }
+          }
+      }
+      
+      public int pick() {
+          int num = rand.nextInt(size);
+  
+          return blackToWhite.containsKey(num) ? blackToWhite.get(num) : num;
+      }
+  }
+  ```
+
+### :star:Q874. [Walking Robot Simulation](https://leetcode.com/problems/walking-robot-simulation/)
 
 * How to hash a 2D coordinate: store two integers into one long number
 
