@@ -3887,6 +3887,271 @@
   }
   ```
 
+### :heart:Q460. 
+
+* ```java
+  class LFUCache {
+  
+      private class LRUNode {
+          LRUCache cache;
+          int frequency;
+          LRUNode prev;
+          LRUNode next;
+  
+          public LRUNode() {}
+          public LRUNode(LRUCache cache, int frequency) {
+              this.cache = cache;
+              this.frequency = frequency;
+              this.prev = null;
+              this.next = null;
+          }
+      }
+  
+      private Map<Integer, Integer> key2UseCount;
+      private Map<Integer, LRUNode> freq2LRU;
+      private LRUNode head;
+      private int capacity;
+      private int size;
+  
+  
+      public LFUCache(int capacity) {
+          this.key2UseCount = new HashMap<>();
+          this.freq2LRU = new HashMap<>();
+          this.head = null;
+          this.capacity = capacity;
+          this.size = 0;
+      }
+      
+      public int get(int key) {
+          if (key2UseCount.containsKey(key)) {
+              int freq = key2UseCount.get(key);
+              int val = freq2LRU.get(freq).cache.get(key);
+              
+              bubbleUp(key, val);
+  
+              return val;
+          }
+          else
+              return -1;
+      }
+      
+      public void put(int key, int value) {
+          if (key2UseCount.containsKey(key)) {
+              bubbleUp(key, value);
+          }
+          else {
+              if (size < capacity) {
+                  if (head == null || head.frequency != 1) {
+                      LRUNode lru1 = new LRUNode(new LRUCache(), 1);
+                      lru1.next = head;
+                      head = lru1;
+                  }
+                  head.cache.put(key, value);
+                  size++;
+              }
+              else {
+                  head.cache.removeLastNode();
+                  if (head.cache.isEmpty())
+                      removeLRUNode(head);
+                  if (head == null || head.frequency != 1) {
+                      LRUNode lru1 = new LRUNode(new LRUCache(), 1);
+                      lru1.next = head;
+                      head = lru1;
+                  }
+                  head.cache.put(key, value);
+              }
+          }
+      }
+  
+      private void bubbleUp(int key, int value) {
+          int freq = key2UseCount.get(key);
+          LRUNode lru = freq2LRU.get(freq);
+  
+          lru.cache.delete(key);
+          freq++;
+          if (!freq2LRU.containsKey(freq))    addLRUNode(freq);       // there must exists a lru of `freq - 1`
+          if (lru.cache.isEmpty())  removeLRUNode(lru);
+          freq2LRU.get(freq).cache.put(key, value);
+          key2UseCount.put(key, freq);
+      }
+  
+      private void addLRUNode(int freq) {
+          LRUNode lru = new LRUNode(new LRUCache(), freq);
+          // there must exists a lru of `freq - 1`
+          LRUNode prev = freq2LRU.get(freq - 1);    
+  
+          lru.next = prev.next;
+          lru.prev = prev;
+          prev.next.prev = lru;
+          prev.next = lru;
+  
+          freq2LRU.put(freq, lru);
+      }
+  
+      private void removeLRUNode(LRUNode lru) {
+          if (freq2LRU.size() == 1) {
+              head = null;
+          }
+          else {
+              if (lru == head) {
+                  head = lru.next;
+                  head.prev = null;
+              }
+              else {
+                  lru.prev.next = lru.next;
+                  if (lru.next != null) lru.next.prev = lru.prev;
+              }
+          }
+  
+          freq2LRU.remove(lru.frequency);
+      }
+  }
+  
+  
+  public class LRUCache {
+      
+      private class Node {
+          int key;
+          int val;
+          Node prev;
+          Node next;
+          Node() {}
+          Node(int key, int val) { this.key = key; this.val = val; }
+          Node(int key, int val, Node prev, Node next) { 
+              this.key = key;
+              this.val = val; 
+              this.prev = prev;
+              this.next = next;
+          }
+      }
+  
+      Map<Integer, Node> keyToNodeMap;
+      Node head;
+      Node tail;
+  
+      public LRUCache() {
+          this.keyToNodeMap = new HashMap<>();
+          this.head = null;
+          this.tail = null;
+      }
+      
+      public int get(int key) {
+          if (keyToNodeMap.containsKey(key)) {
+              prioritize(key);
+              return keyToNodeMap.get(key).val;
+          }
+          else
+              return -1;
+      }
+      
+      public void put(int key, int value) {
+          if (keyToNodeMap.containsKey(key)) {
+              updateNode(key, value);
+              prioritize(key);
+          }
+          else {
+              Node node = new Node(key, value);
+              addNode(node);
+          }
+      }
+  
+      public void delete(int key) {
+          Node deleted = keyToNodeMap.get(key);
+  
+          if (size() == 1) {
+              head = null;
+              tail = null;
+          }
+          else {
+              if (deleted == head) {
+                  head = deleted.next;
+                  head.prev = null;
+              }
+              else if (deleted == tail) {
+                  tail = deleted.prev;
+                  tail.next = null;
+              }
+              else {
+                  deleted.prev.next = deleted.next;
+                  deleted.next.prev = deleted.prev;
+              }
+          }
+  
+          keyToNodeMap.remove(key);
+          deleted = null;
+      }
+  
+      public void removeLastNode() {
+          keyToNodeMap.remove(tail.key);
+          tail = tail.prev;
+          if (tail != null)   
+              tail.next = null;
+          else
+              head = null;
+      }
+  
+      private void prioritize(int key) {
+          Node node = keyToNodeMap.get(key);
+  
+          if (size() == 1 || node == head)
+              return; 
+          
+          if (node == tail) {
+              tail = node.prev;
+              tail.next = null;
+          }
+          else {
+              node.prev.next = node.next;
+              node.next.prev = node.prev;
+          }
+          node.next = head;
+          head.prev = node;
+          head = node;
+          head.prev = null;
+      }
+  
+      private void updateNode(int key, int value) {
+          keyToNodeMap.get(key).val = value;
+      } 
+  
+      private void addNode(Node node) {
+          keyToNodeMap.put(node.key, node);
+          if (size() == 1) {
+              head = node;
+              tail = node;
+          }
+          else {
+              head.prev = node;
+              node.next = head;
+              head = node;    
+          }
+      }
+  
+      public int size() {
+          return keyToNodeMap.size();
+      }
+  
+      public boolean isEmpty() {
+          return size() == 0;
+      }
+      
+  }
+  
+  /**
+   * Your LRUCache object will be instantiated and called as such:
+   * LRUCache obj = new LRUCache(capacity);
+   * int param_1 = obj.get(key);
+   * obj.put(key,value);
+   */
+  
+  /**
+   * Your LFUCache object will be instantiated and called as such:
+   * LFUCache obj = new LFUCache(capacity);
+   * int param_1 = obj.get(key);
+   * obj.put(key,value);
+   */
+  ```
+
 ### :star:Q710. [Random Pick with Blacklist](https://leetcode.com/problems/random-pick-with-blacklist/)
 
 * ```java
@@ -6795,25 +7060,184 @@ class Solution {
 
 # Graph
 
+## 🧠 Mindset
+
+* Traversal
+
+  * **DFS**
+
+    * ```java
+      // 遍历所有节点
+      // O(E + V)
+      
+      // in case there is a cycle in the graph that causes dead loop
+      void traverse(Graph graph, int s, boolean[] visited) {
+          // base case
+          if (s < 0 || s >= graph.size()) {
+              return;
+          }
+          if (visited[s]) {
+              // 防止死循环
+              return;
+          }
+          // 前序位置
+          visited[s] = true;
+          System.out.println("visit " + s);
+          for (Edge e : graph.neighbors(s)) {
+              traverse(graph, e.to, visited);
+          }
+          // 后序位置
+      }
+      ```
+
+    * ```java
+      // 遍历所有边
+      // O(E + V^2)
+      
+      void traverseEdges(Graph graph, int s, boolean[][] visited) {
+          // base case
+          if (s < 0 || s >= graph.size()) {
+              return;
+          }
+          for (Edge e : graph.neighbors(s)) {
+            // 如果边已经被遍历过，则跳过
+            if (visited[s][e.to]) {
+              continue;
+            }
+            // 标记并访问边
+            visited[s][e.to] = true;
+            System.out.println("visit edge: " + s + " -> " + e.to);
+            traverseEdges(graph, e.to, visited);
+          }
+      }
+      ```
+
+    * ```java
+      // 遍历图的所有路径，寻找从 src 到 dest 的所有路径
+      
+      // onPath 和 path 记录当前递归路径上的节点
+      boolean[] onPath = new boolean[graph.size()];
+      List<Integer> path = new LinkedList<>();
+      
+      void traverse(Graph graph, int src, int dest) {
+          // base case
+          if (src < 0 || src >= graph.size()) {
+              return;
+          }
+          if (onPath[src]) {
+              // 防止死循环（成环）
+              return;
+          }
+          if (src == dest) {
+              // 找到目标节点
+              System.out.println("find path: " + String.join("->", path) + "->" + dest);
+              return;
+          }
+      
+          // 前序位置
+          onPath[src] = true;
+          path.add(src);
+          for (Edge e : graph.neighbors(src)) {
+              traverse(graph, e.to, dest);
+          }
+          // 后序位置
+          path.remove(path.size() - 1);
+          onPath[src] = false;
+      }
+      
+      // 因为前文遍历节点的代码中，visited 数组的职责是保证每个节点只会被访问一次。而对于图结构来说，要想遍历所有路径，可能会多次访问同一个节点，这是关键的区别。
+      ```
+
+    * **同时使用`visited` and `onPath`**
+
+      * 遍历所有路径的算法复杂度较高，大部分情况下我们可能并不需要穷举完所有路径，而是仅需要找到某一条符合条件的路径。这种场景下，我们可能会借助 `visited` 数组进行剪枝，提前排除一些不符合条件的路径，从而降低复杂度。
+
+    * **不使用`visited` and `onPath`**
+
+      * Acyclic graph
+
+  * **BFS**
+
+    * ```java
+      // 从 s 开始 BFS 遍历图的所有节点，且记录遍历的步数
+      void bfs(Graph graph, int s) {
+          boolean[] visited = new boolean[graph.size()]; 
+          Queue<Integer> q = new LinkedList<>();
+          q.offer(s);
+          visited[s] = true; 
+          // 记录从 s 开始走到当前节点的步数
+          int step = 0;
+          while (!q.isEmpty()) {
+              int sz = q.size();
+              for (int i = 0; i < sz; i++) {
+                  int cur = q.poll();
+                  System.out.println("visit " + cur + " at step " + step);
+                  for (Edge e : graph.neighbors(cur)) {
+                      if (visited[e.to]) { 
+                          continue;
+                      }
+                      q.offer(e.to);
+                      visited[e.to] = true;
+                  }
+              }
+              step++;
+          }
+      }
+      ```
+
+* **DFS finds all paths, BFS finds the minimal path**
+
+## Tricks
+
+* Optimised BFS: **double-way BFS**
+
+## :bulb: Bipartite Graph
+
+* **Two-color problem**
+* ![bipartite](imgs/bipartite.png)
+* Real life scenario
+  * **Movies to actors**
+  * **生活中不少实体的关系都能自然地形成二分图结构，所以在某些场景下图结构也可以作为存储键值对的数据结构**
+
+### Q785. [Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/)
+
+* ```java
+  class Solution {
+      private boolean isBipartite = true;
+  
+      public boolean isBipartite(int[][] graph) {
+          // 0: not visited, 1: red, -1:green
+          int[] visited = new int[graph.length];
+  
+          // graph may not be connected
+          for (int v = 0; v < graph.length; v++) {
+              if (visited[v] == 0)    traverse(graph, v, 1, visited);
+          }
+  
+          return isBipartite;
+      }
+  
+      private void traverse(int[][] graph, int vertex, int fromColor, int[] visited) {
+          if (!isBipartite)
+              return;
+  
+          if (vertex < 0 || vertex > graph.length)
+              return;
+  
+          if (visited[vertex] != 0) {
+              isBipartite = visited[vertex] != fromColor;
+              return;
+          }
+  
+          visited[vertex] = -fromColor;
+          for (int v : graph[vertex]) {
+              traverse(graph, v, visited[vertex], visited);
+          }
+      }
+  }
+  ```
+
 ## :bulb: DFS
-
-* Framework
-
-  * ```java
-    boolean[] visited;
-    boolean[] onPath;
-    
-    void dfs(Graph graph, int s) {
-        if (visited[s]) return;
-    
-        visited[s] = true;
-        onPath[s] = true;
-        for (int neighbor : graph.neighbors(s)) {
-            dfs(graph, neighbor);
-        }
-        onPath[s] = false;
-    }
-    ```
 
 ### Q797. [All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/)
 
@@ -7064,35 +7488,6 @@ class Solution {
   ```
 
 ## :bulb: BFS
-
-* Framework
-
-  * ```java
-    void BFS(Node start, Node target) {
-        Queue<Node> q;
-        Set<Node> visited;
-        q.offer(start);
-    
-        while (q not empty) {
-            int sz = q.size();
-            for (int i = 0; i < sz; i++) {
-                Node cur = q.poll();
-                if (cur is target)
-                    return;
-              	visited.add(start);
-                for (Node x : cur.adj()) {
-                    if (x not in visited) {
-                        q.offer(x);
-                    }
-                }
-            }
-          	level++;
-        }
-        // no found
-    }
-    ```
-
-* Optimise BFS: double-way BFS
 
 ### :heart:Q752. [Open the Lock](https://leetcode.com/problems/open-the-lock/)
 
