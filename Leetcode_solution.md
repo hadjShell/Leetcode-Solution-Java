@@ -7187,7 +7187,7 @@ class Solution {
 
 * **DFS finds all paths, BFS finds the minimal path**
 
-## Tricks
+## 🛠️ Tricks
 
 * Optimised BFS: **double-way BFS**
 
@@ -7299,7 +7299,11 @@ class Solution {
 
 ## :bulb: Eulerian Graph
 
-* ```java
+* 欧拉路径相关的算法在力扣上都是 Hard 级别的题目，其难点主要在于**如何把题目转化为求解欧拉路径的场景**
+
+  ```java
+  // Time complexity: O(E + V), because we delete the accessed edge, instead of using boolean[][] visited
+  
   class HierholzerAlgorithm {
   
       // 计算欧拉路径/回路，不存在则返回 null
