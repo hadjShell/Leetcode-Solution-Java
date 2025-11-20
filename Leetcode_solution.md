@@ -7062,7 +7062,16 @@ class Solution {
 
 ## 🧠 Mindset
 
+* **Just like tree, think what to do and when to do on a vertex**
+
 * Traversal
+
+  * Graph may be **unconnected**, which means **no root node**, therefore we do:
+
+    * ```java
+      for (int i = 0; i < graph.length; i++) 
+        if (!visited[i])	traverse(graph, i, visited);
+      ```
 
   * **DFS**
 
@@ -7150,11 +7159,13 @@ class Solution {
 
     * **同时使用`visited` and `onPath`**
 
-      * 遍历所有路径的算法复杂度较高，大部分情况下我们可能并不需要穷举完所有路径，而是仅需要找到某一条符合条件的路径。这种场景下，我们可能会借助 `visited` 数组进行剪枝，提前排除一些不符合条件的路径，从而降低复杂度。
+      * 遍历所有路径的算法复杂度较高，大部分情况下我们可能**并不需要穷举完所有路径，而是仅需要找到某一条符合条件的路径**。这种场景下，我们可能会**借助 `visited` 数组进行剪枝**，提前排除一些不符合条件的路径，从而降低复杂度。
 
     * **不使用`visited` and `onPath`**
 
       * Acyclic graph
+
+  > 对于树来说，遍历所有点就是遍历所有边，因为树的每个节点只有一条来自父节点的边（除了root）。遍历路径思想一样。
 
   * **BFS**
 
@@ -7191,7 +7202,7 @@ class Solution {
 
 * Optimised BFS: **double-way BFS**
 
-## :bulb: Bipartite Graph
+## :bulb: Is Bipartite Graph?
 
 * **Two-color problem**
 * ![bipartite](imgs/bipartite.png)
@@ -7293,6 +7304,67 @@ class Solution {
           for (int v : graph[vertex]) {
               traverse(graph, v, visited[vertex], visited);
           }
+      }
+  }
+  ```
+
+## :bulb: Is Cyclic​ Graph?
+
+* **Dependency problem**
+  * **依赖问题，首先想到的就是把问题转化成「有向图」这种数据结构，只要图中存在环，那就说明存在循环依赖**
+  * **`onPath` 看每个节点是否存在环，`visited` 剪枝加速**
+
+### Q207. [Course Schedule](https://leetcode.com/problems/course-schedule/)
+
+* ```java
+  class Solution {
+      private boolean isCyclic = false;
+  
+      public boolean canFinish(int numCourses, int[][] prerequisites) {
+          List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+          boolean[] visited = new boolean[numCourses];
+          boolean[] onPath = new boolean[numCourses];
+  
+          for (int i = 0; i < numCourses; i++)
+              if (!visited[i])    traverse(graph, i, visited, onPath);
+  
+          return !isCyclic;
+      }
+  
+      private void traverse(List<Integer>[] graph, int vertex, boolean[] visited, boolean[] onPath) {
+          if (vertex < 0 || vertex >= graph.length)
+              return;
+  
+          if (isCyclic)
+              return;
+  
+          if (onPath[vertex]) {
+              isCyclic = true;
+              return;
+          }
+  
+          if (visited[vertex])
+              return;
+  
+          visited[vertex] = true;
+          onPath[vertex] = true;
+          for (int to : graph[vertex]) {
+              traverse(graph, to, visited, onPath);
+          }
+          onPath[vertex] = false;
+      }
+  
+      private List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
+          List<Integer>[] graph = new List[numCourses];
+          for (int i = 0; i < numCourses; i++)
+              graph[i] = new ArrayList<>();
+  
+          for (int[] p : prerequisites) {
+              int from = p[1], to = p[0];
+              graph[from].add(to);
+          }
+  
+          return graph;
       }
   }
   ```
