@@ -7204,13 +7204,14 @@ class Solution {
 
 ## :bulb: Is Bipartite Graph?
 
+* Undirected graph
 * **Two-color problem**
 * ![bipartite](imgs/bipartite.png)
 * Real life scenario
   * **Movies to actors**
   * **生活中不少实体的关系都能自然地形成二分图结构，所以在某些场景下图结构也可以作为存储键值对的数据结构**
 
-### Q785. [Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/)
+### :star:Q785. [Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/)
 
 * ```java
   class Solution {
@@ -7314,7 +7315,7 @@ class Solution {
   * **依赖问题，首先想到的就是把问题转化成「有向图」这种数据结构，只要图中存在环，那就说明存在循环依赖**
   * **`onPath` 看每个节点是否存在环，`visited` 剪枝加速**
 
-### Q207. [Course Schedule](https://leetcode.com/problems/course-schedule/)
+### :star:Q207. [Course Schedule](https://leetcode.com/problems/course-schedule/)
 
 * ```java
   class Solution {
@@ -7352,6 +7353,91 @@ class Solution {
               traverse(graph, to, visited, onPath);
           }
           onPath[vertex] = false;
+      }
+  
+      private List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
+          List<Integer>[] graph = new List[numCourses];
+          for (int i = 0; i < numCourses; i++)
+              graph[i] = new ArrayList<>();
+  
+          for (int[] p : prerequisites) {
+              int from = p[1], to = p[0];
+              graph[from].add(to);
+          }
+  
+          return graph;
+      }
+  }
+  ```
+
+## :bulb: Topological Sort
+
+* **DAG** - Directed Acyclic Graph
+
+* Definition
+
+  * A topological order of a directed graph G = (V, E) is an ordering of its nodes as v1, v2, …, vn so that for every edge (vi , vj ) we have i < j
+  * ![topological](imgs/topological.png)
+
+* Properties
+
+  * If G is a **DAG**, then G has **a node with no entering edges**
+  * If G is a **DAG**, then **G has a topological ordering**
+
+* **Dependecy Problem**
+
+* Algorithm
+
+  1. isAcyclic
+  2. **把图结构后序遍历的结果进行反转，就是拓扑排序的结果**
+
+  > 不前序的原因是一开始进去遍历的点不一定是starting node。非要前序就要找到所有starting nodes, i.e. nodes with no entering edges
+
+### :star:Q210. [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
+
+* ```java
+  class Solution {
+      private boolean isCyclic = false;
+  
+      public int[] findOrder(int numCourses, int[][] prerequisites) {
+          List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+          boolean[] visited = new boolean[numCourses];
+          boolean[] onPath = new boolean[numCourses];
+          List<Integer> result = new ArrayList<>();
+  
+          for (int i = 0; i < numCourses; i++)
+              if (!visited[i])    traverse(graph, i, visited, onPath, result);
+  
+          if (isCyclic)
+              return new int[] {};
+          else {
+              Collections.reverse(result);
+              return result.stream().mapToInt(Integer::intValue).toArray();
+          }
+      }
+  
+      private void traverse(List<Integer>[] graph, int vertex, boolean[] visited, boolean[] onPath, List<Integer> result) {
+          if (vertex < 0 || vertex >= graph.length)
+              return;
+  
+          if (isCyclic)
+              return;
+  
+          if (onPath[vertex]) {
+              isCyclic = true;
+              return;
+          }
+  
+          if (visited[vertex])
+              return;
+  
+          visited[vertex] = true;
+          onPath[vertex] = true;
+          for (int to : graph[vertex]) {
+              traverse(graph, to, visited, onPath, result);
+          }
+          onPath[vertex] = false;
+          result.add(vertex);
       }
   
       private List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
@@ -7504,7 +7590,7 @@ class Solution {
   }
   ```
 
-### Q332. [Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/)
+### :star:Q332. [Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/)
 
 * ```java
   class Solution {
