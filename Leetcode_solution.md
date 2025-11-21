@@ -7533,7 +7533,94 @@ class Solution {
     }
     ```
 
-### Q
+### Q130. [Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
+
+* ```java
+  class Solution {
+      public void solve(char[][] board) {
+          int m = board.length, n = board[0].length;
+          UF uf = new UF(board);
+  
+          for (int i = 0; i < m; i++)
+              for (int j = 0; j < n; j++) {
+                  uf.union(i, j, i, j - 1);
+                  uf.union(i, j, i, j + 1);
+                  uf.union(i, j, i - 1, j);
+                  uf.union(i, j, i + 1, j);
+              }
+  
+          for (int i = 0; i < m; i++)
+              for (int j = 0; j < n; j++) {
+                  if (uf.isColorable(i, j))
+                      board[i][j] = 'X';
+              }
+      }
+  
+      class UF {
+          char[][] board;
+          int m;
+          int n;
+          int[] parent;
+  
+          public UF(char[][] board) {
+              this.board = board;
+              m = board.length;
+              n = board[0].length;
+              parent = new int[m * n + 1];    // parent[0] is the parent of all border nodes
+  
+              // initialisation
+              for (int i = 0; i < m; i++)
+                  for (int j = 0; j < n; j++) {
+                      int v = hash(i, j);
+                      if (i == 0 || i == m - 1 || j == 0 || j == n - 1)
+                          parent[v] = 0;
+                      else
+                          parent[v] = v;
+                  }
+          }
+  
+          public void union(int i, int j, int p, int q) {
+              // border
+              if (p == -1 || p == m || q == -1 || q == n)
+                  return;
+  
+              if (board[i][j] != board[p][q])
+                  return;
+  
+              int rootP = find(hash(i, j));
+              int rootQ = find(hash(p, q));
+  
+              if (rootP == rootQ)
+                  return;
+              else if (rootP == 0)
+                  parent[rootQ] = 0;
+              else if (rootQ == 0)
+                  parent[rootP] = 0;
+              else
+                  parent[rootQ] = rootP;
+  
+          }
+  
+          public int find(int v) {
+              if (parent[v] != v) {
+                  parent[v] = find(parent[v]);
+              }
+  
+              return parent[v];
+          }
+  
+          public boolean isColorable(int i, int j) {
+              return board[i][j] == 'O' && find(hash(i, j)) != 0;
+          }
+  
+          // [0, 200)
+          private int hash(int i, int j) {
+              return i * n + j + 1;
+          }
+  
+      }
+  }
+  ```
 
 ## :bulb: Eulerian Graph
 
