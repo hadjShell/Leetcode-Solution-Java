@@ -8,6 +8,12 @@
 * Bucket - suitable when elements' values are within a range
 * Simulation for 2D arrays
 * 2D array 对角线翻转，x轴翻转，y轴翻转的组合
+* 方向数组
+  * `int[][] dir = new int[][]{{1, 0}, {0, 1}, {0, -1}, {-1, 0}};`
+
+* 2D array mapping to 1D array
+  * `(i, j) -> i * arr[0].length + j`
+
 * [Boyer–Moore majority vote algorithm](https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_majority_vote_algorithm)
 
 > If a second pass is not performed and there is no majority, the algorithm will not detect that no majority exists.
