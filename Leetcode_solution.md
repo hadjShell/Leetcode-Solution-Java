@@ -10145,6 +10145,47 @@ class Solution {
   }
   ```
 
+### :star:Q172. [Factorial Trailing Zeroes](https://leetcode.com/problems/factorial-trailing-zeroes/)
+
+* ```java
+  class Solution {
+      public int trailingZeroes(int n) {
+          int count = 0;
+  
+          for (int sum = 0; sum <= n; sum += 5) {
+              count += howMany5s(sum);
+          }
+  
+          return count;
+      }
+  
+      private int howMany5s(int num) {
+          if (num == 0)
+              return 0;
+              
+          int count = 0;
+          while (num % 5 == 0) {
+              num /= 5;
+              count++;
+          }
+  
+          return count;
+      }
+  }
+  ```
+
+* ```java
+  class Solution {
+      public int trailingZeroes(int n) {
+          int res = 0;
+          for (int d = n; d / 5 > 0; d = d / 5) {
+              res += d / 5;
+          }
+          return res;
+      }
+  }
+  ```
+
 ### Q2028. [Find Missing Observations](https://leetcode.com/problems/find-missing-observations/)
 
 * ```java
