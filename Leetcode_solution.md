@@ -7313,7 +7313,7 @@ class Solution {
 
 * **Dependency problem**
   * **依赖问题，首先想到的就是把问题转化成「有向图」这种数据结构，只要图中存在环，那就说明存在循环依赖**
-  * **`onPath` 看每个节点是否存在环，`visited` 剪枝加速**
+  * **`onPath` 看每个节点出发是否存在环，`visited` 剪枝加速**
 
 ### :star:Q207. [Course Schedule](https://leetcode.com/problems/course-schedule/)
 
@@ -7381,7 +7381,7 @@ class Solution {
 
 * Properties
 
-  * If G is a **DAG**, then G has **a node with no entering edges**
+  * If G is a **DAG**, then G has **a node with no entering edges (sink vertex)**
   * If G is a **DAG**, then **G has a topological ordering**
 
 * **Dependecy Problem**
@@ -7389,9 +7389,9 @@ class Solution {
 * Algorithm
 
   1. isAcyclic
-  2. **把图结构后序遍历的结果进行反转，就是拓扑排序的结果**
+  2. **把图结构后序遍历的结果进行反转，就是拓扑排序的结果** (可以和第一步同步进行)
 
-  > 不前序的原因是一开始进去遍历的点不一定是starting node。非要前序就要找到所有starting nodes, i.e. nodes with no entering edges
+  > 不前序的原因是一开始进去遍历的点不一定是sink vertex。非要前序就要找到所有sink vertices, i.e. nodes with no entering edges
 
 ### :star:Q210. [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
 
@@ -7454,6 +7454,86 @@ class Solution {
       }
   }
   ```
+
+## :bulb: Union Find
+
+* **Undirected Graph Connectivity Problem**
+
+  * 动态连通性问题就是说，给你输入一个图结构，然后进行若干次「连接操作」，同时可能会查询任意两个节点是否「连通」，或者查询当前图中有多少个「连通分量」。我们的目标是设计一种数据结构，在尽可能小的时间复杂度下完成连接操作和查询操作。
+
+* Properties of Connectivity
+
+  * **Reflexivity**: Nodes p and p are themselves connected.
+  * **Symmetry**: If nodes p and q are connected, then q and p are also connected.
+
+  * **Transitivity**: If nodes p and q are connected, and q and r are connected, then p and r are also connected.
+
+* Union find class is **a forest (multiple trees)** under the hood, **every tree represents a connected component**
+
+  * If no optimisation, **tree may degrade to a linked list**, resulting to **$O(N)$**
+  * Optimisation: **Union by Rank**
+    * Introduce a **rank** into every tree, i.e. **the number of the nodes in the tree**. Always **append tree with lower rank to tree with higher rank**, so that tree is as balanced as possible
+    * Eventually, **$O(logN)$**
+  * Optimisation: **Path Compression**
+    * **Compress the tree to a tree of height 2** when `find` is operated
+    * Amortized complexity **$O(1)$** for all operations
+
+* Framework
+
+  > Try to reuse the following class and build solution around it instead of modifying it
+
+  * ```java
+    class UF {
+        // 连通分量个数
+        private int count;
+        // 存储每个节点的父节点
+        private int[] parent;
+    
+        // n 为图中节点的个数
+        public UF(int n) {
+            this.count = n;
+            parent = new int[n];
+            for (int i = 0; i < n; i++) {
+                parent[i] = i;
+            }
+        }
+        
+        // 将节点 p 和节点 q 连通
+        public void union(int p, int q) {
+            int rootP = find(p);
+            int rootQ = find(q);
+            
+            if (rootP == rootQ)
+                return;
+            
+            parent[rootQ] = rootP;
+            // 两个连通分量合并成一个连通分量
+            count--;
+        }
+    
+        // 判断节点 p 和节点 q 是否连通
+        public boolean isConnected(int p, int q) {
+            int rootP = find(p);
+            int rootQ = find(q);
+            return rootP == rootQ;
+        }
+    
+        public int find(int x) {
+          	// 本质上是后序DFS
+            if (parent[x] != x) {
+                parent[x] = find(parent[x]);
+            }
+            return parent[x];
+        }
+    
+        // 返回图中的连通分量个数
+        public int count() {
+            return count;
+        }
+    }
+    ```
+
+### Q
 
 ## :bulb: Eulerian Graph
 
