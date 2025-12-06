@@ -2005,12 +2005,12 @@
     while (right < nums.size()) {
         window.addLast(nums[right]);
         right++;
-      	update(result);					// 找最大
+      	if (window.isQualified())	update(result);					// 找最大
         
-        while (left < right && window needs shrink) {
-            window.removeFirst(nums[left]);
+        while (left < right && window needs to shrink) {
+            if (window.isQualified())	update(result);			// 找最小
+          	window.removeFirst(nums[left]);
             left++;
-          	update(result);			// 找最小
         }
     }
     ```
