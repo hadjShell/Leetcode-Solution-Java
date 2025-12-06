@@ -2459,7 +2459,7 @@
 
 # Stack
 
-## :bulb:LIFO
+## :bulb:FIFO
 
 ### :star:Q155. [Min Stack](https://leetcode.com/problems/min-stack/)
 
@@ -3338,7 +3338,7 @@
 
 * Problem
   * **给你一个数组 `window`，已知其最值为 `A`，如果给 `window` 中添加一个数 `B`，那么比较一下 `A` 和 `B` 就可以立即算出新的最值；但如果要从 `window` 数组中减少一个数，就不能直接得到最值了，因为如果减少的这个数恰好是 `A`，就需要遍历 `window` 中的所有元素重新寻找新的最值**。
-  * **First or last element removal**
+  * Find **max/min** of an array where exists **frequent first or last element removal**
 
 ### :star:Q239. [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
 
@@ -3396,6 +3396,7 @@
 
 * If the values of keys are limited, **bucket array** instead of hash table can be used to increase the performance
 * **Combine hash map with other data structures** to improve time performance
+* `int + int -> long`
 
 ## :bulb:Questions
 
@@ -4420,19 +4421,19 @@
 
 * **Sum of previous elements and itself** for each slot
 
-  * Extended to **state of previous elements plus the current element**
+  * Extended to **state of previous elements plus the current element (状态的叠加)**
 
 * **Subarray/Range sum** problems
 
   * Compute the sum of elements between two indices **frequently**
 
-  * Find or **count** the number of subarrays that add upto a specific value
+  * **Find** or **count** the number of subarrays that add upto a specific value
 
 * **区间查询**
 
 ## 🛠️ Tricks
 
-* Dummy 0
+* **Dummy 0**
 * Help of **hash table**
 
 ## :bulb:Questions
@@ -4848,6 +4849,7 @@
   * A **overlaps** B
   * A **overshadows** B
   * Reverse of B to A
+  * ![interval](imgs/interval.png)
 
 ## :bulb:Questions
 
@@ -5350,7 +5352,7 @@
   * 层序：BFS
 * **分解子问题（子树）**
   * 递归DFS
-* **只需要思考一个节点上需要做什么，其他交给递归**
+* **==只需要思考一个节点上需要做什么，其他交给递归==**
 * **递归算法的时间复杂度 = 递归树的节点个数 x 每个节点的时间复杂度**
 * **递归算法的空间复杂度 = 递归树的高度 + 算法申请的存储空间**
 
@@ -6120,7 +6122,7 @@ class Solution {
   }
   ```
 
-### :bulb:Construction
+### :bulb:Deserialisation
 
 #### :star:Q105. [Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 
@@ -6903,6 +6905,47 @@ class Solution {
                   _isValidBST(root.right, root, max);
       }
   }
+  ```
+
+### Q173. [Binary Search Tree Iterator](https://leetcode.com/problems/binary-search-tree-iterator/)
+
+* ```java
+  class BSTIterator {
+      private Deque<TreeNode> stack;
+  
+      public BSTIterator(TreeNode root) {
+          stack = new ArrayDeque<>();
+          while (root != null) {
+              stack.push(root);
+              root = root.left;
+          }
+      }
+      
+      // Time: amortized O(1)   Space: O(logN)
+      public int next() {
+          TreeNode n = stack.pop();
+          int next = n.val;
+  
+          n = n.right;
+          while (n != null) {
+              stack.push(n);
+              n = n.left;
+          }
+  
+          return next;
+      }
+      
+      public boolean hasNext() {
+          return !stack.isEmpty();
+      }
+  
+  }
+  /**
+   * Your BSTIterator object will be instantiated and called as such:
+   * BSTIterator obj = new BSTIterator(root);
+   * int param_1 = obj.next();
+   * boolean param_2 = obj.hasNext();
+   */
   ```
 
 ### Q230. [Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst/)
