@@ -6489,6 +6489,61 @@ class Solution {
   }
   ```
 
+### Q1361. [Validate Binary Tree Nodes](https://leetcode.com/problems/validate-binary-tree-nodes/)
+
+* ```java
+  class Solution {
+      public boolean validateBinaryTreeNodes(int n, int[] leftChild, int[] rightChild) {
+          // only one root node doesn't have in edge, others have only one
+          // all nodes connected to root node
+  
+          boolean isBinaryTree = true;
+          int[] parent = new int[n];
+          Arrays.fill(parent, -1);
+  
+          for (int p = 0; p < n; p++) {
+              if (!isBinaryTree)      break;
+              int left = leftChild[p], right = rightChild[p];
+  
+              if (left != -1) {
+                  if (parent[left] != -1 && parent[left] != p)
+                      isBinaryTree = false;
+                  else
+                      parent[left] = p;
+              }
+  
+              if (right != -1) {
+                  if (parent[right] != -1 && parent[right] != p)
+                      isBinaryTree = false;
+                  else
+                      parent[right] = p;
+              }
+          }
+  
+          int count = 0, root = -1;
+          for (int p = 0; p < n; p++) {
+              if (parent[p] == -1) {
+                  count++;
+                  root = p;
+              } 
+          }
+          if (count != 1 || treeSize(root, leftChild, rightChild) != n)
+              isBinaryTree = false;
+  
+          return isBinaryTree;
+      }
+  
+      private int treeSize(int root, int[] leftChild, int[] rightChild) {
+          if (root == -1)
+              return 0;
+          
+          return treeSize(leftChild[root], leftChild, rightChild) + 
+                  treeSize(rightChild[root], leftChild, rightChild) + 
+                  1;
+      }
+  }
+  ```
+
 
 
 ## :bulb:BFS
