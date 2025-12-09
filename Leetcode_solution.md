@@ -6907,7 +6907,7 @@ class Solution {
   }
   ```
 
-### Q173. [Binary Search Tree Iterator](https://leetcode.com/problems/binary-search-tree-iterator/)
+### :star:Q173. [Binary Search Tree Iterator](https://leetcode.com/problems/binary-search-tree-iterator/)
 
 * ```java
   class BSTIterator {
@@ -7440,7 +7440,7 @@ class Solution {
   1. isAcyclic
   2. **把图结构后序遍历的结果进行反转，就是拓扑排序的结果** (可以和第一步同步进行)
 
-  > 不前序的原因是一开始进去遍历的点不一定是sink vertex。非要前序就要找到所有sink vertices, i.e. nodes with no entering edges
+  > 不前序的原因是一开始进去遍历的点不一定是sink vertex
 
 ### :star:Q210. [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
 
@@ -7670,6 +7670,68 @@ class Solution {
       }
   }
   ```
+
+### Q990. [Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations/)
+
+* ```java
+  class Solution {
+      public boolean equationsPossible(String[] equations) {
+          UF uf = new UF(26);
+          boolean isValid = true;
+  
+          for (String eq : equations) {
+              if (!isEqual(eq))   continue;
+  
+              uf.union(eq.charAt(0) - 'a', eq.charAt(3) - 'a');
+          }
+  
+          for (String eq : equations) {
+              if (!isValid)       break;
+              if (isEqual(eq))   continue;
+  
+              isValid = !uf.isConnected(eq.charAt(0) - 'a', eq.charAt(3) - 'a');
+          }
+  
+          return isValid;
+      }
+  
+      private boolean isEqual(String equation) {
+          return equation.charAt(1) == '=';
+      }
+  
+      class UF {
+          int[] parent;
+  
+          public UF(int size) {
+              parent = new int[size];
+              for (int i = 0; i < size; i++)
+                  parent[i] = i;
+          }
+  
+          public void union(int p, int q) {
+              int rootP = find(p);
+              int rootQ = find(q);
+  
+              if (rootP == rootQ)     return;
+  
+              parent[rootQ] = rootP;
+          }
+  
+          public boolean isConnected(int p, int q) {
+              return find(p) == find(q);
+          }
+  
+          public int find(int p) {
+              if (parent[p] != p)
+                  parent[p] = find(parent[p]);
+  
+              return parent[p];
+          }
+      }
+  }
+  ```
+
+
 
 ## :bulb: Eulerian Graph
 
