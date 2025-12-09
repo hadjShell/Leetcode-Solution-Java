@@ -7671,6 +7671,63 @@ class Solution {
   }
   ```
 
+### Q547. [Number of Provinces](https://leetcode.com/problems/number-of-provinces/)
+
+* ```java
+  class Solution {
+      public int findCircleNum(int[][] isConnected) {
+          int cityAmount = isConnected.length;
+          UF uf = new UF(cityAmount);
+  
+          for (int i = 0; i < cityAmount; i++)
+              for (int j = i; j < cityAmount; j++) {
+                  if (isConnected[i][j] == 0)     continue;
+  
+                  uf.union(i, j);
+              }
+  
+          return uf.count();
+      }
+  
+      class UF {
+          int[] parent;
+          int count;
+  
+          public UF(int size) {
+              count = size;
+              parent = new int[size];
+              for (int i = 0; i < size; i++)
+                  parent[i] = i;
+          }
+  
+          public void union(int p, int q) {
+              int rootP = find(p);
+              int rootQ = find(q);
+  
+              if (rootP == rootQ)     return;
+  
+              parent[rootQ] = rootP;
+              count--;
+          }
+  
+          public boolean isConnected(int p, int q) {
+              return find(p) == find(q);
+          }
+  
+          public int find(int p) {
+              if (parent[p] != p)
+                  parent[p] = find(parent[p]);
+  
+              return parent[p];
+          }
+  
+          public int count() {
+              return count;
+          }
+      }
+  }
+  ```
+
 ### Q990. [Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations/)
 
 * ```java
