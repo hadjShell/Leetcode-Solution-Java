@@ -8313,6 +8313,93 @@ class Solution {
   }
   ```
 
+#### Q1631. [Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
+
+* ```java
+  class Solution {
+  
+      class State {
+          int node;
+          int distFromStart;
+  
+          public State() {}
+          public State(int node, int distFromStart) {
+              this.node = node;
+              this.distFromStart = distFromStart;
+          }
+      }
+  
+      public int minimumEffortPath(int[][] heights) {
+          List<int[]>[] graph = buildGraph(heights);
+          int row = heights.length, col = heights[0].length;
+  
+          return dijkstra(graph, 0, row * col - 1);
+      }
+  
+      private int dijkstra(List<int[]>[] graph, int src, int dst) {
+          int[] distTo = new int[graph.length];
+          Arrays.fill(distTo, Integer.MAX_VALUE);
+  
+          Queue<State> pq = new PriorityQueue<>((a, b) -> a.distFromStart - b.distFromStart);
+  
+          pq.offer(new State(src, 0));
+          distTo[src] = 0;
+  
+          while (!pq.isEmpty()) {
+              State state = pq.poll();
+              int curNode = state.node;
+              int curDistFromStart = state.distFromStart;
+              List<int[]> edges = graph[curNode];
+  
+              if (distTo[curNode] < curDistFromStart)
+                  continue;
+  
+              if (curNode == dst) {
+                  return curDistFromStart;
+              }
+  
+              for (int[] edge : edges) {
+                  int nextNode = edge[0];
+                  int nextDistFromStart = Math.max(curDistFromStart, edge[1]);
+  
+                  if (distTo[nextNode] <= nextDistFromStart)
+                      continue;
+  
+                  pq.offer(new State(nextNode, nextDistFromStart));
+                  distTo[nextNode] = nextDistFromStart;
+              }
+          }
+  
+          return -1;
+      }
+  
+      private List<int[]>[] buildGraph(int[][] heights) {
+          int row = heights.length, col = heights[0].length;
+          List<int[]>[] graph = new List[row * col];
+          int[][] dir = new int[][] {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
+  
+          for (int i = 0; i < graph.length; i++) {
+              graph[i] = new ArrayList<>();
+          }
+  
+          for (int i = 0; i < row; i++)
+              for (int j = 0; j < col; j++) {
+                  List<int[]> edges = graph[i * col + j];
+                  for (int[] d : dir) {
+                      int x = i + d[0], y = j + d[1];
+  
+                      if (x < 0 || y < 0 || x == row || y == col)
+                          continue;
+  
+                      edges.add(new int[] {x * col + y, Math.abs(heights[i][j] - heights[x][y])});
+                  }
+              }
+  
+          return graph;
+      }
+  }
+  ```
+
 ## :bulb: DFS
 
 ### Q797. [All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/)
