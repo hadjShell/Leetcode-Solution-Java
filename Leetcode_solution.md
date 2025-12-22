@@ -8313,6 +8313,93 @@ class Solution {
   }
   ```
 
+#### Q1514. [Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/)
+
+* Dijkstra viriation find longest path
+
+* ```java
+  class Solution {
+      class State {
+          int node;
+          double distFromStart;
+  
+          public State() {}
+          public State(int node, double distFromStart) {
+              this.node = node;
+              this.distFromStart = distFromStart;
+          }
+      }
+  
+      public double maxProbability(int n, int[][] edges, double[] succProb, int start_node, int end_node) {
+          List<double[]>[] graph = buildGraph(n, edges, succProb);
+  
+          return dijkstra(graph, start_node, end_node);
+      }
+  
+      private double dijkstra(List<double[]>[] graph, int src, int dst) {
+          double[] distTo = new double[graph.length];
+          Arrays.fill(distTo, 0);
+  
+          Queue<State> pq = new PriorityQueue<>((a, b) -> {
+              if (b.distFromStart > a.distFromStart)
+                  return 1;
+              else if (b.distFromStart < a.distFromStart)
+                  return -1;
+              else
+                  return 0;
+          });
+  
+          pq.offer(new State(src, 1));
+          distTo[src] = 1;
+  
+          while (!pq.isEmpty()) {
+              State state = pq.poll();
+              int curNode = state.node;
+              double curDistFromStart = state.distFromStart;
+              List<double[]> edges = graph[curNode];
+  
+              if (distTo[curNode] > curDistFromStart)
+                  continue;
+  
+              if (curNode == dst) {
+                  return curDistFromStart;
+              }
+  
+              for (double[] edge : edges) {
+                  int nextNode = (int) edge[0];
+                  double nextDistFromStart = curDistFromStart * edge[1];
+  
+                  if (distTo[nextNode] >= nextDistFromStart)
+                      continue;
+  
+                  pq.offer(new State(nextNode, nextDistFromStart));
+                  distTo[nextNode] = nextDistFromStart;
+              }
+          }
+  
+          return 0;
+      }
+  
+      private List<double[]>[] buildGraph(int n, int[][] edges, double[] succProb) {
+          List<double[]>[] graph = new List[n];
+  
+          for (int i = 0; i < graph.length; i++) {
+              graph[i] = new ArrayList<>();
+          }
+  
+          for (int i = 0; i < succProb.length; i++) {
+              int a = edges[i][0], b = edges[i][1];
+              double prob = succProb[i];
+  
+              graph[a].add(new double[] {b, prob});
+              graph[b].add(new double[] {a, prob});
+          }
+  
+          return graph;
+      }
+  }
+  ```
+
 #### Q1631. [Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/)
 
 * ```java
@@ -10781,6 +10868,8 @@ class Solution {
   ```
 
 # Math
+
+* Multiplying probabilities will result in precision errors. Take log probabilities to sum up numbers instead of multiplying them.
 
 ### Q9. [Palindrome Number](https://leetcode.com/problems/palindrome-number/)
 
