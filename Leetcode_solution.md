@@ -7561,7 +7561,7 @@ class Solution {
 
 ## :bulb: Union Find
 
-* **Undirected Graph Connectivity Problem**
+* ==**Undirected Graph Connectivity Problem**==
 
   * 动态连通性问题就是说，给你输入一个图结构，然后进行若干次「连接操作」，同时可能会查询任意两个节点是否「连通」，或者查询当前图中有多少个「连通分量」。我们的目标是设计一种数据结构，在尽可能小的时间复杂度下完成连接操作和查询操作。
 
@@ -8167,6 +8167,148 @@ class Solution {
           }
   
           result.add(new int[] {from, start});
+      }
+  }
+  ```
+
+##  :bulb: Shortest Path
+
+### :bulb: Dijkstra Algorithm
+
+* ```java
+  class State {
+      // 当前节点 ID
+      int node;
+      // 从起点 s 到当前 node 节点的最小路径权重和
+      int distFromStart;
+  
+      public State(int node, int distFromStart) {
+          this.node = node;
+          this.distFromStart = distFromStart;
+      }
+  }
+  
+  // 输入不包含负权重边的加权图 graph 和起点 src
+  // 返回从起点 src 到其他节点的最小路径权重和
+  int[] dijkstra(Graph graph, int src) {
+      // 记录从起点 src 到其他节点的最小路径权重和
+      // distTo[i] 表示从起点 src 到节点 i 的最小路径权重和
+      int[] distTo = new int[graph.size()];
+      // 都初始化为正无穷，表示未计算
+      Arrays.fill(distTo, Integer.MAX_VALUE);
+  
+      // 优先级队列，distFromStart 较小的节点排在前面
+      Queue<State> pq = new PriorityQueue<>((a, b) -> {
+          return a.distFromStart - b.distFromStart;
+      });
+  
+      // 从起点 src 开始进行 BFS
+      pq.offer(new State(src, 0));
+      distTo[src] = 0;
+  
+      while (!pq.isEmpty()) {
+          State state = pq.poll();
+          int curNode = state.node;
+          int curDistFromStart = state.distFromStart;
+  
+          // 在 Dijkstra 算法中，队列中可能存在重复的节点 state
+          // 所以要在元素出队时进行判断，去除较差的重复节点
+        	// 不是 <= 的原因是会直接忽略起点 src
+        	if (distTo[curNode] < curDistFromStart) { 
+              continue;
+          }
+  
+          for (Edge e : graph.neighbors(curNode)) {
+              int nextNode = e.to;
+              int nextDistFromStart = curDistFromStart + e.weight;
+  
+              if (distTo[nextNode] <= nextDistFromStart) {
+                  continue;
+              }
+  
+              pq.offer(new State(nextNode, nextDistFromStart));
+              distTo[nextNode] = nextDistFromStart;
+          }
+      }
+  
+      return distTo;
+  }
+  ```
+
+#### Q743. [Network Delay Time](https://leetcode.com/problems/network-delay-time/)
+
+* ```java
+  class Solution {
+      class State {
+          int node;
+          int distFromStart;
+  
+          public State() {}
+          public State(int node, int distFromStart) {
+              this.node = node;
+              this.distFromStart = distFromStart;
+          }
+      }
+  
+      public int networkDelayTime(int[][] times, int n, int k) {
+          List<int[]>[] graph = buildGraph(times, n);
+          int[] distTo = dijkstra(graph, k, n);
+          int min = -1;
+  
+          for (int dist : distTo) {
+              min = Math.max(min, dist);
+          }
+  
+          return min == Integer.MAX_VALUE ? -1 : min;
+      }
+  
+      private int[] dijkstra(List<int[]>[] graph, int src, int size) {
+          int[] distTo = new int[size];
+          Arrays.fill(distTo, Integer.MAX_VALUE);
+  
+          Queue<State> pq = new PriorityQueue<>((a, b) -> a.distFromStart - b.distFromStart);
+  
+          pq.offer(new State(src - 1, 0));
+          distTo[src - 1] = 0;
+  
+          while (!pq.isEmpty()) {
+              State state = pq.poll();
+              int curNode = state.node;
+              int curDistFromStart = state.distFromStart;
+              List<int[]> edges = graph[curNode];
+  
+              if (distTo[curNode] < curDistFromStart)
+                  continue;
+  
+              for (int[] edge : edges) {
+                  int nextNode = edge[0];
+                  int nextDistFromStart = curDistFromStart + edge[1];
+  
+                  if (distTo[nextNode] <= nextDistFromStart)
+                      continue;
+  
+                  pq.offer(new State(nextNode, nextDistFromStart));
+                  distTo[nextNode] = nextDistFromStart;
+              }
+          }
+  
+          return distTo;
+      }
+  
+      private List<int[]>[] buildGraph(int[][] times, int size) {
+          List<int[]>[] graph = new List[size];
+  
+          for (int i = 0; i < size; i++) {
+              graph[i] = new ArrayList<>();
+          }
+  
+          for (int[] edge : times) {
+              int src = edge[0] - 1, dist = edge[1] - 1, weight = edge[2];
+  
+              graph[src].add(new int[] {dist, weight});
+          }
+  
+          return graph;
       }
   }
   ```
