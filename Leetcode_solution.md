@@ -8313,6 +8313,87 @@ class Solution {
   }
   ```
 
+#### :star:Q787. [Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
+
+* ```java
+  class Solution {
+  
+      class State {
+          int node;
+          int distFromStart;
+          int edgesFromStart;
+  
+          public State() {}
+          public State(int node, int distFromStart, int edgesFromStart) {
+              this.node = node;
+              this.distFromStart = distFromStart;
+              this.edgesFromStart = edgesFromStart;
+          }
+      }
+  
+      public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+          List<int[]>[] graph = buildGraph(flights, n);
+  
+          return dijkstra(graph, src, dst, k + 1);
+      }
+  
+      private int dijkstra(List<int[]>[] graph, int src, int dst, int k) {
+          // distTo[i][j]: the shortest path from src to i that goes through j edges, at most k edges
+          int[][] distTo = new int[graph.length][k + 1];
+          for (int i = 0; i < distTo.length; i++)
+              Arrays.fill(distTo[i], Integer.MAX_VALUE);
+  
+          Queue<State> pq = new PriorityQueue<>((a, b) -> a.distFromStart - b.distFromStart);
+  
+          pq.offer(new State(src, 0, 0));
+          distTo[src][0] = 0;
+  
+          while (!pq.isEmpty()) {
+              State state = pq.poll();
+              int curNode = state.node;
+              int curDistFromStart = state.distFromStart;
+              int curEdgesFromStart = state.edgesFromStart;
+              List<int[]> edges = graph[curNode];
+  
+              if (distTo[curNode][curEdgesFromStart] < curDistFromStart)
+                  continue;
+  
+              if (curNode == dst)
+                  return curDistFromStart;
+  
+              for (int[] edge : edges) {
+                  int nextNode = edge[0];
+                  int nextDistFromStart = curDistFromStart + edge[1];
+                  int nextEdgesFromStart = curEdgesFromStart + 1;
+  
+                  if (nextEdgesFromStart > k || nextDistFromStart >= distTo[nextNode][nextEdgesFromStart])
+                      continue;
+                  pq.offer(new State(nextNode, nextDistFromStart, nextEdgesFromStart));
+                  distTo[nextNode][nextEdgesFromStart] = nextDistFromStart;
+              }
+          }
+  
+          return -1;
+      }
+  
+      private List<int[]>[] buildGraph(int[][] flights, int n) {
+          List<int[]>[] graph = new List[n];
+  
+          for (int i = 0; i < n; i++) {
+              graph[i] = new ArrayList<>();
+          }
+  
+          for (int[] edge : flights) {
+              int src = edge[0], dist = edge[1], price = edge[2];
+  
+              graph[src].add(new int[] {dist, price});
+          }
+  
+          return graph;
+      }
+  }
+  ```
+
 #### :star:Q1368. [Minimum Cost to Make at Least One Valid Path in a Grid](https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/)
 
 * The most important point is to **translate the quesiton**
