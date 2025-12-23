@@ -8313,7 +8313,105 @@ class Solution {
   }
   ```
 
-#### Q1514. [Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/)
+#### :star:Q1368. [Minimum Cost to Make at Least One Valid Path in a Grid](https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/)
+
+* The most important point is to **translate the quesiton**
+
+* `ArrayDeque` can replace `PriorityQueue` for this question
+
+  * Because weight is either 1 or 0. If it's 1, push the state to the tail of the queue; otherwise, push it to the head
+  * Optimise time complexity from $O(ElogE)$ to $O(E)$
+
+* ```java
+  class Solution {
+  
+      class State {
+          int node;
+          int distFromStart;
+  
+          public State() {}
+          public State(int node, int distFromStart) {
+              this.node = node;
+              this.distFromStart = distFromStart;
+          }
+      }
+  
+      public int minCost(int[][] grid) {
+          List<int[]>[] graph = buildGraph(grid);
+  
+          return dijkstra(graph, 0, graph.length - 1);
+      }
+  
+      private int dijkstra(List<int[]>[] graph, int src, int dst) {
+          int[] distTo = new int[graph.length];
+          Arrays.fill(distTo, Integer.MAX_VALUE);
+  
+          Deque<State> pq = new ArrayDeque<>();
+  
+          pq.addFirst(new State(src, 0));
+          distTo[src] = 0;
+  
+          while (!pq.isEmpty()) {
+              State state = pq.removeFirst();
+              int curNode = state.node;
+              int curDistFromStart = state.distFromStart;
+              List<int[]> edges = graph[curNode];
+  
+              if (distTo[curNode] < curDistFromStart)
+                  continue;
+  
+              if (curNode == dst)
+                  return curDistFromStart;
+  
+              for (int[] edge : edges) {
+                  int nextNode = edge[0];
+                  int nextDistFromStart = curDistFromStart + edge[1];
+  
+                  if (distTo[nextNode] <= nextDistFromStart)
+                      continue;
+  
+                  if (edge[1] == 0) 
+                      pq.addFirst(new State(nextNode, nextDistFromStart));
+                  else
+                      pq.addLast(new State(nextNode, nextDistFromStart));
+                  distTo[nextNode] = nextDistFromStart;
+              }
+          }
+  
+          return -1;
+      }
+  
+      private List<int[]>[] buildGraph(int[][] grid) {
+          int row = grid.length, col = grid[0].length;
+          // right, left, low, up
+          int[][] dir = new int[][] {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+          List<int[]>[] graph = new List[row * col];
+          
+          for (int i = 0; i < graph.length; i++) {
+              graph[i] = new ArrayList<>();
+          }
+  
+          for (int i = 0; i < row; i++)
+              for (int j = 0; j < col; j++) {
+                  List<int[]> edges = graph[i * col + j];
+                  int direction = grid[i][j] - 1;
+  
+                  for (int p = 0; p < dir.length; p++) {
+                      int[] d = dir[p];
+                      int x = i + d[0], y = j + d[1];
+                      int cost = p == direction ? 0 : 1;
+  
+                      if (x < 0 || y < 0 || x == row || y == col)     continue;
+                      edges.add(new int[] {x * col + y, cost});
+                  }
+              }
+  
+          return graph;
+      } 
+  }
+  ```
+
+#### :star:Q1514. [Path with Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/)
 
 * Dijkstra viriation find longest path
 
