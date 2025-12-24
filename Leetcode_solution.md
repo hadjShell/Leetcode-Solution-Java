@@ -8666,16 +8666,16 @@ class Solution {
   }
   ```
 
-## :bulb: Minimal Spanning Tree
+## :bulb: Minimum Spanning Tree
 
 * Spanning tree properties
   * It includes **all the vertices** from the original graph
   * The number of edges is one less than the number of vertices ($V-1$ edges)
   * It is **connected** and has **no cycles**
-* Minimal Spanning Tree
+* Minimum Spanning Tree
   * If the graph is a **undirected connected weighted graph**, the **minimum spanning tree** is the spanning tree with the smallest total edge weights
 
-### :bulb:Kruskal Algorithm
+### :bulb:Kruskal's Algorithm
 
 * **Union Find** + **Greedy Algorithm**
 
@@ -8765,6 +8765,154 @@ class Solution {
       }
   }
   
+  ```
+
+### :bulb: Prim's Algorithm
+
+* **BFS** + **Greedy Algorithm**
+
+* ```java
+  class State {
+      // 当前节点 ID
+      int node;
+      // 进入该节点的边的权重
+      int weight;
+  
+      public State(int node, int weight) {
+          this.node = node;
+          this.weight = weight;
+      }
+  }
+  
+  // 输入加权无环图 graph（可包含负权重边）
+  // 返回最小生成树的权重和
+  int prim(Graph graph) {
+      // 记录最小生成树的权重和
+      int weightSum = 0;
+  
+      // 记录每个节点是否被访问过，默认初始化为 false
+      boolean[] visited = new boolean[graph.length];
+  
+      // 优先级队列，weight 较小的节点排在前面
+      Queue<State> pq = new PriorityQueue<>((a, b) -> {
+          return a.weight - b.weight;
+      });
+  
+      // 可以从任意一个节点开始构建最小生成树
+      pq.offer(new State(0, 0)); 
+  
+      while (!pq.isEmpty()) {
+          State state = pq.poll();
+          int curNode = state.node;
+          int curWeight = state.weight;
+  
+          if (visited[curNode]) {
+              continue;
+          }
+  
+          // curNode 节点第一次出队时，就找到了一条最小生成树的边
+          // 更新最小生成树的权重和
+          weightSum += curWeight; 
+          visited[curNode] = true;
+  
+          for (Edge e : graph.neighbors(curNode)) {
+              int nextNode = e.to;
+              int nextWeight = e.weight; 
+  
+              if (!visited[nextNode]) {
+                  // state.weight 为 curNode->nextNode 的边的权重
+                  pq.offer(new State(nextNode, nextWeight)); 
+              }
+          }
+      }
+  
+      // 最后检查是否所有节点都被访问过
+      // 如果存在未被访问的节点，说明图不是连通的，返回 -1
+      for (int i = 0; i < visited.length; i++) { 
+          if (!visited[i]) {
+              return -1;
+          }
+      }
+  
+      return weightSum;
+  }
+  ```
+
+#### Q1584. [Min Cost to Connect All Points](https://leetcode.com/problems/min-cost-to-connect-all-points/)
+
+* ```java
+  class Solution {
+  
+      class State {
+          int node;
+          int weight;
+  
+          public State() {}
+          public State(int node, int weight) {
+              this.node = node;
+              this.weight = weight;
+          }
+      }
+  
+      public int minCostConnectPoints(int[][] points) {
+          List<int[]>[] graph = buildGraph(points);
+          
+          return prim(graph);
+      }
+  
+      private int prim(List<int[]>[] graph) {
+          int mst = 0;
+          boolean[] visited = new boolean[graph.length];
+          Queue<State> pq = new PriorityQueue<>((a, b) -> a.weight - b.weight);
+  
+          pq.offer(new State(0, 0));
+  
+          while (!pq.isEmpty()) {
+              State state = pq.poll();
+              int curNode = state.node;
+              int curWeight = state.weight;
+              List<int[]> edges = graph[curNode];
+  
+              if (visited[curNode])   continue;
+  
+              visited[curNode] = true;
+              mst += curWeight;
+  
+              for (int[] edge : edges) {
+                  int nextNode = edge[0];
+                  int nextWeight = edge[1];
+  
+                  if (visited[nextNode])  continue;
+                  pq.offer(new State(nextNode, nextWeight));
+              }
+          }
+  
+          for (boolean v : visited) {
+              if (v == false)     return -1;
+          }
+  
+          return mst;
+      }
+  
+      private List<int[]>[] buildGraph(int[][] points) {
+          List<int[]>[] graph = new List[points.length];
+  
+          for (int i = 0; i < points.length; i++)
+              graph[i] = new ArrayList<>();
+  
+          for (int i = 0; i < points.length; i++)
+              for (int j = 0; j < points.length; j++) {
+                  if (i == j)     continue;
+                  graph[i].add(new int[] {j, manhattanDistance(points[i][0], points[i][1], points[j][0], points[j][1])});
+              }
+  
+          return graph;
+      }
+  
+      private int manhattanDistance(int x1, int y1, int x2, int y2) {
+          return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+      }
+  }
   ```
 
 ## :bulb: DFS
