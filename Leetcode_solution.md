@@ -9851,12 +9851,97 @@ class Solution {
 ## :bulb: Permutation, Combination, Subset
 
 * A **permutation** is a rearrangement of all the elements of an array.
+
 * A **subset** of an array is a selection of elements (possibly none) of the array.
+
 * A **combination** is a selection of items from a set that has distinct members, such that the order of selection does not matter.
+
 * Three variations
+
   * Distinct values, only selected once
   * Duplicate values, only selected once
   * Distince values, can be selected more than once
+
+* Permutation decision tree
+
+  * ```mermaid
+    flowchart TD
+    	root["[]"]
+    	1(("[1]"))
+    	2(("[2]"))
+    	3(("[3]"))
+    	4(("[1, 2]"))
+    	5(("[1, 3]"))
+    	6(("[2, 1]"))
+    	7(("[2, 3]"))
+    	8(("[3, 1]"))
+    	9(("[3, 2]"))
+    	10@{ shape: tri, label: "[1, 2, 3]" }
+    	11@{ shape: tri, label: "[1, 3, 2]" }
+    	12@{ shape: tri, label: "[2, 1, 3]" }
+    	13@{ shape: tri, label: "[2, 3, 1]" }
+    	14@{ shape: tri, label: "[3, 1, 2]" }
+    	15@{ shape: tri, label: "[3, 2, 1]" }
+    	
+    	root -->|1| 1
+    	root -->|2| 2
+    	root -->|3| 3
+    	1 -->|2| 4
+    	1 -->|3| 5
+    	2 -->|1| 6
+    	2 -->|3| 7
+    	3 -->|1| 8
+    	3 -->|2| 9
+    	4 -->|3| 10
+    	5 -->|2| 11
+    	6 -->|3| 12
+    	7 -->|1| 13
+    	8 -->|2| 14
+    	9 -->|1| 15
+    ```
+
+* Subset Tree
+
+  * ```mermaid
+    flowchart TD
+    	root@{ shape: tri, label: "[]" }
+    	1@{ shape: tri, label: "[1]" }
+    	2@{ shape: tri, label: "[2]" }
+    	3@{ shape: tri, label: "[3]" }
+    	4@{ shape: tri, label: "[1, 2]" }
+    	5@{ shape: tri, label: "[1, 3]" }
+    	7@{ shape: tri, label: "[2, 3]" }
+    	10@{ shape: tri, label: "[1, 2, 3]" }
+    	
+    	root -->|1| 1
+    	root -->|2| 2
+    	root -->|3| 3
+    	1 -->|2| 4
+    	1 -->|3| 5
+    	2 -->|3| 7
+    	4 -->|3| 10
+    ```
+
+* Combination Tree
+
+  * ```mermaid
+    flowchart TD
+    	root["[]"]
+    	1(("[1]"))
+    	2(("[2]"))
+    	3(("[3]"))
+    	4(("[1, 2]"))@{ shape: tri, label: "[1, 2]" }
+    	5(("[1, 3]"))@{ shape: tri, label: "[1, 3]" }
+    	7(("[2, 3]"))@{ shape: tri, label: "[2, 3]" }
+    	
+    	root -->|1| 1
+    	root -->|2| 2
+    	root -->|3| 3
+    	1 -->|2| 4
+    	1 -->|3| 5
+    	2 -->|3| 7
+    ```
+
 
 ### :bulb: First Viriation
 
@@ -10014,21 +10099,25 @@ class Solution {
 * ```java
   class Solution {
       public List<List<Integer>> subsetsWithDup(int[] nums) {
-          List<List<Integer>> res = new ArrayList<>();
-          List<Integer> track = new ArrayList<>();
-        	Arrays.sort(nums);
-          backtrack(nums, res, 0, track);
-          return res;
+          List<List<Integer>> result = new ArrayList<>();
+          List<Integer> path = new ArrayList<>();
+          
+          Arrays.sort(nums);
+          backtrack(nums, 0, path, result);
+  
+          return result;
       }
   
-      private void backtrack(int[] nums, List<List<Integer>> res, int start, List<Integer> track) {
-          res.add(new ArrayList<>(track));
-          for (int i = start; i < nums.length; i++) {
-              if (i > start && nums[i] == nums[i - 1])
+      private void backtrack(int[] nums, int curIndex, List<Integer> path, List<List<Integer>> result) {
+          result.add(new ArrayList<>(path));
+  
+          for (int i = curIndex; i < nums.length; i++) {
+              if (i > curIndex && nums[i] == nums[i - 1])
                   continue;
-              track.add(nums[i]);
-              backtrack(nums, res, i + 1, track);
-              track.removeLast();
+  
+              path.add(nums[i]);
+              backtrack(nums, i + 1, path, result);
+              path.removeLast();
           }
       }
   }
