@@ -9850,6 +9850,9 @@ class Solution {
 
 ## :bulb: Permutation, Combination, Subset
 
+* A **permutation** is a rearrangement of all the elements of an array.
+* A **subset** of an array is a selection of elements (possibly none) of the array.
+* 
 * Three variations
   * Distinct values, only selected once
   * Duplicate values, only selected once
@@ -9895,18 +9898,21 @@ class Solution {
 * ```java
   class Solution {
       public List<List<Integer>> subsets(int[] nums) {
-          List<List<Integer>> res = new ArrayList<>();
-          List<Integer> track = new ArrayList<>();
-          backtrack(nums, res, 0, track);
-          return res;
+          List<List<Integer>> result = new ArrayList<>();
+          List<Integer> path = new ArrayList<>();
+          
+          backtrack(nums, 0, path, result);
+  
+          return result;
       }
   
-      private void backtrack(int[] nums, List<List<Integer>> res, int start, List<Integer> track) {
-          res.add(new ArrayList<>(track));
-          for (int i = start; i < nums.length; i++) {
-              track.add(nums[i]);
-              backtrack(nums, res, i + 1, track);
-              track.removeLast();
+      private void backtrack(int[] nums, int curIndex, List<Integer> path, List<List<Integer>> result) {
+          result.add(new ArrayList<>(path));
+  
+          for (int i = curIndex; i < nums.length; i++) {
+              path.add(nums[i]);
+              backtrack(nums, i + 1, path, result);
+              path.removeLast();
           }
       }
   }
