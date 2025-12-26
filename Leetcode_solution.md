@@ -7300,7 +7300,7 @@ class Solution {
       }
       ```
 
-* **DFS finds all paths, BFS finds the minimal path**
+* **DFS finds all paths, BFS finds the shortest path**
 
 ## 🛠️ Tricks
 
@@ -9808,39 +9808,51 @@ class Solution {
 
 # Backtracking
 
-* Brute-force approach
+* **Brute-force approach**
 
-* There are multiple solutions and you want all of them
+* Backtracking is the process of **DFS a n-ary decision tree** to get the final solution. **Each node stores a part of valid answer**. **If you traverse the whole tree and collect the answers at the leaf nodes, you will get all valid solutions**.
 
-* DFS a solution tree (**state space tree**), every leaf node stores a legal or illegal solution, collect all of them with the help of bounding function (examine the solution legal or not)
+* A decision tree consists of three types of nodes:
 
-* For each node, considerring
+  * Decision nodes – typically represented by squares
 
-  * Path: the decision already made
-  * Options: the decisions that can be made at the moment
-  * End: reaching the end of a solution tree, no more options that can be chosen
+  * Chance nodes – typically represented by circles
+
+  * End nodes – typically represented by triangles
+
+* There are three considerations on each node:
+
+  * **Path**: the choices that have been made
+  * **Choice list**: the choices that can be made at this chance node
+  * **End condition**: the condition for reaching the bottom of the decision tree where you cannot make any more choices
 
 * Framework
 
   * ```java
-    void backtrack(path, options):
-        if bound(path):
-            result.add(path)
+    Result result;
+    
+    void backtrack(Path path, Choice choice_list)
+      	if (end condition)
+        		result.add(path)
             return
-        
-        for option in options:
-            make decision
-            backtrack(path, options)
-            revoke decision
+    
+    		for choice : choice_list:
+            // make a choice
+            choice_list.remove(choice)
+            path.add(choice)
+          
+            backtrack(path, choice_list)
+             
+            // undo the choice
+            path.remove(choice)
+            choice_list.add(choice)
     ```
 
-* **Backtracking combines preorder, "inorder", postorder DFS for a non-binary tree**
-
-## :bulb: Permutation & Subset and Combination
+## :bulb: Permutation, Combination, Subset
 
 * Three variations
   * Distinct values, only selected once
-  * Dulplicate values, only selected once
+  * Duplicate values, only selected once
   * Distince values, can be selected more than once
 
 ### :bulb: First Viriation
@@ -9850,26 +9862,29 @@ class Solution {
 * ```java
   class Solution {
       public List<List<Integer>> permute(int[] nums) {
-          List<List<Integer>> res = new ArrayList<>();
-          List<Integer> l = new ArrayList<>();
-          boolean[] used = new boolean[nums.length];
-          backtrack(res, nums, used, l);
-          return res;
+          List<List<Integer>> result = new ArrayList<>();
+          List<Integer> path = new ArrayList<>();
+          boolean[] used = new boolean[21];
+  
+          backtrack(nums, used, path, result);
+  
+          return result;
       }
   
-      private void backtrack(List<List<Integer>> res, int[] nums, boolean[] used, List<Integer> l) {
-          if (l.size() == nums.length) {
-              res.add(new ArrayList<>(l));
+      private void backtrack(int[] nums, boolean[] used, List<Integer> path, List<List<Integer>> result) {
+          if (path.size() == nums.length) {
+              result.add(new ArrayList<>(path));
               return;
           }
-          for (int i = 0; i < nums.length; i++) {
-              if (used[i] == true)
-                  continue;
-              l.add(nums[i]);
-              used[i] = true;
-              backtrack(res, nums, used, l);
-              l.removeLast();
-              used[i] = false;
+  
+          for (int num : nums) {
+              if (used[num + 10] == true)     continue;
+  
+              path.add(num);
+              used[num + 10] = true;
+              backtrack(nums, used, path, result);
+              path.removeLast();
+              used[num + 10] = false;
           }
       }
   }
