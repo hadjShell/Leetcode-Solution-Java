@@ -10094,64 +10094,43 @@ class Solution {
 
 * Need to sort the array first
 
-### Q90. [Subsets II](https://leetcode.com/problems/subsets-ii/)
-
-* ```java
-  class Solution {
-      public List<List<Integer>> subsetsWithDup(int[] nums) {
-          List<List<Integer>> result = new ArrayList<>();
-          List<Integer> path = new ArrayList<>();
-          
-          Arrays.sort(nums);
-          backtrack(nums, 0, path, result);
-  
-          return result;
-      }
-  
-      private void backtrack(int[] nums, int curIndex, List<Integer> path, List<List<Integer>> result) {
-          result.add(new ArrayList<>(path));
-  
-          for (int i = curIndex; i < nums.length; i++) {
-              if (i > curIndex && nums[i] == nums[i - 1])
-                  continue;
-  
-              path.add(nums[i]);
-              backtrack(nums, i + 1, path, result);
-              path.removeLast();
-          }
-      }
-  }
-  ```
-
 ### Q40. [Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)
 
 * ```java
   class Solution {
       public List<List<Integer>> combinationSum2(int[] nums, int target) {
-          List<List<Integer>> res = new ArrayList<>();
-          List<Integer> track = new ArrayList<>();
+          List<List<Integer>> result = new ArrayList<>();
+          List<Integer> path = new ArrayList<>();
+  
         	Arrays.sort(nums);
-          backtrack(nums, res, 0, track, 0, target);
-          return res;
+          backtrack(nums, 0, 0, target, path, result);
+  
+          return result;
       }
   
-      private void backtrack(int[] nums, List<List<Integer>> res, int start, List<Integer> track, int sum, int target) {
+      private void backtrack(int[] nums, int curIndex, int sum, int target, List<Integer> path, List<List<Integer>> result) {
           if (sum == target) {
-              res.add(new ArrayList<>(track));
+              result.add(new ArrayList<>(path));
               return;
           }
+  
           if (sum > target)
               return;
-          for (int i = start; i < nums.length; i++) {
-              if (i > start && nums[i] == nums[i - 1])
+  
+          for (int i = curIndex; i < nums.length; i++) {
+              if (i > curIndex && nums[i] == nums[i - 1])
                   continue;
-              if (nums[i] > target) break;
-              track.add(nums[i]);
-              backtrack(nums, res, i + 1, track, sum + nums[i], target);
-              track.removeLast();
+  
+              sum += nums[i];
+              path.add(nums[i]);
+              backtrack(nums, i + 1, sum, target, path, result);
+              path.removeLast();
+              sum -= nums[i];
           }
       }
   }
+  
+  
   ```
 
 ### Q47. [Permutations II](https://leetcode.com/problems/permutations-ii/)
@@ -10182,6 +10161,35 @@ class Solution {
               backtrack(res, nums, used, track);
               track.removeLast();
               used[i] = false;
+          }
+      }
+  }
+  ```
+
+### Q90. [Subsets II](https://leetcode.com/problems/subsets-ii/)
+
+* ```java
+  class Solution {
+      public List<List<Integer>> subsetsWithDup(int[] nums) {
+          List<List<Integer>> result = new ArrayList<>();
+          List<Integer> path = new ArrayList<>();
+          
+          Arrays.sort(nums);
+          backtrack(nums, 0, path, result);
+  
+          return result;
+      }
+  
+      private void backtrack(int[] nums, int curIndex, List<Integer> path, List<List<Integer>> result) {
+          result.add(new ArrayList<>(path));
+  
+          for (int i = curIndex; i < nums.length; i++) {
+              if (i > curIndex && nums[i] == nums[i - 1])
+                  continue;
+  
+              path.add(nums[i]);
+              backtrack(nums, i + 1, path, result);
+              path.removeLast();
           }
       }
   }
