@@ -9852,7 +9852,7 @@ class Solution {
 
 * A **permutation** is a rearrangement of all the elements of an array.
 * A **subset** of an array is a selection of elements (possibly none) of the array.
-* 
+* A **combination** is a selection of items from a set that has distinct members, such that the order of selection does not matter.
 * Three variations
   * Distinct values, only selected once
   * Duplicate values, only selected once
@@ -9893,6 +9893,34 @@ class Solution {
   }
   ```
 
+### Q77. [Combinations](https://leetcode.com/problems/combinations/)
+
+* ```java
+  class Solution {
+      public List<List<Integer>> combine(int n, int k) {
+          List<List<Integer>> result = new ArrayList<>();
+          List<Integer> path = new ArrayList<>();
+          
+          backtrack(1, n, k, path, result);
+  
+          return result;
+      }
+  
+      private void backtrack(int curNum, int n, int k, List<Integer> path, List<List<Integer>> result) {
+          if (path.size() == k) {
+              result.add(new ArrayList<>(path));
+              return;
+          }
+  
+          for (int i = curNum; i <= n; i++) {
+              path.add(i);
+              backtrack(i + 1, n, k, path, result);
+              path.removeLast();
+          }
+      }
+  }
+  ```
+
 ### Q78. [Subsets](https://leetcode.com/problems/subsets/)
 
 * ```java
@@ -9913,33 +9941,6 @@ class Solution {
               path.add(nums[i]);
               backtrack(nums, i + 1, path, result);
               path.removeLast();
-          }
-      }
-  }
-  ```
-
-### Q77. [Combinations](https://leetcode.com/problems/combinations/)
-
-* Subset problem with restricted base case
-
-* ```java
-  class Solution {
-      public List<List<Integer>> combine(int n, int k) {
-          List<List<Integer>> res = new ArrayList<>();
-          List<Integer> track = new ArrayList<>();
-          backtrack(res, track, n, k, 1);
-          return res;
-      }
-  
-      private void backtrack(List<List<Integer>> res, List<Integer> track, int n, int k, int start) {
-          if (track.size() == k) {
-              res.add(new ArrayList<>(track));
-              return;
-          }
-          for (int i = start; i <= n; i++) {
-              track.add(i);
-              backtrack(res, track, n, k, i + 1);
-              track.removeLast();
           }
       }
   }
