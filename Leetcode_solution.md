@@ -802,6 +802,11 @@
 
 # String
 
+## 🛠️ Tricks
+
+* Delete last char of `StringBuilder`
+  * `sb.setLength(sb.length() - 1)`
+
 
 ### Q884. [Uncommon Words from Two Sentences](https://leetcode.com/problems/uncommon-words-from-two-sentences/)
 
@@ -10062,29 +10067,30 @@ class Solution {
 
 * ```java
   class Solution {
-      public static final String[] PHONE_MAP = {"", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+      static final String[] PHONE_MAP = {"", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
   
   
       public List<String> letterCombinations(String digits) {
-          List<String> res = new ArrayList<>();
-          StringBuilder sb = new StringBuilder();
-          if (digits.length() == 0)
-              return res;
-          backtrack(res, sb, digits, 0);
-          return res;
+          List<String> result = new ArrayList<>();
+          StringBuilder path = new StringBuilder();
+  
+          backtrack(digits, 0, path, result);
+  
+          return result;
       }
   
-      private void backtrack(List<String> res, StringBuilder sb, String digits, int index) {
-          if (index == digits.length()) {
-              res.add(sb.toString());
+      private void backtrack(String digits, int start, StringBuilder path, List<String> result) {
+          if (path.length() == digits.length()) {
+              result.add(path.toString());
               return;
           }
-          char digit = digits.charAt(index);
-          String letters = PHONE_MAP[digit - '1'];
+  
+          char num = digits.charAt(start);
+          String letters = PHONE_MAP[num - '1'];
           for (int i = 0; i < letters.length(); i++) {
-              sb.append(letters.charAt(i));
-              backtrack(res, sb, digits, index + 1);
-              sb.setLength(sb.length() - 1);
+              path.append(letters.charAt(i));
+              backtrack(digits, start + 1, path, result);
+              path.setLength(path.length() - 1);
           }
       }
   }
@@ -10210,33 +10216,33 @@ class Solution {
 
 * ```java
   class Solution {
-      public List<List<Integer>> combinationSum(int[] nums, int target) {
-          List<List<Integer>> res = new ArrayList<>();
-          List<Integer> track = new ArrayList<>();
-        	Arrays.sort(nums);
-          backtrack(nums, res, nums.length - 1, track, 0, target);
-          return res;
+      public List<List<Integer>> combinationSum(int[] candidates, int target) {
+          List<List<Integer>> result = new ArrayList<>();
+          List<Integer> path = new ArrayList<>();
+  
+          Arrays.sort(candidates);
+          backtrack(candidates, 0, 0, target, path, result);
+  
+          return result;
       }
   
-      private void backtrack(int[] nums, List<List<Integer>> res, int start, List<Integer> track, int sum, int target) {
+      private void backtrack(int[] candidates, int start, int sum, int target, List<Integer> path, List<List<Integer>> result) {
           if (sum == target) {
-              res.add(new ArrayList<>(track));
+              result.add(new ArrayList<>(path));
               return;
           }
+  
           if (sum > target)
               return;
-          for (int i = start; i >= 0; i--) {
-              if (nums[i] > target) continue;
-              track.add(nums[i]);
-              if (target - sum < nums[i]) {
-                  backtrack(nums, res, i - 1, track, sum + nums[i], target);
-              }
-              else {
-                  backtrack(nums, res, i, track, sum + nums[i], target);
-              }
-              track.removeLast();
+  
+          for (int i = start; i < candidates.length; i++) {
+              sum += candidates[i];
+              path.add(candidates[i]);
+              backtrack(candidates, i, sum, target, path, result);
+              path.removeLast();
+              sum -= candidates[i];
           }
-      }
+      }    
   }
   ```
 
