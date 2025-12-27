@@ -10138,29 +10138,38 @@ class Solution {
 * ```java
   class Solution {
       public List<List<Integer>> permuteUnique(int[] nums) {
-          List<List<Integer>> res = new ArrayList<>();
-          List<Integer> track = new ArrayList<>();
+          List<List<Integer>> result = new ArrayList<>();
+          List<Integer> path = new ArrayList<>();
           boolean[] used = new boolean[nums.length];
+  
           Arrays.sort(nums);
-          backtrack(res, nums, used, track);
-          return res;
+          backtrack(nums, used, path, result);
+  
+          return result;
       }
   
-       private void backtrack(List<List<Integer>> res, int[] nums, boolean[] used, List<Integer> track) {
-          if (track.size() == nums.length) {
-              res.add(new ArrayList<>(track));
+      private void backtrack(int[] nums, boolean[] used, List<Integer> path, List<List<Integer>> result) {
+          if (path.size() == nums.length) {
+              result.add(new ArrayList<>(path));
               return;
           }
-          int selected = -11;
-          for (int i = 0; i < nums.length; i++) {
-              if (used[i] == true || nums[i] == selected)
+  
+          int i = 0;
+          while (i < nums.length) {
+              if (used[i] == true) {
+                  i++;
                   continue;
-              selected = nums[i];
-              track.add(nums[i]);
+              }
+  
               used[i] = true;
-              backtrack(res, nums, used, track);
-              track.removeLast();
+              path.add(nums[i]);
+              backtrack(nums, used, path, result);
+              path.removeLast();
               used[i] = false;
+  
+              do {
+                  i++;
+              } while (i < nums.length && nums[i] == nums[i - 1]);
           }
       }
   }
