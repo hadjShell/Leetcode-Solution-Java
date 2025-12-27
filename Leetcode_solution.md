@@ -10440,9 +10440,67 @@ class Solution {
   }
   ```
 
+### Q52. [N-Queens II](https://leetcode.com/problems/n-queens-ii/)
 
-
-
+* ```java
+  class Solution {
+      int result = 0;
+  
+      public int totalNQueens(int n) {
+          char[][] board = createBoard(n);
+          
+          backtrack(board, 0);
+  
+          return result;
+      }
+  
+      private void backtrack(char[][] board, int i) {
+          if (i == board.length) {
+              result++;
+              return;
+          }
+  
+          for (int j = 0; j < board.length; j++) {
+              if (!isValid(i, j, board)) 
+                  continue;         
+  
+              board[i][j] = 'Q';
+              backtrack(board, i + 1);
+              board[i][j] = '.';
+          }
+      }
+  
+      private boolean isValid(int i, int j, char[][] board) {
+          // row
+          for (int c = 0; c < j; c++) 
+              if (board[i][c] == 'Q')     return false;
+  
+          // col
+          for (int r = 0; r < i; r++) 
+              if (board[r][j] == 'Q')     return false;
+              
+          // diagonal - left-upper, right-upper
+          for (int r = i - 1, c = j - 1; r >= 0 && c >= 0; r--, c--)
+              if (board[r][c] == 'Q') return false;
+          
+          for (int r = i - 1, c = j + 1; r >= 0 && c < board.length; r--, c++)
+              if (board[r][c] == 'Q') return false;
+  
+          return true;
+      }
+  
+      private char[][] createBoard(int n) {
+          char[][] board = new char[n][];
+  
+          for (int i = 0; i < n; i++) {
+              board[i] = new char[n];
+              Arrays.fill(board[i], '.');
+          }
+  
+          return board;
+      }
+  }
+  ```
 
 ## :bulb: Generate Parentheses
 
