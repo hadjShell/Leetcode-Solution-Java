@@ -10256,48 +10256,106 @@ class Solution {
 
 * ```java
   class Solution {
-      private static final int SIZE = 9;
+      class Sudoku {
+          public static final int SIZE = 9;
   
-      public void solveSudoku(char[][] board) {
-          backtrack(board, 0, 0);
+          char[][] board;
+          List<Set<Character>> rows;
+          List<Set<Character>> cols;
+          List<Set<Character>> grids;
+          boolean isSolved;
+  
+          public Sudoku() {}
+          public Sudoku(char[][] board) {
+              isSolved = false;
+              this.board = board;
+              rows = new ArrayList<>();
+              cols = new ArrayList<>();
+              grids = new ArrayList<>();
+  
+              for (int i = 0; i < SIZE; i++) {
+                  rows.add(new HashSet<>());
+                  cols.add(new HashSet<>());
+                  grids.add(new HashSet<>());
+              }
+              
+              for (int i = 0; i < SIZE; i++) 
+                  for (int j = 0; j < SIZE; j++) {
+                      if (board[i][j] != '.') {
+                          rows.get(i).add(board[i][j]);
+                          cols.get(j).add(board[i][j]);
+                          grids.get(getGridIndex(i, j)).add(board[i][j]);
+                      }
+                  }
+          }
+  
+          // is it valid to put digit into [i, j]
+          public boolean isValid(int i, int j, char digit) {
+              int g = getGridIndex(i, j);
+  
+              return !rows.get(i).contains(digit) && 
+                      !cols.get(j).contains(digit) &&
+                      !grids.get(g).contains(digit);
+          }
+  
+          public void add(int i, int j, char digit) {
+              int g = getGridIndex(i, j);
+  
+              board[i][j] = digit;
+              rows.get(i).add(digit);
+              cols.get(j).add(digit);
+              grids.get(g).add(digit);
+          }
+  
+          public void remove(int i, int j, char digit) {
+              int g = getGridIndex(i, j);
+  
+              board[i][j] = '.';
+              rows.get(i).remove(digit);
+              cols.get(j).remove(digit);
+              grids.get(g).remove(digit);
+          }
+  
+          private int getGridIndex(int i, int j) {
+              return ((int) i / 3) * 3 + ((int) j / 3);
+          }
       }
   
-      public boolean backtrack(char[][] board, int i, int j) {
-          if (j == SIZE) {
+      public void solveSudoku(char[][] board) {
+          Sudoku sudoku = new Sudoku(board);
+  
+          backtrack(sudoku, 0, 0);
+      }
+  
+      private void backtrack(Sudoku sudoku, int i, int j) {
+          if (j == Sudoku.SIZE) {
               i++;
               j = 0;
           }
-          if (i == SIZE)
-              return true;
-          if (board[i][j] != '.') {
-              return backtrack(board, i, j + 1);
-          }
-          for (char c = '1'; c <= '9'; c++) {
-              if (!isValid(board, i, j, c))
-                  continue;
-              board[i][j] = c;
-              if (backtrack(board, i, j + 1) == true)
-                  return true;
-              board[i][j] = '.';
-          }
-          return false;
-      }
   
-      private boolean isValid(char[][] board, int i, int j, char c) {
-          for (int k = 0; k < SIZE; k++) {
-              if (board[i][k] == c)
-                  return false;
-              if (board[k][j] == c)
-                  return false;
+          if (i == Sudoku.SIZE) {
+              sudoku.isSolved = true;
+              return;
           }
-          int p = ((int) i / 3) * 3, q = ((int) j / 3) * 3;
-          for (int a = p; a < p + 3; a++)
-              for (int b = q; b < q + 3; b++) {
-                  if (board[a][b] == c)
-                      return false;
-              }
-          return true;
+  
+          if (sudoku.board[i][j] != '.') {
+              backtrack(sudoku, i, j + 1);
+              return;
+          }
+  
+          for (char choice = '1'; choice <= '9'; choice++) {
+              if (sudoku.isSolved)
+                  return;
+              
+              if (!sudoku.isValid(i, j, choice))
+                  continue;
+  
+              sudoku.add(i, j, choice);
+              backtrack(sudoku, i, j + 1);
+              if (!sudoku.isSolved)  sudoku.remove(i, j, choice);
+          }
       }
+      
   }
   ```
 
