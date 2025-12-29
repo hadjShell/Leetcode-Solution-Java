@@ -10504,32 +10504,122 @@ class Solution {
 
 ## :bulb: Generate Parentheses
 
+* Parenthesis problem has two variations:
+  1. Valid parentheses: stack solution
+  2. Generate parentheses: backtracking
+* Properties of a valid parentheses combination
+  * A valid parentheses combination has **the same amount of left parentheses and right parentheses**.
+  * For a valid parentheses combination $p$, **the amount of left parentheses must be greater than or equal to the amount of right parentheses** in every substring $p[0...i]$, where $0 <= i < len(p)$.
+
 ### Q22. [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)
 
 * ```java
   class Solution {
       public List<String> generateParenthesis(int n) {
-          List<String> res = new ArrayList<>();
-          StringBuilder sb = new StringBuilder();
-          backtrack(sb, res, n, 0, 0);
-          return res;
+          List<String> result = new ArrayList<>();
+          // 0: left, 1: right
+          int[] parenthesis = new int[2];
+          StringBuilder path = new StringBuilder();
+  
+          backtrack(n, parenthesis, path, result);
+  
+          return result;
       }
   
-      private void backtrack(StringBuilder sb, List<String> res, int n, int open, int close) {
-          if (close > open)
+      private void backtrack(int n, int[] parenthesis, StringBuilder path, List<String> result) {
+          if (parenthesis[0] < parenthesis[1] || path.length() > 2 * n)
               return;
-          if (open > n)
-              return;
-          if (close == n) {
-              res.add(sb.toString());
+  
+          if (parenthesis[0] == parenthesis[1] && parenthesis[0] == n) {
+              result.add(path.toString());
               return;
           }
-          sb.append('(');
-          backtrack(sb, res, n, open + 1, close);
-          sb.setLength(sb.length() - 1);
-          sb.append(')');
-          backtrack(sb, res, n, open, close + 1);
-          sb.setLength(sb.length() - 1);
+  
+          parenthesis[0]++;
+          path.append('(');
+          backtrack(n, parenthesis, path, result);
+          path.setLength(path.length() - 1);
+          parenthesis[0]--;
+  
+          parenthesis[1]++;
+          path.append(')');
+          backtrack(n, parenthesis, path, result);
+          path.setLength(path.length() - 1);
+          parenthesis[1]--;
+      }
+  }
+  ```
+
+## :bulb: Others​
+
+### :star:Q79. [Word Search](https://leetcode.com/problems/word-search/)
+
+* ```java
+  class Solution {
+      static final int[][] DIR = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+      boolean isExisted = false;
+  
+      public boolean exist(char[][] board, String word) {
+          int m = board.length, n = board[0].length;
+          boolean[] used = new boolean[m * n];
+  
+          if (!isDicSufficient(board, word) || word.length() > m * n)
+              return false;
+  
+          // edge case for single char in board
+          if (m == 1 && n == 1) {
+              return word.length() == 1 && (board[0][0] == word.charAt(0));
+          }
+  
+          for (int i = 0; i < m; i++)
+              for (int j = 0; j < n; j++)
+                  // pruning 
+                  if (!isExisted && board[i][j] == word.charAt(0)) backtrack(board, i, j, used, 0, word);
+  
+          return isExisted;
+      }
+  
+      private void backtrack(char[][] board, int i, int j, boolean[] used, int start, String word) {
+          if (isExisted)
+              return;
+  
+          if (start == word.length()) {
+              isExisted = true;
+              return;
+          }
+  
+          int m = board.length, n = board[0].length;
+          if (used[i * n + j] == true || board[i][j] != word.charAt(start)) 
+              return;
+  
+          start++;
+          used[i * n + j] = true;
+  
+          for (int[] d : DIR) {
+              int a = i + d[0], b = j + d[1];
+              if (a < 0 || a == m || b < 0 || b == n)     continue;
+              
+              backtrack(board, a, b, used, start, word);
+          }
+  
+          used[i * n + j] = false;
+          start--;
+      }
+  
+      private boolean isDicSufficient(char[][] board, String word) {
+          Set<Character> dictionary = new HashSet<>();
+          int m = board.length, n = board[0].length;
+  
+          for (int i = 0; i < m; i++)
+              for (int j = 0; j < n; j++)
+                  dictionary.add(board[i][j]);
+  
+          for (char c : word.toCharArray()) {
+              if (!dictionary.contains(c))
+                  return false;
+          }
+  
+          return true;
       }
   }
   ```
