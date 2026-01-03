@@ -10013,7 +10013,9 @@ class Solution {
 
 ### Q78. [Subsets](https://leetcode.com/problems/subsets/)
 
-* ```java
+* 盒子视角
+  
+  ```java
   class Solution {
       public List<List<Integer>> subsets(int[] nums) {
           List<List<Integer>> result = new ArrayList<>();
@@ -10032,6 +10034,34 @@ class Solution {
               backtrack(nums, i + 1, path, result);
               path.removeLast();
           }
+      }
+  }
+  ```
+
+* 球视角
+
+  ```java
+  class Solution {
+      public List<List<Integer>> subsets(int[] nums) {
+          List<List<Integer>> result = new ArrayList<>();
+          List<Integer> path = new ArrayList<>();
+          
+          backtrack(nums, 0, path, result);
+  
+          return result;
+      }
+  
+      private void backtrack(int[] nums, int start, List<Integer> path, List<List<Integer>> result) {
+          if (start == nums.length) {
+              result.add(new ArrayList<>(path));
+              return;
+          }
+  
+          backtrack(nums, start + 1, path, result);
+  
+          path.add(nums[start]);
+          backtrack(nums, start + 1, path, result);
+          path.removeLast();
       }
   }
   ```
@@ -10624,7 +10654,157 @@ class Solution {
   }
   ```
 
+### :star:Q698. [Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/)
 
+* 球视角一：球必须进入盒子，从k个盒子里选一个进入
+
+  * 复杂度 $O(k^n)$，注意是指数级不是阶乘级，因为是球视角
+
+  ```java
+  class Solution {
+      boolean canPart = false;
+  
+      public boolean canPartitionKSubsets(int[] nums, int k) {
+          int[] buckets = new int[k];
+          int target = target(nums, k);
+  
+          if (target == -1)   
+              return false;
+  
+          backtrack(nums, buckets, 0, target);
+  
+          return canPart;
+      }
+  
+      // 球视角
+      private void backtrack(int[] nums, int[] buckets, int start_nums, int target) {
+          if (canPart)
+              return;
+          
+          if (start_nums == nums.length) {
+              for (int i = 0; i < buckets.length; i++) {
+                  if (target != buckets[i])
+                      return;
+              }
+  
+              canPart = true;
+              return;
+          }
+  
+          for (int i = 0; i < buckets.length; i++) {
+              if (buckets[i] + nums[start_nums] > target)
+                  continue;
+  
+              if (i > 0) {
+                  boolean isSame = false;
+  
+                  for (int j = i - 1; j >= 0; j--) {
+                      if (buckets[i] == buckets[j]) {
+                          isSame = true;
+                          break;
+                      }
+                  }
+  
+                  if (isSame) continue;
+              }
+              
+              buckets[i] += nums[start_nums];
+              backtrack(nums, buckets, start_nums + 1, target);
+              buckets[i] -= nums[start_nums];
+          }
+      }
+  
+      private int target(int[] nums, int k) {
+          int sum = 0;
+          for (int n : nums)
+              sum += n;
+  
+          return sum % k == 0 ? sum / k : -1;
+      }
+  }
+  ```
+
+* 拆分问题后的球视角
+
+  * 复杂度 $O(k*2^n)$
+
+* ```java
+  class Solution {
+      boolean canPart = false;
+  
+      public boolean canPartitionKSubsets(int[] nums, int k) {
+          int[] buckets = new int[k];
+          boolean[] used = new boolean[nums.length];
+          Set<Integer> badChoices = new HashSet<>();
+          
+          int target = target(nums, k);
+          
+          if (target == -1)   
+              return false;
+  
+          backtrack(nums, buckets, used, 0, 0, target, badChoices);
+  
+          return canPart;
+      }
+  
+      // 球视角
+      private void backtrack(int[] nums, int[] buckets, boolean[] used, int curBucket, int start, int target, Set<Integer> badChoices) {
+          if (canPart)
+              return;
+          
+          if (curBucket == buckets.length) {
+              canPart = true;
+              return;
+          }
+  
+          if (buckets[curBucket] == target) {
+              int sumTree = hash(used);
+  
+              if (!badChoices.contains(sumTree))
+                  backtrack(nums, buckets, used, curBucket + 1, 0, target, badChoices);
+  
+              if (!canPart)
+                  badChoices.add(sumTree);
+  
+              return;
+          }
+  
+          if (buckets[curBucket] > target || start == nums.length)
+              return;
+  
+          if (used[start])
+              backtrack(nums, buckets, used, curBucket, start + 1, target, badChoices);
+          else {
+              // 不进入桶
+              backtrack(nums, buckets, used, curBucket, start + 1, target, badChoices);
+  
+              // 入桶
+              used[start] = true;
+              buckets[curBucket] += nums[start];
+              backtrack(nums, buckets, used, curBucket, start + 1, target, badChoices); 
+              buckets[curBucket] -= nums[start];
+              used[start] = false;
+          }
+      }
+  
+      private int hash(boolean[] used) {
+          int val = 0;
+  
+          for (boolean u : used) 
+              val = u == true ? val << 1 | 1 : val << 1 | 0;
+  
+          return val;
+      }
+  
+      private int target(int[] nums, int k) {
+          int sum = 0;
+          for (int n : nums)
+              sum += n;
+  
+          return sum % k == 0 ? sum / k : -1;
+      }
+  }
+  ```
 
 # Dynamic Programming
 
