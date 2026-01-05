@@ -9172,6 +9172,8 @@ class Solution {
 
 ## :bulb: BFS
 
+* Hard part is to abstract the graph from the real-world scenario
+
 ### :heart:Q752. [Open the Lock](https://leetcode.com/problems/open-the-lock/)
 
 * ```java
@@ -9322,33 +9324,42 @@ class Solution {
 * ```java
   class Solution {
       public int slidingPuzzle(int[][] board) {
-          int target = 1193040;
-          int i = 0, j = 0;
-          for (int r = 0; r < board.length; r++) 
-              for(int c = 0; c < board[0].length; c++) {
-                  if (board[r][c] == 0) {
-                      i = r;
-                      j = c;
-                  }
-              }
+          int m = 2, n = 3;
+          int[][] neighbors = new int[][]{
+                  {1, 3},
+                  {0, 4, 2},
+                  {1, 5},
+                  {0, 4},
+                  {3, 1, 5},
+                  {4, 2}
+          };
+          String target = "123450";
+          StringBuilder start = new StringBuilder();
+          for (int i = 0; i < m; i++)
+              for (int j = 0; j < n; j++)
+                  start.append(board[i][j]);
   
-          Set<Integer> visited = new HashSet<>();
-          Deque<Board> q = new ArrayDeque<>();
+          Set<String> visited = new HashSet<>();
+          Deque<String> q = new ArrayDeque<>();
           int moves = 0;
-          q.offer(new Board(board, i, j));
+          q.offer(start.toString());
+          visited.add(start.toString());
   
           while (!q.isEmpty()) {
               int size = q.size();
               for (int k = 0; k < size; k++) {
-                  Board b = q.poll();
-                  int hashValue = b.hash();
-                  if (hashValue == target)
+                  String state = q.poll();
+  
+                  if (state.equals(target))
                       return moves;
-                  visited.add(hashValue);
-                  List<Board> nextMoves = b.nextMoves();
-                  for (Board next : nextMoves) {
-                      if (!visited.contains(next.hash()))
-                          q.offer(next);
+                  
+                  int index = state.indexOf('0');
+                  int[] neighbor = neighbors[index];
+                  for (int i : neighbor) {
+                      String next = swap(state, index, i);
+                      if (visited.contains(next)) continue;
+                      q.offer(next);
+                      visited.add(next);
                   }
               }
               moves++;
@@ -9357,67 +9368,13 @@ class Solution {
           return -1;
       }
   
-      private class Board {
-          int[][] board;
-          int i;
-          int j;
+      private String swap(String s, int x, int y) {
+          char[] chars = s.toCharArray();
+          char a = chars[x], b = chars[y];
+          chars[x] = b;
+          chars[y] = a;
   
-          public Board() {}
-  
-          public Board(int[][] board, int i, int j) {
-              this.board = board;
-              this.i = i;
-              this.j = j;
-          }
-  
-          public int hash() {
-              int res = 0;
-              for (int[] row : board)
-                  for (int c : row) {
-                      res = (res << 4) ^ c;
-                  }
-              return res;
-          }
-  
-          public int[][] copyBoard() {
-              int[][] copy = new int[board.length][];
-              for(int i = 0; i < board.length; i++)
-                  copy[i] = board[i].clone();
-              return copy;
-          }
-  
-          public List<Board> nextMoves() {
-              List<Board> next = new ArrayList<>();
-              // go up
-              if (i - 1 >= 0) {
-                  int[][] copy = copyBoard();
-                  copy[i][j] = copy[i - 1][j];
-                  copy[i - 1][j] = 0;
-                  next.add(new Board(copy, i - 1, j));
-              }
-              // go down
-              if (i + 1 < 2) {
-                  int[][] copy = copyBoard();
-                  copy[i][j] = copy[i + 1][j];
-                  copy[i + 1][j] = 0;
-                  next.add(new Board(copy, i + 1, j));
-              }
-              // go left
-              if (j - 1 >= 0) {
-                  int[][] copy = copyBoard();
-                  copy[i][j] = copy[i][j - 1];
-                  copy[i][j - 1] = 0;
-                  next.add(new Board(copy, i, j - 1));
-              }
-              /// go right
-              if (j + 1 < 3) {
-                  int[][] copy = copyBoard();
-                  copy[i][j] = copy[i][j + 1];
-                  copy[i][j + 1] = 0;
-                  next.add(new Board(copy, i, j + 1));
-              }
-              return next;
-          }
+          return new String(chars);
       }
   }
   ```
