@@ -10656,6 +10656,8 @@ class Solution {
 
 ### :star:Q698. [Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/)
 
+* [Solution](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/solutions/7462220/backtracking-with-divide-and-conquer-and-u5vl)
+
 * 球视角一：球必须进入盒子，从k个盒子里选一个进入
 
   * 复杂度 $O(k^n)$，注意是指数级不是阶乘级，因为是球视角
@@ -10802,6 +10804,38 @@ class Solution {
               sum += n;
   
           return sum % k == 0 ? sum / k : -1;
+      }
+  }
+  ```
+
+### Q967. [Numbers With Same Consecutive Differences](https://leetcode.com/problems/numbers-with-same-consecutive-differences/)
+
+* ```java
+  class Solution {
+      public int[] numsSameConsecDiff(int n, int k) {
+          List<Integer> result = new ArrayList<>();
+  
+          backtrack(0, k, n, 0, result);
+  
+          return result.stream().mapToInt(i -> i).toArray();
+      }
+  
+      private void backtrack(int length, int diff, int targetLength, int path, List<Integer> result) {
+          if (length == targetLength) {
+              result.add(path);
+              return;
+          }
+  
+          for (int digit = 0; digit <= 9; digit++) {
+              if (length == 0 && digit == 0)  continue;
+  
+              int lastDigit = path % 10;
+              if (length > 0 && Math.abs(digit - lastDigit) != diff)  continue;
+  
+              path = path * 10 + digit;
+              backtrack(length + 1, diff, targetLength, path, result);
+              path /= 10;
+          }
       }
   }
   ```
