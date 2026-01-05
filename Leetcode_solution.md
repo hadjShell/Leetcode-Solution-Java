@@ -10722,6 +10722,47 @@ class Solution {
   }
   ```
 
+### Q131. [Palindrome Partitioning](https://leetcode.com/problems/palindrome-partitioning/)
+
+* ```java
+  class Solution {
+      public List<List<String>> partition(String s) {
+          List<List<String>> result = new ArrayList<>();
+          List<String> path = new ArrayList<>();
+  
+          backtrack(s, 0, path, result);
+  
+          return result;
+      }
+  
+      private void backtrack(String s, int start, List<String> path, List<List<String>> result) {
+          if (start == s.length()) {
+              result.add(new ArrayList<>(path));
+              return;
+          }
+  
+          for (int end = start + 1; end <= s.length(); end++) {
+              String p = s.substring(start, end);
+  
+              if (!isPalin(p))    continue;
+  
+              path.add(p);
+              backtrack(s, end, path, result);
+              path.removeLast();
+          }
+      }
+  
+      private boolean isPalin(String s) {
+          for (int i = 0; i < s.length() / 2; i++) {
+              if (s.charAt(i) != s.charAt(s.length() - i - 1))
+                  return false;
+          }
+  
+          return true;
+      }
+  }
+  ```
+
 ### :star:Q491. [Non-decreasing Subsequences](https://leetcode.com/problems/non-decreasing-subsequences/)
 
 * The problem can be solved just by thinking it as a "take - don't take recursion". Furthermore, **we can avoid using `set`** to track duplicates by checking just one case.
@@ -10946,6 +10987,59 @@ class Solution {
               path = path * 10 + digit;
               backtrack(length + 1, diff, targetLength, path, result);
               path /= 10;
+          }
+      }
+  }
+  ```
+
+### Q980. [Unique Paths III](https://leetcode.com/problems/unique-paths-iii/)
+
+* ```java
+  class Solution {
+      static final int[][] DIR = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+      int count = 0;
+  
+      public int uniquePathsIII(int[][] grid) {
+          int m = grid.length, n = grid[0].length;
+          boolean[][] visited = new boolean[m][n];
+          int empty = 0;
+          int[] start = new int[2], end = new int[2];
+  
+          for (int i = 0; i < m; i++)
+              for (int j = 0; j < n; j++) {
+                  if (grid[i][j] == 0)    empty++;
+                  if (grid[i][j] == 1) {
+                      start[0] = i;
+                      start[1] = j;
+                  }
+                  if (grid[i][j] == 2) {
+                      end[0] = i;
+                      end[1] = j;
+                  }
+              }
+  
+          backtrack(start[0], start[1], grid, end, visited, empty);
+  
+          return count;
+      }
+  
+      private void backtrack(int i, int j, int[][] grid, int[] end, boolean[][] visited, int empty) {
+          if (i == end[0] && j == end[1]) {
+              if (empty == -1) 
+                  count++;
+              return;
+          }
+  
+          int m = grid.length, n = grid[0].length;
+          for (int[] d : DIR) {
+              int a = i + d[0], b = j + d[1];
+  
+              if (a < 0 || a >= m || b < 0 || b >= n)   continue;
+              if (grid[a][b] == -1 || visited[a][b])   continue;
+  
+              visited[i][j] = true;
+              backtrack(a, b, grid, end, visited, empty - 1);
+              visited[i][j] = false;
           }
       }
   }
