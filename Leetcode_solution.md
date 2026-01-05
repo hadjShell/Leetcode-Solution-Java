@@ -10654,6 +10654,49 @@ class Solution {
   }
   ```
 
+### :star:Q491. [Non-decreasing Subsequences](https://leetcode.com/problems/non-decreasing-subsequences/)
+
+* The problem can be solved just by thinking it as a "take - don't take recursion". Furthermore, **we can avoid using `set`** to track duplicates by checking just one case.
+  First, we take the element and do backtrack. Before going to the "don't take" case, we can make a simple ***check if the current number is equal to the last number of our temporary answer array***. If that is the case, we will get repeated answers if we go down this path. So, we don't recurse down if that is the case.
+
+  ***Time Complexity***: Each element will have two options. Either it's chosen, or it's not. So, the time complexity will be $O(2^n)$ in the worst case for sorted arrays where all the elements are considered. Most of the time it will be less than that as we get to prune early
+
+  > Idea to avoid duplicates in this post -https://leetcode.com/problems/non-decreasing-subsequences/discussion/comments/1765599
+
+* ```java
+  class Solution {
+      public List<List<Integer>> findSubsequences(int[] nums) {
+          List<List<Integer>> result = new ArrayList<>();
+          List<Integer> path = new ArrayList<>();
+  
+          backtrack(nums, 0, path, result);
+  
+          return result;
+      }
+  
+      private void backtrack(int[] nums, int start, List<Integer> path, List<List<Integer>> result) {        
+          if (start == nums.length) {
+              if (path.size() >= 2) 
+                  result.add(new ArrayList<>(path));
+              return;
+          }
+  
+          // ball viewpoint
+  
+          // into bin
+          if (path.size() == 0 || nums[start] >= path.getLast()) {
+              path.add(nums[start]);
+              backtrack(nums, start + 1, path, result);
+              path.removeLast();
+          }
+  
+          // not into bin
+          if (path.size() == 0 || nums[start] != path.getLast())
+              backtrack(nums, start + 1, path, result);
+      }
+  }
+  ```
+
 ### :star:Q698. [Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/)
 
 * [Solution](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/solutions/7462220/backtracking-with-divide-and-conquer-and-u5vl)
