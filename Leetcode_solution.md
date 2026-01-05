@@ -10654,6 +10654,74 @@ class Solution {
   }
   ```
 
+### Q93. [Restore IP Addresses](https://leetcode.com/problems/restore-ip-addresses/)
+
+* ```java
+  class Solution {
+      public List<String> restoreIpAddresses(String s) {
+          List<String> result = new ArrayList<>();
+  
+          if (s.length() > 12)
+              return result;
+  
+          boolean[] dot = new boolean[s.length()];
+          Set<Integer> choices = new HashSet<>();
+  
+          backtrack(s, dot, 0, choices, result);
+  
+          return result;
+      }
+  
+      private void backtrack(String s, boolean[] dot, int count, Set<Integer> choices, List<String> result) {
+          int choice = hash(dot);
+  
+          if (choices.contains(choice))
+              return;
+          else
+              choices.add(choice);
+  
+          if (count == 3) {
+              StringBuilder address = new StringBuilder();
+              int start = 0, end = 0;
+  
+              for (; end < dot.length; end++) {
+                  if (dot[end] == false)  continue;
+  
+                  String ip = s.substring(start, end);
+                  if (ip.length() > 3 || (ip.length() > 1 && ip.charAt(0) == '0') || Integer.parseInt(ip) > 255)    return;
+                  address.append(ip).append('.');
+  
+                  start = end;
+              }
+              String ip = s.substring(start, end);
+              if (ip.length() > 3 || (ip.length() > 1 && ip.charAt(0) == '0' || Integer.parseInt(ip) > 255))    return;
+              address.append(ip);
+  
+              result.add(address.toString());
+              return;
+          }
+  
+          for (int i = 1; i < s.length(); i++) {
+              if (dot[i] == true) continue;
+  
+              dot[i] = true;
+              backtrack(s, dot, count + 1, choices, result);
+              dot[i] = false;
+          }
+      }
+  
+      private int hash(boolean[] dot) {
+          int val = 0;
+  
+          for (int i = 0; i < dot.length; i++) {
+              val = val << 1 | (dot[i] == true ? 1 : 0 );
+          }
+  
+          return val;
+      }
+  }
+  ```
+
 ### :star:Q491. [Non-decreasing Subsequences](https://leetcode.com/problems/non-decreasing-subsequences/)
 
 * The problem can be solved just by thinking it as a "take - don't take recursion". Furthermore, **we can avoid using `set`** to track duplicates by checking just one case.
