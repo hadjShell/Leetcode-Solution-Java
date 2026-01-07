@@ -9175,6 +9175,57 @@ class Solution {
 * Shortest path problem
 * Hardest part is to abstract the graph from the real-world scenario
 
+### Q433. [Minimum Genetic Mutation](https://leetcode.com/problems/minimum-genetic-mutation/)
+
+* ```java
+  class Solution {
+      public int minMutation(String startGene, String endGene, String[] bank) {
+          Set<String> validGenes = new HashSet<>(Arrays.asList(bank));
+  
+          if (!validGenes.contains(endGene))
+              return -1;
+  
+          char[] genes = {'A', 'C', 'G', 'T'};
+          Deque<String> q = new ArrayDeque<>();
+          Set<String> visited = new HashSet<>();
+          int step = 0;
+  
+          q.offer(startGene);
+          visited.add(startGene);
+  
+          while (!q.isEmpty()) {
+              int size = q.size();
+  
+              for (int i = 0; i < size; i++) {
+                  String g = q.poll();
+  
+                  if (g.equals(endGene))
+                      return step;
+  
+                  for (int k = 0; k < g.length(); k++) {
+                      char[] chars = g.toCharArray();
+  
+                      for (int j = 0; j < genes.length; j++) {
+                          if (chars[k] == genes[j])    continue;
+                          
+                          chars[k] = genes[j];
+                          String newGene = new String(chars);
+                          if (validGenes.contains(newGene) && !visited.contains(newGene)) {
+                              q.offer(newGene);
+                              visited.add(newGene);
+                          }
+                      }
+                  }            
+              }
+  
+              step++;
+          }
+  
+          return -1;
+      }
+  }
+  ```
+
 ### :heart:Q752. [Open the Lock](https://leetcode.com/problems/open-the-lock/)
 
 * ```java
