@@ -9301,6 +9301,59 @@ class Solution {
   }
   ```
 
+### Q909. [Snakes and Ladders](https://leetcode.com/problems/snakes-and-ladders/)
+
+* ```java
+  class Solution {
+      public int snakesAndLadders(int[][] board) {
+          int n = board.length;
+          int start = 1, end = n * n;
+          Deque<Integer> q = new ArrayDeque<>();
+          boolean[] visited = new boolean[end + 1];
+          int step = 0;
+  
+          q.offer(1);
+          visited[start] = true;
+  
+          while (!q.isEmpty()) {
+              int size = q.size();
+  
+              for (int i = 0; i < size; i++) {
+                  int square = q.poll(), nextMax = Math.min(square + 6, end);
+  
+                  if (square == end)
+                      return step;
+  
+                  for (int k = square + 1; k <= nextMax; k++) {
+                      int[] index = getIndex(k, n);
+                      int ladder = board[index[0]][index[1]];
+                      int next = ladder == -1 ? k : ladder;
+  
+                      if (visited[next] != true) {
+                          q.offer(next);
+                          visited[next] = true;
+                      }
+                  }
+              }
+  
+              step++;
+          }
+  
+          return -1;
+      }
+  
+      private int[] getIndex(int square, int n) {
+          int[] m = new int[2];
+          int rowFromBottom = (square - 1) / n;       // start from 0;
+          int colToEdge = (rowFromBottom + 1) * n - square;       // how many cols to right or left edge
+          m[0] = (n - 1) - rowFromBottom;
+          m[1] = rowFromBottom % 2 == 0 ? n - 1 - colToEdge : colToEdge;
+          
+          return m;
+      }
+  }
+  ```
+
 ### :heart:Q994. [Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
 
 * ```java
