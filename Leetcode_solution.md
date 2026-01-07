@@ -9172,149 +9172,71 @@ class Solution {
 
 ## :bulb: BFS
 
-* Hard part is to abstract the graph from the real-world scenario
+* Shortest path problem
+* Hardest part is to abstract the graph from the real-world scenario
 
 ### :heart:Q752. [Open the Lock](https://leetcode.com/problems/open-the-lock/)
 
 * ```java
+  // Bidirectional BFS
   class Solution {
       public int openLock(String[] deadends, String target) {
-          if (target.equals("0000"))
-              return 0;
-          
-          Deque<String> q = new ArrayDeque<>();
-        	// Initialise visited with deadends, more elegant
-          Set<String> visited = new HashSet<>(Arrays.asList(deadends));
-  
-          if (visited.contains(target) || visited.contains("0000"))
-              return -1;
-  
-          q.offer("0000");
-          visited.add("0000");
-          int step = 0;
-  
-          while (!q.isEmpty()) {
-              int size = q.size();
-              for (int i = 0; i < size; i++) {
-                  String s = q.poll();
-                  if (s.equals(target))
-                      return step;
-                  List<String> adj = adjacent(s);
-                  for (String neighbor : adj) {
-                      if (!visited.contains(neighbor)) {
-                          q.offer(neighbor);
-                          visited.add(neighbor);
-                      }
-                  }
-              }
-              step++;
-          }
-          return -1;
-      }
-  
-      private List<String> adjacent(String s) {
-          List<String> res = new ArrayList<>();
-          char[] c = s.toCharArray();
-          for (int i = 0; i < 4; i++) {
-              if (c[i] == '0') {
-                  c[i]++;
-                  res.add(new String(c));
-                  c[i]--;
-                  c[i] = '9';
-                  res.add(new String(c));
-                  c[i] = '0';
-              }
-              else if (c[i] == '9') {
-                  c[i] = '0';
-                  res.add(new String(c));
-                  c[i] = '9';
-                  c[i]--;
-                  res.add(new String(c));
-                  c[i]++;
-              }
-              else {
-                  c[i]++;
-                  res.add(new String(c));
-                  c[i]--;
-                  c[i]--;
-                  res.add(new String(c));
-                  c[i]++;
-              }
-          }
-          return res;
-      }
-  }
-  ```
-
-* ```java
-  // Two-way BFS
-  class Solution {
-      public int openLock(String[] deadends, String target) {
-          if (target.equals("0000"))
-              return 0;
-          
           Set<String> q1 = new HashSet<>();
           Set<String> q2 = new HashSet<>();
-          Set<String> visited = new HashSet<>(Arrays.asList(deadends));
+          Set<String> visited = new HashSet<>();
+          int turn = 0;
+          String start = "0000";
   
-          if (visited.contains(target) || visited.contains("0000"))
-              return -1;
+          for (String d : deadends) {
+              if (d.equals(start) || d.equals(target))
+                  return -1;
   
-          q1.add("0000");
+              visited.add(d);
+          }
+  
+          q1.add(start);
           q2.add(target);
-          int step = 0;
   
-        	// Notice when to update visited set
           while (!q1.isEmpty() && !q2.isEmpty()) {
               Set<String> temp = new HashSet<>();
-              for (String s : q1) {
-                  if (q2.contains(s))
-                      return step;
-                  visited.add(s);
-                  List<String> adj = adjacent(s);
-                  for (String neighbor : adj) {
-                      if (!visited.contains(neighbor)) {
-                          temp.add(neighbor);
-                      }
+  
+              for (String state : q1) {
+                  if (q2.contains(state))
+                      return turn;
+  
+                  // notice when to set visited true
+                  visited.add(state);
+                  for (int k = 0; k < state.length(); k++) {
+                      String up = rotateUp(state, k), down = rotateDown(state, k);
+  
+                      if (!visited.contains(up))      temp.add(up);
+                      if (!visited.contains(down))    temp.add(down);
                   }
               }
-              step++;
-              q1 = q2;
-              q2 = temp;
+  
+              if (q2.size() < temp.size()) {
+                  q1 = q2;
+                  q2 = temp;
+              }
+              else
+                  q1 = temp;
+              
+              turn++;
           }
+  
           return -1;
       }
   
-      private List<String> adjacent(String s) {
-          List<String> res = new ArrayList<>();
+      private String rotateUp(String s, int i) {
           char[] c = s.toCharArray();
-          for (int i = 0; i < 4; i++) {
-              if (c[i] == '0') {
-                  c[i]++;
-                  res.add(new String(c));
-                  c[i]--;
-                  c[i] = '9';
-                  res.add(new String(c));
-                  c[i] = '0';
-              }
-              else if (c[i] == '9') {
-                  c[i] = '0';
-                  res.add(new String(c));
-                  c[i] = '9';
-                  c[i]--;
-                  res.add(new String(c));
-                  c[i]++;
-              }
-              else {
-                  c[i]++;
-                  res.add(new String(c));
-                  c[i]--;
-                  c[i]--;
-                  res.add(new String(c));
-                  c[i]++;
-              }
-          }
-          return res;
+          c[i] = c[i] == '9' ? '0' : (char) (c[i] + 1);
+          return new String(c);
+      }
+  
+      private String rotateDown(String s, int i) {
+          char[] c = s.toCharArray();
+          c[i] = c[i] == '0' ? '9' : (char) (c[i] - 1);
+          return new String(c);
       }
   }
   ```
