@@ -9175,6 +9175,70 @@ class Solution {
 * Shortest path problem
 * Hardest part is to abstract the graph from the real-world scenario
 
+### :star:Q127. [Word Ladder](https://leetcode.com/problems/word-ladder/)
+
+* ```java
+  class Solution {
+      static char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+  
+      public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+          Set<String> dictionary = new HashSet<>(wordList);
+  
+          if (!dictionary.contains(endWord))      return 0;
+  
+          Set<String> q1 = new HashSet<>();
+          Set<String> q2 = new HashSet<>();
+          Set<String> visited = new HashSet<>();
+          int step = 0;
+  
+          q1.add(beginWord);
+          q2.add(endWord);
+  
+          while (!q1.isEmpty() && !q2.isEmpty()) {
+              Set<String> temp = new HashSet<>(); 
+  
+              for (String word : q1) {
+                  if (q2.contains(word))
+                      return step + 1;
+  
+                  visited.add(word);
+                  for (String next : neighbors(word)) {
+                      if (!dictionary.contains(next) || visited.contains(next))   continue;
+                      temp.add(next);
+                  }
+              }
+  
+              if (temp.size() < q2.size())
+                  q1 = temp;
+              else {
+                  q1 = q2;
+                  q2 = temp;
+              }
+  
+              step++;
+          }
+  
+          return 0;
+      }
+  
+      private List<String> neighbors(String s) {
+          List<String> l = new ArrayList<>();
+  
+          for (int i = 0; i < s.length(); i++) {
+              for (char c : alphabet) {
+                  if (s.charAt(i) == c)      continue;
+  
+                  char[] chars = s.toCharArray();
+                  chars[i] = c;
+                  l.add(new String(chars));
+              }
+          }
+  
+          return l;
+      }
+  }
+  ```
+
 ### Q433. [Minimum Genetic Mutation](https://leetcode.com/problems/minimum-genetic-mutation/)
 
 * ```java
