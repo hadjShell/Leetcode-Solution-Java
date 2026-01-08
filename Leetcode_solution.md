@@ -9239,6 +9239,71 @@ class Solution {
   }
   ```
 
+### Q365. [Water and Jug Problem](https://leetcode.com/problems/water-and-jug-problem/)
+
+* ```java
+  class Solution {
+      public boolean canMeasureWater(int x, int y, int target) {
+          if (x + y < target)
+              return false;
+  
+          Deque<int[]> q = new ArrayDeque<>();
+          Set<Long> visited = new HashSet<>();
+          int[] start = new int[2];
+  
+          q.offer(start);
+          visited.add(0l);
+  
+          while (!q.isEmpty()) {
+              int size = q.size();
+  
+              for (int i = 0; i < size; i++) {
+                  int[] state = q.poll();
+  
+                  if (state[0] + state[1] == target)
+                      return true;
+  
+                  for (int[] next : nextMoves(state, x, y)) {
+                      long hash = hash(next);
+                      if (visited.contains(hash))     continue;
+                      q.offer(next);
+                      visited.add(hash);
+                  }
+              }
+          }
+  
+          return false;
+      }
+  
+      private List<int[]> nextMoves(int[] state, int x, int y) {
+          List<int[]> l = new ArrayList<>();
+          int total = state[0] + state[1];
+          
+          for (int i = 0; i < 6; i++) {
+              int[] c = Arrays.copyOf(state, state.length);
+              l.add(c);
+          }
+  
+          l.get(0)[0] = x;
+          l.get(1)[1] = y;
+          l.get(2)[0] = 0;
+          l.get(3)[1] = 0;
+          int[] c5 = l.get(4);
+          c5[0] = total <= y ? 0 : total - y;
+          c5[1] = total <= y ? total : y;
+          int[] c6 = l.get(5);
+          c6[0] = total <= x ? total : x;
+          c6[1] = total <= x ? 0 : total - x;
+  
+          return l;
+      }
+  
+      private long hash(int[] state) {
+          return ((long) state[0]) << 32 | state[1];
+      }
+  }
+  ```
+
 ### Q433. [Minimum Genetic Mutation](https://leetcode.com/problems/minimum-genetic-mutation/)
 
 * ```java
