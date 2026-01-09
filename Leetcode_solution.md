@@ -11365,8 +11365,6 @@ class Solution {
       	result = maxOrMin(result, v)
     ```
 
-* Sometimes we can optimise the space complexity of DP by compressing the 2D memoization to 1D
-
 ## :bulb: Fibonacci Style
 
 ### Q70. [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
@@ -12214,46 +12212,52 @@ class Solution {
   // Bottom-up
   class Solution {
       public int coinChange(int[] coins, int amount) {
-          int[] memo = new int[amount + 1];
-          Arrays.fill(memo, Integer.MAX_VALUE);
-          memo[0] = 0;
-          for (int a = 1; a <= amount; a++) {
-              for (int c : coins) {
-                  if (a - c < 0 || memo[a - c] == -1)
+          int[] dp = new int[amount + 1];
+  
+          Arrays.fill(dp, amount + 1);
+          dp[0] = 0;
+  
+          for (int i = 1; i <= amount; i++) {
+              for (int coin : coins) {
+                  if (i - coin < 0 || dp[i - coin] == -1)
                       continue;
-                  memo[a] = Math.min(memo[a], memo[a - c] + 1);
+                  dp[i] = Math.min(dp[i], dp[i - coin] + 1);
               }
-              if (memo[a] == Integer.MAX_VALUE)
-                  memo[a] = -1;
+              if (dp[i] == amount + 1)
+                  dp[i] = -1;
           }
-          return memo[amount];
+  
+          return dp[amount];
       }
   }
   ```
-
+  
 * ```java
   // Top-down
   class Solution {
       public int coinChange(int[] coins, int amount) {
           int[] memo = new int[amount + 1];
+  
           Arrays.fill(memo, -2);
           memo[0] = 0;
+          
           return dp(coins, amount, memo);
       }
   
-      public int dp(int[] coins, int amount, int[] memo) {
-          if (amount < 0)
+      private int dp(int[] coins, int amount, int[] memo) {
+          if (amount < 0) 
               return -1;
+  
           if (memo[amount] != -2)
               return memo[amount];
-          int res = Integer.MAX_VALUE;
-          for (int c : coins) {
-              int cnt = dp(coins, amount - c, memo);
-              if (cnt == -1)
-                  continue;
-              res = Math.min(res, cnt + 1);
+  
+          int min = Integer.MAX_VALUE;
+          for (int i = 0; i < coins.length; i++) {
+              int count = dp(coins, amount - coins[i], memo);
+              if (count != -1)    min = Math.min(min, count + 1);
           }
-          memo[amount] = res == Integer.MAX_VALUE ? -1 : res;
+          memo[amount] = min == Integer.MAX_VALUE ? -1 : min;
+  
           return memo[amount];
       }
   }
