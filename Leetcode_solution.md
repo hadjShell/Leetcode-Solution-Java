@@ -11508,28 +11508,34 @@ class Solution {
 
 ### :star:Q115. [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
 
-* ```java 
+* **球盒模型**
+  
+  ```java 
   class Solution {
       public int numDistinct(String s, String t) {
-          Integer[][] dp = new Integer[s.length()][t.length()];
-          return compute(s, t, 0, 0, dp);
+          Integer[][] memo = new Integer[s.length()][t.length()];
+  
+          return dp(s, 0, t, 0, memo);
       }
   
-      public int compute(String s, String t, int is, int it, Integer[][] dp) {
-          if (s.length() - is < t.length() - it)
-              return 0;
-          if (it == t.length()) {
+      private int dp(String s, int i, String t, int j, Integer[][] memo) {
+          if (j == t.length())
               return 1;
-          }
-          int res = 0;
-          if (dp[is][it] != null)
-              return dp[is][it];
-          if (s.charAt(is) != t.charAt(it))
-              res += compute(s, t, is + 1, it, dp);
+  
+          if (t.length() - j > s.length() - i)
+              return 0;
+  
+          if (memo[i][j] != null)
+              return memo[i][j];
+  
+          int count = 0;
+          if (t.charAt(j) == s.charAt(i))
+              count += dp(s, i + 1, t, j + 1, memo) + dp(s, i + 1, t, j, memo);
           else
-              res += compute(s, t, is + 1, it, dp) + compute(s, t, is + 1, it + 1, dp);
-          dp[is][it] = res;
-          return res;
+              count += dp(s, i + 1, t, j, memo);
+          memo[i][j] = count;
+  
+          return memo[i][j];
       }
   }
   ```
