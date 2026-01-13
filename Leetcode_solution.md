@@ -12379,29 +12379,42 @@ class Solution {
 
 ### Q931. [Minimum Falling Path Sum](https://leetcode.com/problems/minimum-falling-path-sum/)
 
-* ```java
+* Usage: [Seam carving](https://en.wikipedia.org/wiki/Seam_carving)
+  
+  ```java
   class Solution {
+      static final int DEFAULT_VALUE = 1000001;
+  
       public int minFallingPathSum(int[][] matrix) {
-          Integer[][] memo = new Integer[matrix.length][matrix.length];
-          int shortest = Integer.MAX_VALUE;
-          for (int j = 0; j < matrix.length; j++) {
-              shortest = Math.min(shortest, dp(matrix, 0, j, memo));
+          int m = matrix.length, n = matrix[0].length;
+          int[][] memo = new int[m][n];
+          int min = Integer.MAX_VALUE;
+  
+          for (int[] arr : memo)
+              Arrays.fill(arr, DEFAULT_VALUE);
+  
+          for (int j = 0; j < n; j++) {
+              min = Math.min(min, dp(matrix, 0, j, memo));
           }
-          return shortest;
+  
+          return min;
       }
   
-      private int dp(int[][] matrix, int i, int j, Integer[][] memo) {
-          if (i == matrix.length - 1) 
-              return matrix[i][j];
-          if (memo[i][j] != null)
+      private int dp(int[][] matrix, int i, int j, int[][] memo) {
+          if (i == matrix.length - 1) {
+              memo[i][j] = matrix[i][j];
               return memo[i][j];
-              
-          int path = dp(matrix, i + 1, j, memo);
-          if (j - 1 >= 0)
-              path = Math.min(path, dp(matrix, i + 1, j - 1, memo));
-          if (j + 1 < matrix.length)
-              path = Math.min(path, dp(matrix, i + 1, j + 1, memo));
-          memo[i][j] = matrix[i][j] + path;
+          }
+          
+          if (memo[i][j] != DEFAULT_VALUE)
+              return memo[i][j];
+  
+          int min = Integer.MAX_VALUE;
+          if (j > 0) min = Math.min(min, dp(matrix, i + 1, j - 1, memo) + matrix[i][j]);
+          min = Math.min(min, dp(matrix, i + 1, j, memo) + matrix[i][j]);
+          if (j < matrix[0].length - 1) min = Math.min(min, dp(matrix, i + 1, j + 1, memo) + matrix[i][j]);
+          memo[i][j] = min;
+  
           return memo[i][j];
       }
   }
