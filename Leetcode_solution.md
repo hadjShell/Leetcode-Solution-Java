@@ -12178,43 +12178,61 @@ class Solution {
 * ```java
   class Solution {
       public List<String> wordBreak(String s, List<String> wordDict) {
-          Set<String> d = new HashSet<>(wordDict);
-          Set<Integer> len = new HashSet<>();
-          for (String word : d) {
-              len.add(word.length());
+          List<List<Integer>>[] memo = new List[s.length() + 1];
+          List<List<Integer>> spaces = dp(s, wordDict, 0, memo);
+          List<String> result = new ArrayList<>();
+          char[] chars = s.toCharArray();
+          
+          for (List<Integer> space : spaces) {
+              int i = 0, j = space.size() - 2;
+              StringBuilder sb = new StringBuilder();
+  
+              for (; i < chars.length; i++) {
+                  if (i == space.get(j)) {
+                      sb.append(' ');
+                      j--;
+                  }
+                  sb.append(chars[i]);
+              }
+  
+              result.add(sb.toString());
           }
-          List<String>[] memo = new List[s.length()];
-          return dp(s, 0, d, len, memo);
+  
+          return result;
       }
   
-      private List<String> dp(String s, int i, Set<String> d, Set<Integer> len, List<String>[] memo) {
-          List<String> res = new ArrayList<>();
-          if (i == s.length()) {
-              res.add("");
-              return res;
-          }
-          
+      private List<List<Integer>> dp(String s, List<String> words, int i, List[] memo) {
           if (memo[i] != null)
               return memo[i];
           
-          for (int l : len) {
-              if (l + i <= s.length()) {
-                  String word = s.substring(i, l + i);
-                  if (d.contains(word)) {
-                      List<String> nextSentence = dp(s, i + l, d, len, memo);
-                      if (!nextSentence.isEmpty()) {
-                          for (String sen : nextSentence) {
-                              if (sen.length() == 0)
-                                  res.add(word);
-                              else
-                                  res.add(word + " " + sen);
-                          }
-                      }
+          if (i == s.length()) {
+              List<List<Integer>> result = new ArrayList<>();
+              List<Integer> seq = new ArrayList<>();
+              seq.add(i);
+              result.add(seq);
+              memo[i] = result;
+  
+              return memo[i];
+          }
+  
+          List<List<Integer>> seqs = new ArrayList<>();
+          for (String word : words) {
+              if (word.length() > s.length() - i || !word.equals(s.substring(i, i + word.length())))
+                  continue;
+  
+              List<List<Integer>> next = dp(s, words, i + word.length(), memo);
+  
+              if (next.size() != 0) {
+                  for (List<Integer> l : next) {
+                      List<Integer> seq = new ArrayList<>(l);
+                      seq.add(i);
+                      seqs.add(seq);
                   }
               }
           }
-          memo[i] = res;
-          return res;
+          memo[i] = seqs;
+  
+          return memo[i];
       }
   }
   ```
