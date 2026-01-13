@@ -11541,21 +11541,35 @@ class Solution {
   // DP
   class Solution {
       public int lengthOfLIS(int[] nums) {
-          int[] dp = new int[nums.length];
-          Arrays.fill(dp, 1);
+          int[] memo = new int[nums.length];
           int max = 1;
-          for (int i = 1; i < nums.length; i++) {
-              for (int j = 0; j < i; j++) {
-                  if (nums[j] < nums[i])
-                      dp[i] = Math.max(dp[i], dp[j] + 1);
-              }
-              max = Math.max(max, dp[i]);
-          }
+  
+          for (int i = 0; i < memo.length; i++)
+              max = Math.max(max, dp(nums, i, memo));
+  
           return max;
+      }
+  
+      private int dp(int[] nums, int i, int[] memo) {
+          if (i == nums.length - 1)
+              return 1;
+  
+          if (memo[i] != 0)
+              return memo[i];
+  
+          int max = 1;
+          for (int k = i + 1; k < nums.length; k++) {
+              if (nums[i] >= nums[k])     continue;
+  
+              max = Math.max(max, dp(nums, k, memo) + 1);
+          }
+          memo[i] = max;
+  
+          return memo[i];
       }
   }
   ```
-
+  
 * ```java
   // O(NlogN)
   // Spider Card game, binary search
