@@ -11594,24 +11594,101 @@ class Solution {
 ### :star:Q354. [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/)
 
 * Variation of Q300.
-* **Sort first** to reduce the problem from two-dimensional array into a one-dimensional array
 
 * ```java
+  /**
+   * 354. Russian Doll Envelopes
+   *
+   * Optimal strategy:
+   * - Sort by width asc; for equal widths, height desc.
+   * - Then find LIS length on heights (strictly increasing) via patience sorting (O(n log n)).
+   */
   class Solution {
-      public int maxEnvelopes(int[][] envelopes) {
-          Arrays.sort(envelopes, (e1, e2) -> e1[0] == e2[0] ? e2[1] - e1[1] : e1[0] - e2[0]);
-          List<Integer> l = new ArrayList<>();
+  
+      // Standard optimal implementation
+      public int maxEnvelopesUltra(int[][] envelopes) {
+          int n = envelopes.length;
+          if (n == 0) return 0;
+  
+          // Sort: width asc, height desc (to prevent chaining equal widths)
+          Arrays.sort(envelopes, (a, b) -> {
+              if (a[0] != b[0]) return a[0] - b[0];
+              return b[1] - a[1]; // height desc when widths equal
+          });
+  
+          // Extract heights
+          int[] tails = new int[n];
+          int len = 0;
+  
           for (int[] e : envelopes) {
-              int insert = Collections.binarySearch(l, e[1]);
-              if (insert < 0) {
-                  insert = -1 * insert - 1;
-                  if (insert == l.size())
-                      l.add(e[1]);
-                  else
-                      l.set(insert, e[1]);
-              }
+              int h = e[1];
+  
+              // lower_bound on tails[0..len): first index with tails[idx] >= h
+              int idx = Arrays.binarySearch(tails, 0, len, h);
+              if (idx < 0) idx = -idx - 1; // insertion point
+  
+              tails[idx] = h;
+              if (idx == len) len++;
           }
-          return l.size();
+          return len;
+      }
+  
+      /**
+       * Near-100% optimized variant:
+       * - Uses primitive long key sorting (dual-pivot quicksort on long[] is faster than Comparator on object arrays).
+       * - Encodes sort key as: key = ((long)w << 32) | (Integer.MAX_VALUE - h).
+       *   This sorts by w asc; for equal w, by (MAX-h) asc i.e., h desc.
+       */
+      public int maxEnvelopes(int[][] envelopes) {
+          int n = envelopes.length;
+          if (n == 0) return 0;
+  
+          long[] keys = new long[n];
+          for (int i = 0; i < n; i++) {
+              int w = envelopes[i][0], h = envelopes[i][1];
+              keys[i] = (((long) w) << 32) | (Integer.MAX_VALUE - h);
+          }
+          Arrays.sort(keys);
+  
+          int[] tails = new int[n];
+          int len = 0;
+  
+          for (long key : keys) {
+              // Recover height: h = Integer.MAX_VALUE - low32bits
+              int h = Integer.MAX_VALUE - (int) (key & 0xffffffffL);
+  
+              int idx = Arrays.binarySearch(tails, 0, len, h);
+              if (idx < 0) idx = -idx - 1;
+              tails[idx] = h;
+              if (idx == len) len++;
+          }
+          return len;
+      }
+  
+      // O(n^2) DP fallback (simple, for small n)
+      // dp[i] = longest chain ending at i (after sorting by width asc, height desc)
+      public int maxEnvelopesDP(int[][] envelopes) {
+          int n = envelopes.length;
+          if (n == 0) return 0;
+  
+          Arrays.sort(envelopes, (a, b) -> {
+              if (a[0] != b[0]) return a[0] - b[0];
+              return b[1] - a[1];
+          });
+  
+          int[] dp = new int[n];
+          Arrays.fill(dp, 1);
+          int ans = 1;
+  
+          for (int i = 0; i < n; i++) {
+              for (int j = 0; j < i; j++) {
+                  if (envelopes[j][0] < envelopes[i][0] && envelopes[j][1] < envelopes[i][1]) {
+                      dp[i] = Math.max(dp[i], dp[j] + 1);
+                  }
+              }
+              ans = Math.max(ans, dp[i]);
+          }
+          return ans;
       }
   }
   ```
