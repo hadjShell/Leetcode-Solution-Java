@@ -11325,45 +11325,68 @@ class Solution {
 
 # Dynamic Programming
 
-* The problem is to exhaust every solution to find a **extreme value**
+* The basic idea of dynamic programming is to exhaust all possibilities to **find the optimal value**, which is a brute-force approach. However, DP optimises this process by **avoiding redundant exploration of repeated subproblems** in the decision tree. This simple optimization typically reduces time complexities **from exponential to polynomial**.
 
-* The key: find the state transfer equation (**mathematical induction**)
+* Three core elements of DP
 
-* Top-down: recursion; Bottom-up: iteration
+  * **State transition equation:** Defines how a problem is broken down into smaller subproblems and how the solution to a state is derived from the solutions of those subproblems.
 
-* **Backtracking loops a decision tree by DFS. DP, indeed, dfs the tree too; however, it breaks down the tree to subtrees and cut off unnecessary branches**
+  * **Optimal substructure:** The optimal solution of the given problem can be obtained by using **the optimal solution to its subproblems** instead of trying every possible way to solve the subproblems. To satisfy the optimal substructure, **the subproblems must be independent of each other**. For example, we can say that the maximum marks of an exam has optimal substructure because we can solve it by checking the maximum marks of each subject; however, assuming math mark is associated with english mark, i.e., those are not independent, then the problem doesn't have optimal substructure.
 
-* How does DP work?
+    > The problem can be derived into different combinations of subproblems, therefore an optimal solution can be selected by comparison of those different answers.
 
-  * Reduce to sub-problem whose answer is the answer of the original problem
-  * Memoization(caching): overlapping subproblems
+  * **Overlapping subproblems:** Many subproblems are solved multiple times. DP addresses this by using **memoization** (top-down) or a **tabulation** (bottom-up) to store and reuse previously computed results, avoiding redundant computations.
 
 * Framework
 
   * ```java
-    // Top-down
-    void dp(state1, state2, ...):
-        if (base case)
-          	return;
-    		if (memo[state1][state2][...] != null)
-          	return;
+    // Top-down recursive dynamic programming
+    public Result dp(State state) {
+      	if baseCase:
+      			return defaultValue;
+        
+      	// overlapping subproblems
+        if memo.containsKey(state) 
+          	return memo.get(state);
+        
+      	// state transition equation
+      	Result optimal;
+      	for nextState in nextStates
+          	Result result = cal(dp(nextState));
+        		optimal = findOptimal(optimal, result);
+    		memo.put(state, optimal);
+      	
+    		return memo.get(state);
+    }
     
-    		for option in options:
-            // the states have been changed because of the dicision made
-            result = maxOrMin(result, dp(nextState1, nextState2, ...))
-        return result
+    // Bottom-up iterative dynamic programming
+    dp[baseState] = defaultValue;
     
-    // Bottom-up
-    // initialisation
-    dp[0][0][...] = base case
-    // updating
-    for state1 in options1：
-        for state2 in options2：
-            for ...
-                dp[state1][state2][...] = dp[prevState1][prevState2][...] ...
-    for v : dp
-      	result = maxOrMin(result, v)
+    // Perform state transitions
+    for state from nextState to targetState
+      		Result optimal;
+      		for prevState to baseState
+    					optimal = findOptimal(optimal, cal(dp[prevState]));
+    			dp[state] = optimal;
+    
+    return dp[targetState];
     ```
+
+  * **Bottom-to-top DP algorithms are usually more efficient**, but they are generally harder (and sometimes impossible) to build, since it is not always easy to predict which primitive sub-problems you are going to need to solve the whole original problem, and which path you have to take from small sub-problems to get to the final solution in the most efficient way.
+
+* Difference between Dynamic Programming and Backtracking
+
+  * **DP is 分解子问题思想的 DFS**, to **find an optimal solution** of a given problem, optimised by **memorising solutions of subproblems**.
+  * **Backtracking is 遍历思想的 DFS**, to **find all or some valid solutions that satisfy given constraints**, optimised by **pruning the decision tree when a path violates the constraints**.
+
+*   带备忘录的动态规划算法的时间复杂度 = 
+  子问题的个数 x 函数本身的时间复杂度, 
+  「状态」的个数 x 函数本身的时间复杂度 
+
+* Optimisation on space complexity
+
+  * Compress the size of the DP table when only a part of it is needed during state transition
+  * In general, it's easier to write with bottom-up dp
 
 ## :bulb: Fibonacci Style
 
@@ -11732,29 +11755,39 @@ class Solution {
 * ```java
   class Solution {
       public int minDistance(String word1, String word2) {
-          StringBuilder sb = new StringBuilder(word1);
-          Integer[][] memo = new Integer[word1.length()][word2.length()];
-          return dp(word1, word2, 0, 0, memo);
+          Integer[][] memo = new Integer[word1.length() + 1][word2.length() + 1];
+  
+          return dp(word1, 0, word2, 0, memo);
       }
   
-      private int dp(String word1, String word2, int i1, int i2, Integer[][] memo) {
-          if (i1 == word1.length())
-              return word2.length() - i2;
-          if (i2 == word2.length())
-              return word1.length() - i1;
-          if (memo[i1][i2] != null)
-              return memo[i1][i2];
+      private int dp(String word1, int i, String word2, int j, Integer[][] memo) {
+          if (i == word1.length() && j == word2.length())
+              return 0;
+  
+          if (memo[i][j] != null)
+              return memo[i][j];
           
-          int res = Integer.MAX_VALUE;
-          if (word1.charAt(i1) == word2.charAt(i2))
-              res = Math.min(res, dp(word1, word2, i1 + 1, i2 + 1, memo));
+          int step = Integer.MAX_VALUE;
+          // if i reach end not j, insert
+          if (i == word1.length())
+              step = dp(word1, i, word2, j + 1, memo) + 1;
+          // if j reach end not i, delete
+          else if (j == word2.length())
+              step = dp(word1, i + 1, word2, j, memo) + 1;
+          // same char
+          else if (word1.charAt(i) == word2.charAt(j))
+              step = dp(word1, i + 1, word2, j + 1, memo);
           else {
-              res = Math.min(res, 1 + dp(word1, word2, i1, i2 + 1, memo));
-              res = Math.min(res, 1 + dp(word1, word2, i1 + 1, i2, memo));
-              res = Math.min(res, 1 + dp(word1, word2, i1 + 1, i2 + 1, memo));
+              // insert
+              step = Math.min(step, dp(word1, i, word2, j + 1, memo) + 1);
+              // delete
+              step = Math.min(step, dp(word1, i + 1, word2, j, memo) + 1);
+              // replace
+              step = Math.min(step, dp(word1, i + 1, word2, j + 1, memo) + 1);
           }
-          memo[i1][i2] = res;
-         return res;
+          memo[i][j] = step;
+  
+          return memo[i][j];
       }
   }
   ```
