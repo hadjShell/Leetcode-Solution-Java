@@ -11722,30 +11722,34 @@ class Solution {
   }
   ```
 
-### :heart:Q1143. [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
+### Q1143. [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
 
 * ```java
   class Solution {
       public int longestCommonSubsequence(String text1, String text2) {
-          Integer[][] memo = new Integer[text1.length()][text2.length()];
-          return dp(text1, text2, 0, 0, memo);
+          Integer[][] memo = new Integer[text1.length() + 1][text2.length() + 1];
+  
+          return dp(text1, 0, text2, 0, memo);
       }
   
-      private int dp(String s1, String s2, int i1, int i2, Integer[][] memo) {
-          if (i1 == s1.length() || i2 == s2.length())
+      private int dp(String s1, int i, String s2, int j, Integer[][] memo) {
+          if (memo[i][j] != null)
+              return memo[i][j];
+  
+          if (i == s1.length() || j == s2.length()) {
+              memo[i][j] = 0;
               return 0;
-          if (memo[i1][i2] != null)
-              return memo[i1][i2];
-          
-          int res = 0;
-          if (s1.charAt(i1) == s2.charAt(i2)) {
-              res = 1 + dp(s1, s2, i1 + 1, i2 + 1, memo);
           }
-          else {
-              res = Math.max(dp(s1, s2, i1 + 1, i2, memo), dp(s1, s2, i1, i2 + 1, memo));
-          }
-          memo[i1][i2] = res;
-          return res;
+  
+          int len = 0;
+          if (s1.charAt(i) == s2.charAt(j))
+              len = 1 + dp(s1, i + 1, s2, j + 1, memo);
+          else
+              len = Math.max(dp(s1, i + 1, s2, j, memo), 
+                              dp(s1, i, s2, j + 1, memo));
+          memo[i][j] = len;
+  
+          return memo[i][j];
       }
   }
   ```
