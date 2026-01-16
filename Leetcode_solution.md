@@ -12009,6 +12009,63 @@ class Solution {
   }
   ```
 
+### Q322. [Coin Change](https://leetcode.com/problems/coin-change/)
+
+* ```java
+  // Bottom-up
+  class Solution {
+      public int coinChange(int[] coins, int amount) {
+          int[] dp = new int[amount + 1];
+  
+          Arrays.fill(dp, amount + 1);
+          dp[0] = 0;
+  
+          for (int i = 1; i <= amount; i++) {
+              for (int coin : coins) {
+                  if (i - coin < 0 || dp[i - coin] == -1)
+                      continue;
+                  dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+              }
+              if (dp[i] == amount + 1)
+                  dp[i] = -1;
+          }
+  
+          return dp[amount];
+      }
+  }
+  ```
+
+* ```java
+  // Top-down
+  class Solution {
+      public int coinChange(int[] coins, int amount) {
+          int[] memo = new int[amount + 1];
+  
+          Arrays.fill(memo, -2);
+          memo[0] = 0;
+          
+          return dp(coins, amount, memo);
+      }
+  
+      private int dp(int[] coins, int amount, int[] memo) {
+          if (amount < 0) 
+              return -1;
+  
+          if (memo[amount] != -2)
+              return memo[amount];
+  
+          int min = Integer.MAX_VALUE;
+          for (int i = 0; i < coins.length; i++) {
+              int count = dp(coins, amount - coins[i], memo);
+              if (count != -1)    min = Math.min(min, count + 1);
+          }
+          memo[amount] = min == Integer.MAX_VALUE ? -1 : min;
+  
+          return memo[amount];
+      }
+  }
+  ```
+
 ### :star:Q377. [Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/)
 
 * ```java
@@ -12129,27 +12186,34 @@ class Solution {
 
 ### :star:Q518. [Coin Change II](https://leetcode.com/problems/coin-change-ii/)
 
-* ```java
+* [Solution](https://leetcode.com/problems/coin-change-ii/solutions/7499274/unbounded-knapsack-problem-2d-dp-omn-by-kgzty)
+  
+* Unbounded knapsack
+  
+  ```java
   class Solution {
       public int change(int amount, int[] coins) {
           Integer[][] memo = new Integer[amount + 1][coins.length + 1];
-          return dp(amount, coins.length, coins, memo);
+  
+          return dp(amount, coins, 0, memo);
       }
   
-      private int dp(int amount, int cnt, int[] coins, Integer[][] memo) {
+      private int dp(int amount, int[] coins, int i, Integer[][] memo) {
           if (amount == 0)
               return 1;
-          if (cnt == 0)
+  
+          if (i == coins.length)
               return 0;
-          if (memo[amount][cnt] != null)
-              return memo[amount][cnt];
-          
-          int res = 0, coin = coins[cnt - 1]; 
-          if (coin > amount)
-              res = dp(amount, cnt - 1, coins, memo);
-          else
-              res = dp(amount - coin, cnt, coins, memo) + dp(amount, cnt - 1, coins, memo);
-          return memo[amount][cnt] = res;
+  
+          if (memo[amount][i] != null)
+              return memo[amount][i];
+  
+          int combination = 0;
+          if (amount >= coins[i])     combination = dp(amount - coins[i], coins, i, memo) + dp(amount, coins, i + 1, memo);
+          else                        combination = dp(amount, coins, i + 1, memo);
+          memo[amount][i] = combination;
+  
+          return memo[amount][i];
       }
   }
   ```
@@ -12379,63 +12443,6 @@ class Solution {
               i++;
           }
           return result;
-      }
-  }
-  ```
-
-### :heart:Q322. [Coin Change](https://leetcode.com/problems/coin-change/)
-
-* ```java
-  // Bottom-up
-  class Solution {
-      public int coinChange(int[] coins, int amount) {
-          int[] dp = new int[amount + 1];
-  
-          Arrays.fill(dp, amount + 1);
-          dp[0] = 0;
-  
-          for (int i = 1; i <= amount; i++) {
-              for (int coin : coins) {
-                  if (i - coin < 0 || dp[i - coin] == -1)
-                      continue;
-                  dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-              }
-              if (dp[i] == amount + 1)
-                  dp[i] = -1;
-          }
-  
-          return dp[amount];
-      }
-  }
-  ```
-  
-* ```java
-  // Top-down
-  class Solution {
-      public int coinChange(int[] coins, int amount) {
-          int[] memo = new int[amount + 1];
-  
-          Arrays.fill(memo, -2);
-          memo[0] = 0;
-          
-          return dp(coins, amount, memo);
-      }
-  
-      private int dp(int[] coins, int amount, int[] memo) {
-          if (amount < 0) 
-              return -1;
-  
-          if (memo[amount] != -2)
-              return memo[amount];
-  
-          int min = Integer.MAX_VALUE;
-          for (int i = 0; i < coins.length; i++) {
-              int count = dp(coins, amount - coins[i], memo);
-              if (count != -1)    min = Math.min(min, count + 1);
-          }
-          memo[amount] = min == Integer.MAX_VALUE ? -1 : min;
-  
-          return memo[amount];
       }
   }
   ```
