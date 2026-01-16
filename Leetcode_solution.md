@@ -12162,27 +12162,43 @@ class Solution {
   }
   ```
 
-### Q494. [Target Sum](https://leetcode.com/problems/target-sum/)
+### :star:Q494. [Target Sum](https://leetcode.com/problems/target-sum/)
 
 * ```java
   class Solution {
       public int findTargetSumWays(int[] nums, int target) {
+          // sum [0, 1000]    target [-1000, 1000]
           Integer[][] memo = new Integer[4001][nums.length + 1];
-          // target [-2000, 2000]
-          return dp(target, nums.length, nums, memo);
+  
+          return dp(nums, 0, target, memo);
       }
   
-      private int dp(int target, int range, int[] nums, Integer[][] memo) {
-          if (range == 0) 
+      private int dp(int[] nums, int i, int target, Integer[][] memo) {
+          if (i == nums.length) 
               return target == 0 ? 1 : 0;
-          if (memo[target + 2000][range] != null)
-              return memo[target + 2000][range];
-          
-          int num = nums[range - 1];
-          return memo[target + 2000][range] = dp(target + num, range - 1, nums, memo) + dp(target - num, range - 1, nums, memo);
+  
+          if (memo[target + 2000][i] != null)
+              return memo[target + 2000][i];
+  
+          memo[target + 2000][i] = dp(nums, i + 1, target + nums[i], memo) + dp(nums, i + 1, target - nums[i], memo);
+  
+          return memo[target + 2000][i];
       }
   }
   ```
+
+* Idea 2
+
+  * 首先，如果我们把 `nums` 划分成两个子集 `A` 和 `B`，分别代表分配 `+` 的数和分配 `-` 的数，那么他们和 `target` 存在如下关系：
+
+    ```
+    sum(A) - sum(B) = target
+    sum(A) = target + sum(B)
+    sum(A) + sum(A) = target + sum(B) + sum(A)
+    2 * sum(A) = target + sum(nums)
+    ```
+
+    综上，可以推出 `sum(A) = (target + sum(nums)) / 2`，也就是把原问题转化成：**`nums` 中存在几个子集 `A`，使得 `A` 中元素的和为 `(target + sum(nums)) / 2`**？
 
 ### :star:Q518. [Coin Change II](https://leetcode.com/problems/coin-change-ii/)
 
