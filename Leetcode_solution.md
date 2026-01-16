@@ -11529,6 +11529,79 @@ class Solution {
 
 ## :bulb: Subsequence
 
+* Problem domain: ask for a valid longest subsequence. (A **subsequence** is a sequence that can be derived from another sequence by deleting some or no elements without changing the order of the remaining elements.)
+* In general, time complexity would be $O(n^2)$ with DP; if using backtracking, it would be at least $O(2^n)$ because we have to enumerate all subsequences.
+* Framework
+  * One-dimensional DP
+    * `memo[i]` stores the answer of orginal question with the input reduces to the subarray `arr[i...]` of original input array `arr`.
+    * E.g., Q300, Q53.
+  * Two-dimensional DP
+    * **Two strings or arrays input**: `memo[i][j]` stores the answer of orginal question with the inputs reduce to the subarrays `arr1[i...]` and `arr2[j...]`.
+    * E.g., Q1143, Q72. 
+    * **One string or array input**: `memo[i][j]` stores the answer of orginal question with the input reduces to the subarray `arr[i..j]`.
+    * E.g., Q516, Q1312.
+
+### :star:Q53. [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
+
+* ```java
+  class Solution {
+      public int maxSubArray(int[] nums) {
+          // max subarray ending at index i
+          int memo = nums[0], max = nums[0];
+          for (int i = 1; i < nums.length; i++) {
+              if (memo < 0) 
+                  memo = nums[i];
+              else
+                  memo += nums[i];
+              max = Math.max(max, memo);
+          }
+          return max;
+      }
+  }
+  ```
+
+### :star:Q72. [Edit Distance](https://leetcode.com/problems/edit-distance/)
+
+* ```java
+  class Solution {
+      public int minDistance(String word1, String word2) {
+          Integer[][] memo = new Integer[word1.length() + 1][word2.length() + 1];
+  
+          return dp(word1, 0, word2, 0, memo);
+      }
+  
+      private int dp(String word1, int i, String word2, int j, Integer[][] memo) {
+          if (i == word1.length() && j == word2.length())
+              return 0;
+  
+          if (memo[i][j] != null)
+              return memo[i][j];
+          
+          int step = Integer.MAX_VALUE;
+          // if i reach end not j, insert
+          if (i == word1.length())
+              step = dp(word1, i, word2, j + 1, memo) + 1;
+          // if j reach end not i, delete
+          else if (j == word2.length())
+              step = dp(word1, i + 1, word2, j, memo) + 1;
+          // same char
+          else if (word1.charAt(i) == word2.charAt(j))
+              step = dp(word1, i + 1, word2, j + 1, memo);
+          else {
+              // insert
+              step = Math.min(step, dp(word1, i, word2, j + 1, memo) + 1);
+              // delete
+              step = Math.min(step, dp(word1, i + 1, word2, j, memo) + 1);
+              // replace
+              step = Math.min(step, dp(word1, i + 1, word2, j + 1, memo) + 1);
+          }
+          memo[i][j] = step;
+  
+          return memo[i][j];
+      }
+  }
+  ```
+
 ### :star:Q115. [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
 
 * **球盒模型**
@@ -11722,74 +11795,34 @@ class Solution {
   }
   ```
 
-### Q1143. [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
+### Q516. [Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/)
 
 * ```java
   class Solution {
-      public int longestCommonSubsequence(String text1, String text2) {
-          Integer[][] memo = new Integer[text1.length() + 1][text2.length() + 1];
+      public int longestPalindromeSubseq(String s) {
+          Integer[][] memo = new Integer[s.length()][s.length()];
   
-          return dp(text1, 0, text2, 0, memo);
+          return dp(s, 0, s.length() - 1, memo);
       }
   
-      private int dp(String s1, int i, String s2, int j, Integer[][] memo) {
+      private int dp(String s, int i, int j, Integer[][] memo) {
           if (memo[i][j] != null)
               return memo[i][j];
   
-          if (i == s1.length() || j == s2.length()) {
-              memo[i][j] = 0;
-              return 0;
+          if (i == j) {
+              memo[i][j] = 1;
+              return 1;
           }
+  
+          if (j < i)
+              return 0;
   
           int len = 0;
-          if (s1.charAt(i) == s2.charAt(j))
-              len = 1 + dp(s1, i + 1, s2, j + 1, memo);
+          if (s.charAt(i) == s.charAt(j))
+              len = 2 + dp(s, i + 1, j - 1, memo);
           else
-              len = Math.max(dp(s1, i + 1, s2, j, memo), 
-                              dp(s1, i, s2, j + 1, memo));
+              len = Math.max(dp(s, i + 1, j, memo), dp(s, i, j - 1, memo));
           memo[i][j] = len;
-  
-          return memo[i][j];
-      }
-  }
-  ```
-
-### :star:Q72. [Edit Distance](https://leetcode.com/problems/edit-distance/)
-
-* ```java
-  class Solution {
-      public int minDistance(String word1, String word2) {
-          Integer[][] memo = new Integer[word1.length() + 1][word2.length() + 1];
-  
-          return dp(word1, 0, word2, 0, memo);
-      }
-  
-      private int dp(String word1, int i, String word2, int j, Integer[][] memo) {
-          if (i == word1.length() && j == word2.length())
-              return 0;
-  
-          if (memo[i][j] != null)
-              return memo[i][j];
-          
-          int step = Integer.MAX_VALUE;
-          // if i reach end not j, insert
-          if (i == word1.length())
-              step = dp(word1, i, word2, j + 1, memo) + 1;
-          // if j reach end not i, delete
-          else if (j == word2.length())
-              step = dp(word1, i + 1, word2, j, memo) + 1;
-          // same char
-          else if (word1.charAt(i) == word2.charAt(j))
-              step = dp(word1, i + 1, word2, j + 1, memo);
-          else {
-              // insert
-              step = Math.min(step, dp(word1, i, word2, j + 1, memo) + 1);
-              // delete
-              step = Math.min(step, dp(word1, i + 1, word2, j, memo) + 1);
-              // replace
-              step = Math.min(step, dp(word1, i + 1, word2, j + 1, memo) + 1);
-          }
-          memo[i][j] = step;
   
           return memo[i][j];
       }
@@ -11835,79 +11868,77 @@ class Solution {
 
 ### Q712. [Minimum ASCII Delete Sum for Two Strings](https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/)
 
-* Variation of LCS
-
 * ```java
   class Solution {
       public int minimumDeleteSum(String word1, String word2) {
           Integer[][] memo = new Integer[word1.length() + 1][word2.length() + 1];
-          return dp(word1, word2, 0, 0, memo);
+  
+          return dp(word1, 0, word2, 0, memo);
       }
   
-      private int dp(String word1, String word2, int i1, int i2, Integer[][] memo) {
-          if (memo[i1][i2] != null)
-              return memo[i1][i2];
-          int res = 0;
-          if (i1 == word1.length()) {
-              for (int i = i2; i < word2.length(); i++)
-                  res += word2.charAt(i);
-              memo[i1][i2] = res;
-              return res;
+      private int dp(String s1, int i, String s2, int j, Integer[][] memo) {
+          if (memo[i][j] != null)
+              return memo[i][j];
+  
+          if (i == s1.length() && j == s2.length()) {
+              memo[i][j] = 0;
+              return 0;
           }
-          if (i2 == word2.length()) {
-              for (int i = i1; i < word1.length(); i++)
-                  res += word1.charAt(i);
-              memo[i1][i2] = res;
-              return res;
+  
+          if (i == s1.length()) {
+              memo[i][j] = (int) s2.charAt(j) + dp(s1, i, s2, j + 1, memo);
+              return memo[i][j];
           }
-          
-          if (word1.charAt(i1) == word2.charAt(i2))
-              res = dp(word1, word2, i1 + 1, i2 + 1, memo);
-          else {
-              res = Math.min(word1.charAt(i1) + dp(word1, word2, i1 + 1, i2, memo), 
-                              word2.charAt(i2) + dp(word1, word2, i1, i2 + 1, memo));
+  
+          if (j == s2.length()) {
+              memo[i][j] = (int) s1.charAt(i) + dp(s1, i + 1, s2, j, memo);
+              return memo[i][j];
           }
-          memo[i1][i2] = res;
-          return res;
+  
+          int sum = 0;
+          if (s1.charAt(i) == s2.charAt(j))
+              sum = dp(s1, i + 1, s2, j + 1, memo);
+          else 
+              sum = Math.min(dp(s1, i + 1, s2, j, memo) + (int) s1.charAt(i), 
+                              dp(s1, i, s2, j + 1, memo) + (int) s2.charAt(j));
+          memo[i][j] = sum;
+  
+          return memo[i][j];
       }
   }
   ```
 
-### Q516. [Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/)
-
-* Variation of LCS
+### Q1143. [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
 
 * ```java
   class Solution {
-      public int longestPalindromeSubseq(String s) {
-          return LCS(s, new StringBuilder(s).reverse().toString());
+      public int longestCommonSubsequence(String text1, String text2) {
+          Integer[][] memo = new Integer[text1.length() + 1][text2.length() + 1];
+  
+          return dp(text1, 0, text2, 0, memo);
       }
   
-      public int LCS(String text1, String text2) {
-          Integer[][] memo = new Integer[text1.length()][text2.length()];
-          return dp(text1, text2, 0, 0, memo);
-      }
+      private int dp(String s1, int i, String s2, int j, Integer[][] memo) {
+          if (memo[i][j] != null)
+              return memo[i][j];
   
-      private int dp(String s1, String s2, int i1, int i2, Integer[][] memo) {
-          if (i1 == s1.length() || i2 == s2.length())
+          if (i == s1.length() || j == s2.length()) {
+              memo[i][j] = 0;
               return 0;
-          if (memo[i1][i2] != null)
-              return memo[i1][i2];
-          
-          int res = 0;
-          if (s1.charAt(i1) == s2.charAt(i2)) {
-              res = 1 + dp(s1, s2, i1 + 1, i2 + 1, memo);
           }
-          else {
-              res = Math.max(dp(s1, s2, i1 + 1, i2, memo), dp(s1, s2, i1, i2 + 1, memo));
-          }
-          memo[i1][i2] = res;
-          return res;
+  
+          int len = 0;
+          if (s1.charAt(i) == s2.charAt(j))
+              len = 1 + dp(s1, i + 1, s2, j + 1, memo);
+          else
+              len = Math.max(dp(s1, i + 1, s2, j, memo), 
+                              dp(s1, i, s2, j + 1, memo));
+          memo[i][j] = len;
+  
+          return memo[i][j];
       }
   }
   ```
-
-***
 
 ## :bulb: Knapsack Problem
 
@@ -12131,27 +12162,6 @@ class Solution {
 ***
 
 ## :bulb: Others
-
-### :star:Q53. [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
-
-* The key is to transform the current question to another question, i.e., find the correct definition of `memo`
-
-* ```java
-  class Solution {
-      public int maxSubArray(int[] nums) {
-          // max subarray ending at index i
-          int memo = nums[0], max = nums[0];
-          for (int i = 1; i < nums.length; i++) {
-              if (memo < 0) 
-                  memo = nums[i];
-              else
-                  memo += nums[i];
-              max = Math.max(max, memo);
-          }
-          return max;
-      }
-  }
-  ```
 
 ### Q139. [Word Break](https://leetcode.com/problems/word-break/)
 
