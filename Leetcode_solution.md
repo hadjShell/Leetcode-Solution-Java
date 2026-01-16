@@ -11798,61 +11798,37 @@ class Solution {
 
 ### Q583. [Delete Operation for Two Strings](https://leetcode.com/problems/delete-operation-for-two-strings/)
 
-* Variation of Q1143. or Q72
-
 * ```java
-  // Variation of Q1143
   class Solution {
       public int minDistance(String word1, String word2) {
-          Integer[][] memo = new Integer[word1.length()][word2.length()];
-          int lcs = dp(word1, word2, 0, 0, memo);
-          return word1.length() + word2.length() - 2 * lcs;
+          Integer[][] memo = new Integer[word1.length() + 1][word2.length() + 1];
+  
+          return dp(word1, 0, word2, 0, memo);
       }
   
-      private int dp(String s1, String s2, int i1, int i2, Integer[][] memo) {
-          if (i1 == s1.length() || i2 == s2.length())
-              return 0;
-          if (memo[i1][i2] != null)
-              return memo[i1][i2];
-          
-          int res = 0;
-          if (s1.charAt(i1) == s2.charAt(i2)) {
-              res = 1 + dp(s1, s2, i1 + 1, i2 + 1, memo);
-          }
-          else {
-              res = Math.max(dp(s1, s2, i1 + 1, i2, memo), dp(s1, s2, i1, i2 + 1, memo));
-          }
-          memo[i1][i2] = res;
-          return res;
-      }
-  }
-  ```
-
-* ```java
-  // Variation of Q72
-  class Solution {
-      public int minDistance(String word1, String word2) {
-          Integer[][] memo = new Integer[word1.length()][word2.length()];
-          return dp(word1, word2, 0, 0, memo);
-      }
+      private int dp(String s1, int i, String s2, int j, Integer[][] memo) {
+          if (memo[i][j] != null)
+              return memo[i][j];
   
-      private int dp(String word1, String word2, int i1, int i2, Integer[][] memo) {
-          if (i1 == word1.length())
-              return word2.length() - i2;
-          if (i2 == word2.length())
-              return word1.length() - i1;
-          if (memo[i1][i2] != null)
-              return memo[i1][i2];
-          
-          int res = Integer.MAX_VALUE;
-          if (word1.charAt(i1) == word2.charAt(i2))
-              res = Math.min(res, dp(word1, word2, i1 + 1, i2 + 1, memo));
-          else {
-              res = Math.min(res, 1 + dp(word1, word2, i1, i2 + 1, memo));
-              res = Math.min(res, 1 + dp(word1, word2, i1 + 1, i2, memo));
+          if (i == s1.length()) {
+              memo[i][j] = s2.length() - j;
+              return memo[i][j];
           }
-          memo[i1][i2] = res;
-          return res;
+  
+          if (j == s2.length()) {
+              memo[i][j] = s1.length() - i;
+              return memo[i][j];
+          }
+  
+          int step = 0;
+          if (s1.charAt(i) == s2.charAt(j))
+              step = dp(s1, i + 1, s2, j + 1, memo);
+          else 
+              step = Math.min(dp(s1, i + 1, s2, j, memo), 
+                              dp(s1, i, s2, j + 1, memo)) + 1;
+          memo[i][j] = step;
+  
+          return memo[i][j];
       }
   }
   ```
