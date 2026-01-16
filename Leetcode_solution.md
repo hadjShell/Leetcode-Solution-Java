@@ -11088,6 +11088,8 @@ class Solution {
 
 * [Solution](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/solutions/7462220/backtracking-with-divide-and-conquer-and-u5vl)
 
+* **Cannot** use DP as Q416.
+
 * 球视角一：球必须进入盒子，从k个盒子里选一个进入
 
   * 复杂度 $O(k^n)$，注意是指数级不是阶乘级，因为是球视角
@@ -11388,7 +11390,7 @@ class Solution {
   * Compress the size of the DP table when only a part of it is needed during state transition
   * In general, it's easier to write with bottom-up dp
 
-## :bulb: Fibonacci Style
+## :bulb: Fibonacci
 
 ### Q70. [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
 
@@ -11976,13 +11978,11 @@ class Solution {
 
 ## :bulb: Knapsack Problem
 
-* 2D DP
-* Two states
-  * The volume of the backpack
-  * The range of the optional items
-* The definition of `memo`
-  * `memo[w][i]`: for first `i` items, if the volume of the backpack is `w`, the maximum value it can hold is `memo[w][i]`
-* Sometimes an item can only be picked once; sometimes it can be picked multiple times
+* Two-dimensional DP
+* `memo[w][i]`: for items in `item[i...]`, if the volume of the backpack is `w`, the maximum value it can hold is `memo[w][i]`
+* 0-1 knapsack: an item can only be picked once
+* Bounded knapsack: there are certain number of copies of each item
+* Unbounded knapsack: no upper bound on the number of copies of each kind of item
 
 ### Q279. [Perfect Squares](https://leetcode.com/problems/perfect-squares/)
 
@@ -12041,29 +12041,36 @@ class Solution {
 * ```java
   class Solution {
       public boolean canPartition(int[] nums) {
-          int sum = 0;
-          for (int n : nums) {
-              sum += n;
-          }
-          if (sum % 2 == 1)
+          int sum = sum(nums);
+  
+          if (sum % 2 != 0)
               return false;
-          Boolean[][] memo = new Boolean[nums.length][sum / 2 + 1];
-          return dp(0, sum / 2, nums, memo);
+  
+          int target = sum / 2;
+          Boolean[][] memo = new Boolean[target + 1][nums.length];
+  
+          return dp(nums, 0, target, memo);
       }
   
-      private boolean dp(int i, int sum, int[] nums, Boolean[][] memo) {
-          if (sum == 0)
+      private boolean dp(int[] nums, int i, int target, Boolean[][] memo) {
+          if (target == 0) 
               return true;
-          else if (i == nums.length)
-              return false;
-          if (memo[i][sum] != null)
-              return memo[i][sum];
           
-          boolean res = dp(i + 1, sum, nums, memo);
-          if (nums[i] > sum)
-              return memo[i][sum] = res;
-          else 
-              return memo[i][sum] = dp(i + 1, sum - nums[i], nums, memo) || res;
+          if (target < 0 || i == nums.length)
+              return false;
+  
+          if (memo[target][i] != null)
+              return memo[target][i];
+  
+          memo[target][i] = dp(nums, i + 1, target - nums[i], memo) || dp(nums, i + 1, target, memo);
+          
+          return memo[target][i];
+      }
+  
+      private int sum(int[] nums) {
+          int sum = 0;
+          for (int num : nums)    sum += num;
+          return sum;
       }
   }
   ```
