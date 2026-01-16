@@ -11940,6 +11940,40 @@ class Solution {
   }
   ```
 
+### Q1312. [Minimum Insertion Steps to Make a String Palindrome](https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/)
+
+* ```java
+  class Solution {
+      public int minInsertions(String s) {
+          Integer[][] memo = new Integer[s.length()][s.length()];
+  
+          return dp(s, 0, s.length() - 1, memo);
+      }
+  
+      private int dp(String s, int i, int j, Integer[][] memo) {
+          if (memo[i][j] != null)
+              return memo[i][j];
+  
+          if (i == j) {
+              memo[i][j] = 0;
+              return 0;
+          }
+  
+          if (i > j)
+              return 0;
+  
+          int insertion = 0;
+          if (s.charAt(i) == s.charAt(j))
+              insertion = dp(s, i + 1, j - 1, memo);
+          else
+              insertion = Math.min(dp(s, i + 1, j, memo), dp(s, i, j - 1, memo)) + 1;
+          memo[i][j] = insertion;
+  
+          return memo[i][j];
+      }
+  }
+  ```
+
 ## :bulb: Knapsack Problem
 
 * 2D DP
