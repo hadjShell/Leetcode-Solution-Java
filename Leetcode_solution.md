@@ -12282,6 +12282,45 @@ class Solution {
 
 ***
 
+## :bulb: Shortest Path
+
+### Q64. [Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/)
+
+* ```java
+  class Solution {
+      public int minPathSum(int[][] grid) {
+          int m = grid.length, n = grid[0].length;
+          Integer[] memo = new Integer[m * n];
+  
+          return dp(grid, 0, 0, memo);
+      }
+  
+      private int dp(int[][] grid, int i, int j, Integer[] memo) {
+          int m = grid.length, n = grid[0].length;
+          int start = i * n + j, end = m * n - 1;
+  
+          if (start == end)
+              return grid[i][j];
+  
+          if (memo[start] != null)
+              return memo[start];
+  
+          int sum = Integer.MAX_VALUE;
+          // down
+          if (i + 1 < m)
+              sum = Math.min(sum, grid[i][j] + dp(grid, i + 1, j, memo));
+          // right
+          if (j + 1 < n)
+              sum = Math.min(sum, grid[i][j] + dp(grid, i, j + 1, memo));
+          memo[start] = sum;
+  
+          return memo[start];
+      }
+  }
+  ```
+
+
+
 ## :bulb: Others
 
 ### Q139. [Word Break](https://leetcode.com/problems/word-break/)
