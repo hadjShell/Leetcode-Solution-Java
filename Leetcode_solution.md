@@ -12321,7 +12321,7 @@ class Solution {
 
 ## :bulb: Games
 
-### Q174. [Dungeon Game](https://leetcode.com/problems/dungeon-game/)
+### :heart:Q174. [Dungeon Game](https://leetcode.com/problems/dungeon-game/)
 
 * [Solution](https://leetcode.com/problems/dungeon-game/solutions/7509258/2d-dp-reverse-thinking-from-end-to-start-cwu1)
 
@@ -12364,6 +12364,56 @@ class Solution {
           memo[i][j] = minHealth;
   
           return memo[i][j];
+      }
+  }
+  ```
+
+### :star:Q514. [Freedom Trail](https://leetcode.com/problems/freedom-trail/)
+
+* ```java
+  class Solution {
+      public int findRotateSteps(String ring, String key) {
+          // i at "12:00", min steps to form key[j...]
+          Integer[][] memo = new Integer[ring.length()][key.length() + 1];
+          Map<Character, Set<Integer>> dict = getDictionary(ring);
+  
+          return dp(ring, 0, key, 0, memo, dict);
+      }
+  
+      private int dp(String ring, int i, String key, int j, Integer[][] memo, Map<Character, Set<Integer>> dict) {
+          if (j == key.length())
+              return 0;
+  
+          if (memo[i][j] != null)
+              return memo[i][j];
+  
+          int step = Integer.MAX_VALUE;
+          char requiredChar = key.charAt(j);
+          Set<Integer> indexes = dict.get(requiredChar);
+  
+          for (int index : indexes) {
+              step = Math.min(step, 
+                              countMinimalRotationSteps(i, index, ring.length()) + 1 + dp(ring, index, key, j + 1, memo, dict));
+          }
+          memo[i][j] = step;
+  
+          return memo[i][j];
+      }
+  
+      private int countMinimalRotationSteps(int i, int j, int length) {
+          return Math.min(Math.abs(i - j), length - Math.abs(i - j));
+          
+      }
+  
+      private Map<Character, Set<Integer>> getDictionary(String ring) {
+          Map<Character, Set<Integer>> dict = new HashMap<>();
+  
+          for (int i = 0; i < ring.length(); i++) {
+              char c = ring.charAt(i);
+              dict.computeIfAbsent(c, k -> new HashSet<>()).add(i);
+          }
+  
+          return dict;
       }
   }
   ```
