@@ -12319,6 +12319,59 @@ class Solution {
   }
   ```
 
+### Q787. [Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
+
+* ```java
+  class Solution {
+      public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+          // cheapest price from i to dst, fly at most j times
+          Integer[][] memo = new Integer[n + 1][k + 2];
+          Map<Integer, List<int[]>> graph = buildGraph(flights);
+  
+          return dp(graph, src, dst, k + 1, memo);
+      }
+  
+      private int dp(Map<Integer, List<int[]>> graph, int src, int dst, int k, Integer[][] memo) {
+          if (src == dst && k >= 0)
+              return 0;
+          
+          if (src != dst && k == 0)
+              return -1;
+  
+          if (memo[src][k] != null)
+              return memo[src][k];
+          
+          int price = Integer.MAX_VALUE;
+          List<int[]> nexts = graph.get(src);
+          if (nexts != null) {
+              for (int[] next : nexts) {
+                  int nextDst = next[0], nextPrice = next[1];
+                  int nextCheapest = dp(graph, nextDst, dst, k - 1, memo);
+  
+                  if (nextCheapest == -1) continue;
+                  price = Math.min(price, nextPrice + nextCheapest);
+              }
+          }
+          if (price == Integer.MAX_VALUE)
+              price = -1;
+          memo[src][k] = price;
+  
+          return memo[src][k];
+      }
+  
+      private Map<Integer, List<int[]>> buildGraph(int[][] flights) {
+          Map<Integer, List<int[]>> graph = new HashMap<>();
+  
+          for (int[] flight : flights) {
+              int from = flight[0], to = flight[1], price = flight[2];
+              graph.computeIfAbsent(from, key -> new ArrayList()).add(new int[] {to, price});
+          }
+  
+          return graph;
+      }
+  }
+  ```
+
 ## :bulb: Games
 
 ### :heart:Q174. [Dungeon Game](https://leetcode.com/problems/dungeon-game/)
@@ -12370,7 +12423,9 @@ class Solution {
 
 ### :star:Q514. [Freedom Trail](https://leetcode.com/problems/freedom-trail/)
 
-* ```java
+* 可以用bfs，不过要遍历所有节点，不能走到叶子就停下，因为我们不知道哪个叶子节点是终点。整个decision tree一共 $m^n$ 个节点，每个节点进出栈一次，复杂度 $O(m^n)$. DP的复杂度则是 $O(m^2n)$，实际上还是DP更快。
+
+  ```java
   class Solution {
       public int findRotateSteps(String ring, String key) {
           // i at "12:00", min steps to form key[j...]
