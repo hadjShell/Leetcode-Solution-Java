@@ -12759,6 +12759,49 @@ class Solution {
   }
   ```
 
+### :heart:Q312. [Burst Balloons](https://leetcode.com/problems/burst-balloons/)
+
+* ```java
+  class Solution {
+      public int maxCoins(int[] nums) {
+          // min length is 2
+          int[] ballons = addDummyBallons(nums);
+          Integer[][] memo = new Integer[ballons.length][ballons.length];
+  
+          return dp(ballons, 0, ballons.length - 1, memo);
+      }
+  
+      private int dp(int[] ballons, int i, int j, Integer[][] memo) {
+          if (j - i == 1)
+              return 0;
+  
+          if (j - i == 2)
+              return ballons[i] * ballons[i + 1] * ballons[j];
+  
+          if (memo[i][j] != null)
+              return memo[i][j];
+  
+          int max = Integer.MIN_VALUE;
+          for (int k = i + 1; k < j; k++) 
+              max = Math.max(max, dp(ballons, i, k, memo) + dp(ballons, k, j, memo) + ballons[i] * ballons[k] * ballons[j]);
+          memo[i][j] = max;
+  
+          return memo[i][j];
+      }
+  
+      private int[] addDummyBallons(int[] nums) {
+          int[] result = new int[nums.length + 2];
+  
+          result[0] = 1;
+          result[result.length - 1] = 1;
+          for (int i = 1; i < result.length - 1; i++)
+              result[i] = nums[i - 1];
+  
+          return result;
+      }
+  }
+  ```
+
 ### :star:Q790. [Domino and Tromino Tiling](https://leetcode.com/problems/domino-and-tromino-tiling/)
 
 * ```java
