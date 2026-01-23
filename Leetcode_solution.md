@@ -11471,7 +11471,7 @@ class Solution {
 
 ## :bulb: House Robber
 
-### :star:Q198. [House Robber](https://leetcode.com/problems/house-robber/)
+### Q198. [House Robber](https://leetcode.com/problems/house-robber/)
 
 * ```java
   class Solution {
@@ -11494,6 +11494,44 @@ class Solution {
           memo[i] = Math.max(nums[i] + dp(nums, i + 2, memo), dp(nums, i + 1, memo));
   
           return memo[i];
+      }
+  }
+  ```
+
+### Q213. [House Robber II](https://leetcode.com/problems/house-robber-ii/)
+
+* ```java
+  class Solution {
+      public int rob(int[] nums) {
+          Integer[][] memo = new Integer[nums.length][nums.length];
+  
+          return dp(nums, 0, nums.length - 1, memo);
+      }
+  
+      private int dp(int[] nums, int start, int end, Integer[][] memo) {
+          if (start > end)
+              return 0;
+          
+          if (start == end)
+              return nums[start];
+  
+          if (memo[start][end] != null)
+              return memo[start][end];
+  
+          int sum = Integer.MIN_VALUE;
+          // rob start
+          sum = Math.max(nums[start] + (isAdajcent(start, end, nums.length) ? 
+                  dp(nums, start + 2, end - 1, memo) : 
+                  dp(nums, start + 2, end, memo)), sum);
+          // not rob start
+          sum = Math.max(dp(nums, start + 1, end, memo), sum);
+          memo[start][end] = sum;
+  
+          return memo[start][end];
+      }
+  
+      private boolean isAdajcent(int start, int end, int length) {
+          return Math.abs(start - end) == 1 || Math.abs(start - end) == length - 1;
       }
   }
   ```
