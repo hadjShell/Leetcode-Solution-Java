@@ -11476,21 +11476,24 @@ class Solution {
 * ```java
   class Solution {
       public int rob(int[] nums) {
-          // the maxmimum money if you rob this house and stopped
-          int[] dp = new int [nums.length];
-          dp[0] = nums[0];
-          for (int i = 1; i < dp.length; i++) {
-              int prevMax = 0;
-              for (int j = 0; j < i - 1; j++) {
-                  prevMax = Math.max(prevMax, dp[j]);
-              }
-              dp[i] = prevMax + nums[i];
-          }
-          int max = 0;
-          for (int i = 0; i < dp.length; i++) {
-              max = Math.max(max, dp[i]);
-          }
-          return max;
+          Integer[] memo = new Integer[nums.length + 1];
+  
+          return dp(nums, 0, memo);
+      }
+  
+      private int dp(int[] nums, int i, Integer[] memo) {
+          if (i == nums.length)
+              return 0;
+  
+          if (i == nums.length - 1)
+              return nums[nums.length - 1];
+  
+          if (memo[i] != null)
+              return memo[i];
+  
+          memo[i] = Math.max(nums[i] + dp(nums, i + 2, memo), dp(nums, i + 1, memo));
+  
+          return memo[i];
       }
   }
   ```
@@ -12376,52 +12379,87 @@ class Solution {
 
 * Assume two players play optimally, who will win the game?
 
+### :star:Q486. [Predict the Winner](https://leetcode.com/problems/predict-the-winner/)
+
+* [Solution](https://leetcode.com/problems/predict-the-winner/solutions/7517161/backtracking-to-dp-stone-game-optimal-st-ds8g)
+
+  ```java
+  class Solution {
+      public boolean predictTheWinner(int[] piles) {
+          // memo[i][j]: the max stones a player can score in the game playing on piles[i..j], the player plays first
+          Integer[][] memo = new Integer[piles.length][piles.length];
+          int sum = sum(piles);
+          int score1 = dp(piles, 0, piles.length - 1, memo, sum);
+  
+          return score1 >= sum - score1;
+      }
+  
+      private int dp(int[] piles, int i, int j, Integer[][] memo, int sum) {
+          if (i == j)
+              return piles[i];
+  
+          if (memo[i][j] != null)
+              return memo[i][j];
+  
+          int score = Integer.MIN_VALUE;
+          
+          // alice choose i
+          score = Math.max(score, sum - dp(piles, i + 1, j, memo, sum - piles[i]));
+          // alice choose j
+          score = Math.max(score, sum - dp(piles, i, j - 1, memo, sum - piles[j]));
+  
+          memo[i][j] = score;
+  
+          return memo[i][j];
+      }
+  
+      private int sum(int[] piles) {
+          int sum = 0;
+          for (int n : piles) sum += n;
+          return sum;
+      }
+  }
+  ```
+
 ### Q877. [Stone Game](https://leetcode.com/problems/stone-game/)
 
 * ```java
   class Solution {
       public boolean stoneGame(int[] piles) {
-          // memo[i][j]: the biggest difference of alice's stones to bob in the game playing on piles[i..j], alice plays first
+          // memo[i][j]: the max stones a player can score in the game playing on piles[i..j], the player plays first
           Integer[][] memo = new Integer[piles.length][piles.length];
+          int sum = sum(piles);
+          int score1 = dp(piles, 0, piles.length - 1, memo, sum);
   
-          return dp(piles, 0, piles.length - 1, memo) > 0;
+          return score1 > sum - score1;
       }
   
-      private int dp(int[] piles, int i, int j, Integer[][] memo) {
+      private int dp(int[] piles, int i, int j, Integer[][] memo, int sum) {
           if (i == j)
               return piles[i];
-  
-          if (j - i == 1)
-              return Math.abs(piles[i] - piles[j]);
   
           if (memo[i][j] != null)
               return memo[i][j];
   
-          int diff = Integer.MIN_VALUE, a = 0, b = 0;
+          int score = Integer.MIN_VALUE;
           
-          // alice choose bigger one of i or j, bob choose another
-          a = piles[i];
-          b = piles[j];
-          diff = Math.max(diff, dp(piles, i + 1, j - 1, memo) + Math.abs(a - b));
+          // alice choose i
+          score = Math.max(score, sum - dp(piles, i + 1, j, memo, sum - piles[i]));
+          // alice choose j
+          score = Math.max(score, sum - dp(piles, i, j - 1, memo, sum - piles[j]));
   
-          // alice choose i, bob choose i + 1
-          a = piles[i];
-          b = piles[i + 1];
-          diff = Math.max(diff, dp(piles, i + 2, j, memo) + a - b);
-  
-          // alice choose j, bob choose j - 1
-          a = piles[j];
-          b = piles[j - 1];
-          diff = Math.max(diff, dp(piles, i, j - 2, memo) + a - b);
-  
-          memo[i][j] = diff;
+          memo[i][j] = score;
   
           return memo[i][j];
       }
+  
+      private int sum(int[] piles) {
+          int sum = 0;
+          for (int n : piles) sum += n;
+          return sum;
+      }
   }
   ```
-
-
 
 ## :bulb: Others
 
