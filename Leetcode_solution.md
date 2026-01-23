@@ -12372,7 +12372,58 @@ class Solution {
   }
   ```
 
-## :bulb: Games
+## :bulb: Optimal Strategy Game
+
+* Assume two players play optimally, who will win the game?
+
+### Q877. [Stone Game](https://leetcode.com/problems/stone-game/)
+
+* ```java
+  class Solution {
+      public boolean stoneGame(int[] piles) {
+          // memo[i][j]: the biggest difference of alice's stones to bob in the game playing on piles[i..j], alice plays first
+          Integer[][] memo = new Integer[piles.length][piles.length];
+  
+          return dp(piles, 0, piles.length - 1, memo) > 0;
+      }
+  
+      private int dp(int[] piles, int i, int j, Integer[][] memo) {
+          if (i == j)
+              return piles[i];
+  
+          if (j - i == 1)
+              return Math.abs(piles[i] - piles[j]);
+  
+          if (memo[i][j] != null)
+              return memo[i][j];
+  
+          int diff = Integer.MIN_VALUE, a = 0, b = 0;
+          
+          // alice choose bigger one of i or j, bob choose another
+          a = piles[i];
+          b = piles[j];
+          diff = Math.max(diff, dp(piles, i + 1, j - 1, memo) + Math.abs(a - b));
+  
+          // alice choose i, bob choose i + 1
+          a = piles[i];
+          b = piles[i + 1];
+          diff = Math.max(diff, dp(piles, i + 2, j, memo) + a - b);
+  
+          // alice choose j, bob choose j - 1
+          a = piles[j];
+          b = piles[j - 1];
+          diff = Math.max(diff, dp(piles, i, j - 2, memo) + a - b);
+  
+          memo[i][j] = diff;
+  
+          return memo[i][j];
+      }
+  }
+  ```
+
+
+
+## :bulb: Others
 
 ### :heart:Q174. [Dungeon Game](https://leetcode.com/problems/dungeon-game/)
 
@@ -12472,10 +12523,6 @@ class Solution {
       }
   }
   ```
-
-
-
-## :bulb: Others
 
 ### :heart:Q10. [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
 
