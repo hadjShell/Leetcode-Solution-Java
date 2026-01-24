@@ -12578,6 +12578,12 @@ class Solution {
 
 ## :bulb: Best Time to Buy and Sell Stock
 
+* `memo[i][k][j]`: the maximum profit you can achieve from i^th^ day with at most k transactions, j = 0 means no stock holding, j = 1 means holding one stock
+* Father of all: Q188.
+* `k = 1`: Q121.
+* `k = +inf`: Q122. We don't need state `k` anymore
+* 
+
 ### Q121. [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
 
 * ```java
@@ -12589,6 +12595,22 @@ class Solution {
                   min = prices[i];
               else 
                   profit = Math.max(profit, prices[i] - min);
+          }
+          return profit;
+      }
+  }
+  ```
+
+### Q122. [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
+
+* ```java
+  class Solution {
+      public int maxProfit(int[] prices) {
+          int profit = 0;
+          for (int i = 1; i < prices.length; i++) {
+              int p = prices[i] - prices[i - 1];
+              if (p > 0)
+                  profit += p;
           }
           return profit;
       }
@@ -12628,6 +12650,8 @@ class Solution {
       }
   }
   ```
+
+### Q309. 
 
 ## :bulb: Others
 
