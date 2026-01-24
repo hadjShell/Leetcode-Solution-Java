@@ -12583,7 +12583,7 @@ class Solution {
 * `k = 1`: Q121.
 * `k = +inf`: Q122. We don't need state `k` anymore
 * `k = +inf` with cooldown: Q309. We don't need state `k` anymore. `j` have 4 possible states instead of 2.
-* 
+* `k = +inf` with transaction fee: Q714. Same as Q122. Treat transaction fee as increasement on stock price
 
 ### Q121. [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
 
@@ -12625,29 +12625,30 @@ class Solution {
       public int maxProfit(int k, int[] prices) {
           // memo[i][j][k]: the maximum profit you can achieve from ith day with at most k transactions, j = 0 means no stock holding, j = 1 means holding one stock
           // one transaction: one buy + one sell
-          Integer[][][] memo = new Integer[prices.length + 1][k + 1][2];
+          Integer[][][] memo = new Integer[prices.length + 1][2][k + 1];
   
-          return dp(prices, 0, k, 0, memo);
+          return dp(prices, 0, 0, k, memo);
       }
   
-      private int dp(int[] prices, int i, int k, int isHoldingStock, Integer[][][] memo) {
+      private int dp(int[] prices, int i, int j, int k, Integer[][][] memo) {
           if (i == prices.length || k == 0)
               return 0;
   
-          if (memo[i][k][isHoldingStock] != null)
-              return memo[i][k][isHoldingStock];
+          if (memo[i][j][k] != null)
+              return memo[i][j][k];
   
           int profit = Integer.MIN_VALUE;
           // buy
-          if (isHoldingStock == 0) 
-              profit = Math.max(profit, dp(prices, i + 1, k, 1, memo) - prices[i]);
+          if (j == 0) 
+              profit = Math.max(profit, dp(prices, i + 1, 1, k, memo) - prices[i]);
           // sell
           else
-              profit = Math.max(profit, dp(prices, i + 1, k - 1, 0, memo) + prices[i]);
+              profit = Math.max(profit, dp(prices, i + 1, 0, k - 1, memo) + prices[i]);
           // hold
-          profit = Math.max(profit, dp(prices, i + 1, k, isHoldingStock, memo));
-          
-          return memo[i][k][isHoldingStock] = profit;
+          profit = Math.max(profit, dp(prices, i + 1, j, k, memo));
+          memo[i][j][k] = profit;
+  
+          return memo[i][j][k];
       }
   }
   ```
@@ -12684,6 +12685,39 @@ class Solution {
               profit = Math.max(profit, dp(prices, i + 1, 1, memo));
           
           return memo[i][j] = profit;
+      }
+  }
+  ```
+
+### Q714. [Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
+
+* ```java
+  class Solution {
+      public int maxProfit(int[] prices, int fee) {
+          Integer[][] memo = new Integer[prices.length + 1][2];
+  
+          return dp(prices, 0, 0, memo, fee);
+      }
+  
+      private int dp(int[] prices, int i, int j, Integer[][] memo, int fee) {
+          if (i == prices.length)
+              return 0;
+  
+          if (memo[i][j] != null)
+              return memo[i][j];
+  
+          int profit = Integer.MIN_VALUE;
+          // buy
+          if (j == 0) 
+              profit = Math.max(profit, dp(prices, i + 1, 1, memo, fee) - prices[i] - fee);
+          // sell
+          else
+              profit = Math.max(profit, dp(prices, i + 1, 0, memo, fee) + prices[i]);
+          // hold
+          profit = Math.max(profit, dp(prices, i + 1, j, memo, fee));
+          memo[i][j] = profit;
+  
+          return memo[i][j];
       }
   }
   ```
