@@ -12582,6 +12582,7 @@ class Solution {
 * Father of all: Q188.
 * `k = 1`: Q121.
 * `k = +inf`: Q122. We don't need state `k` anymore
+* `k = +inf` with cooldown: Q309. We don't need state `k` anymore. `j` have 4 possible states instead of 2.
 * 
 
 ### Q121. [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
@@ -12651,7 +12652,41 @@ class Solution {
   }
   ```
 
-### Q309. 
+### Q309. [Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
+
+* ```java
+  class Solution {
+      public int maxProfit(int[] prices) { 
+          // j = 0: hold no stock prev day, j = 1: hold one stock prev day, j = 2: sell prev day, j = 3: buy prev day
+          Integer[][] memo = new Integer[prices.length + 1][4];
+  
+          return dp(prices, 0, 0, memo);
+      }
+  
+      private int dp(int[] prices, int i, int j, Integer[][] memo) {
+          if (i == prices.length)
+              return 0;
+  
+          if (memo[i][j] != null)
+              return memo[i][j];
+  
+          int profit = Integer.MIN_VALUE;
+          // buy
+          if (j == 0 || j == 1) 
+              profit = Math.max(profit, dp(prices, i + 1, 3, memo) - prices[i]);
+          // sell
+          if (j == 1 || j == 3)
+              profit = Math.max(profit, dp(prices, i + 1, 2, memo) + prices[i]);
+          // hold
+          if (j == 0 || j == 2)
+              profit = Math.max(profit, dp(prices, i + 1, 0, memo));
+          if (j == 1 || j == 3)
+              profit = Math.max(profit, dp(prices, i + 1, 1, memo));
+          
+          return memo[i][j] = profit;
+      }
+  }
+  ```
 
 ## :bulb: Others
 
