@@ -12576,6 +12576,42 @@ class Solution {
   }
   ```
 
+## :bulb: Best Time to Buy and Sell Stock
+
+### :heart:Q188. [Best Time to Buy and Sell Stock IV](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/)
+
+* ```java 
+  class Solution {
+      public int maxProfit(int k, int[] prices) {
+          // memo[i][j][k]: the maximum profit you can achieve from ith day with at most k transactions, j = 0 means no stock holding, j = 1 means holding one stock
+          // one transaction: one buy + one sell
+          Integer[][][] memo = new Integer[prices.length + 1][k + 1][2];
+  
+          return dp(prices, 0, k, 0, memo);
+      }
+  
+      private int dp(int[] prices, int i, int k, int isHoldingStock, Integer[][][] memo) {
+          if (i == prices.length || k == 0)
+              return 0;
+  
+          if (memo[i][k][isHoldingStock] != null)
+              return memo[i][k][isHoldingStock];
+  
+          int profit = Integer.MIN_VALUE;
+          // buy
+          if (isHoldingStock == 0) 
+              profit = Math.max(profit, dp(prices, i + 1, k, 1, memo) - prices[i]);
+          // sell
+          else
+              profit = Math.max(profit, dp(prices, i + 1, k - 1, 0, memo) + prices[i]);
+          // hold
+          profit = Math.max(profit, dp(prices, i + 1, k, isHoldingStock, memo));
+          
+          return memo[i][k][isHoldingStock] = profit;
+      }
+  }
+  ```
+
 ## :bulb: Others
 
 ### :heart:Q174. [Dungeon Game](https://leetcode.com/problems/dungeon-game/)
